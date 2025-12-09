@@ -89,11 +89,11 @@ managednodeGroups:
         cloudWatch: true
         awsLoadBalancerController: true
       #attachPolicyARNs: https://dev.to/aws-builders/eks-iam-deep-dive-136d https://schema.eksctl.io/
-         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        # - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+         #- arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+         #- arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
        # AWS Managed or Customer Managed IAM Policy ARN.
-         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+         #- arn:aws:iam::aws:policy/AmazonS3FullAccess
       #instanceProfileARN: "arn:aws:iam::509399617800:instance-profile/eksNodeRole"
       #instanceRoleARN: "arn:aws:iam::509399617800:role/eksNodeRole"
     tags:
