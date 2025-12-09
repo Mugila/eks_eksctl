@@ -15,6 +15,7 @@ metadata:
 
 vpc:
   id: vpc-0f941eed71c3b0179
+  #autoAllocateIPv6: false
   #publicAccessCIDRs: ["10.0.2.0/24", "10.0.9.0/25"]
   securityGroup: sg-06a0beefd0ed45a07
   subnets:
@@ -27,7 +28,7 @@ vpc:
       us-east-1b: { id: subnet-0b352436511bed6c4 }
       #us-east-1c: { id: subnet-02ab36d3b3700e7fa }
   clusterEndpoints:
-    privateAccess: true
+    privateAccess: false
     publicAccess: true
 cloudWatch:
    clusterLogging:
@@ -35,17 +36,42 @@ cloudWatch:
     logRetentionInDays: 7
 iam:
  withOIDC: true
+ podIdentityAssociations: 
  serviceAccounts:	
- - metadata:
-      name: aws-load-balancer-controller
-      namespace: kube-system
-   wellKnownPolicies:
-      awsLoadBalancerController: true  
- - metadata:
-      name: external-dns
-      namespace: kube-system
-   wellKnownPolicies:
-      externalDNS: true
+  - namespace: kube-system
+    serviceAccountName: aws-load-balancer-controller
+    roleName: pod-identity-role-alb
+    wellKnownPolicies:
+      awsLoadBalancerController: true
+
+  - namespace: kube-system
+    serviceAccountName: efs-csi-controller-sa
+    roleName: pod-identity-role-efs
+    wellKnownPolicies:
+      efsCSIController: true      
+
+  - namespace: kube-system
+    serviceAccountName: external-dns
+    roleName: pod-identity-role-external-dns
+    wellKnownPolicies:
+      externalDNS: true          
+
+  - namespace: cert-manager
+    serviceAccountName: cert-manager
+    roleName: pod-identity-role-cert-manager
+    wellKnownPolicies:
+      certManager: true         
+
+  - namespace: kube-system
+    serviceAccountName: cluster-autoscaler
+    roleName: pod-identity-role-cluster-autoscaler
+    wellKnownPolicies:
+      autoScaler: true  
+
+  - namespace: amazon-cloudwatch
+    serviceAccountName: aws-node
+    roleName: pod-identity-role-cloudwatch-agent
+    permissionPolicyARNs: ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
 
 managednodeGroups:
   - name: eks-pooc-ng
@@ -55,6 +81,7 @@ managednodeGroups:
    # updateConfig:
     #  maxUnavailablePercentage: 10
     disableIMDSv1: false
+    disablePodIMDS: false
     desiredCapacity: 2
     minSize: 2
     maxSize: 2
@@ -68,7 +95,7 @@ managednodeGroups:
       publicKeyPath: "/root/.ssh/devops.pub"
     securityGroups:
       withShared: true
-      attachIDs: ["sg-06a0beefd0ed45a07"]
+      attachIDs: sg-06a0beefd0ed45a07
     maxPodsPerNode: 17
     subnets:
       - subnet-0ebeafd6054e83d84
@@ -80,14 +107,14 @@ managednodeGroups:
         autoScaler: true
         externalDNS: true
         certManager: true
-        appMesh: true
+        #appMesh: true
         ebs: true
-        fsx: true
-        efs: true
         albIngress: true
         xRay: true
         cloudWatch: true
         awsLoadBalancerController: true
+        efs: false
+        fsx: false
       #attachPolicyARNs: https://dev.to/aws-builders/eks-iam-deep-dive-136d https://schema.eksctl.io/
         # - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
          #- arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
@@ -97,9 +124,13 @@ managednodeGroups:
       #instanceProfileARN: "arn:aws:iam::509399617800:instance-profile/eksNodeRole"
       #instanceRoleARN: "arn:aws:iam::509399617800:role/eksNodeRole"
     tags:
+      alpha.eksctl.io/cluster-name: eks-poc
       alpha.eksctl.io/nodegroup-name: "ops_build_eks_nodegroup"
       alpha.eksctl.io/nodegroup-type: "managed"
       nodegroup-role: "worker-node"
+       # EC2 tags required for cluster-autoscaler auto-discovery - these tags are automatically applied to a managed nodegroup autoscaling group
+      k8s.io/cluster-autoscaler/enabled: "true"
+      k8s.io/cluster-autoscaler/managednodes-quickstart: "owned"   
     labels: 
       nodegroup-role: "worker" 
 
@@ -107,24 +138,30 @@ addons:
   #- name: aws-ebs-csi-driver
   #  version: latest
   - name: eks-pod-identity-agent
-    version: latest 
+    version: latest
+    resolveConflicts: overwrite
   - name: vpc-cni
     version: latest # Example version
-    attachPolicyARNs:
-     - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+    resolveConflicts: overwrite
+    #attachPolicyARNs:
+     #- arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     # Optional: Add specific config for the CNI if needed
   - name: kube-proxy
     version: latest
+    resolveConflicts: overwrite
     # Optional: Configure settings here
   - name: coredns
-    version: latest
+    version: latest 
+    resolveConflicts: overwrite
+    
 #  - name: aws-ebs-csi-driver # Example for a common add-on
 #    wellKnownPolicies: # Simplifies IAM setup
 #      ebsCSIController: true
   
   
-#addonsConfig:    
-#   autoApplyPodIdentityAssociations: true
+addonsConfig:  
+# automatically resolve (and apply) the recommended pod identity configuration  
+   autoApplyPodIdentityAssociations: true
 
 #karpenter:
  # version: '0.37.0' # Exact version must be provided
