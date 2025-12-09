@@ -23,9 +23,9 @@ vpc:
   #publicAccessCIDRs: ["10.0.2.0/24", "10.0.9.0/25"]
   securityGroup: "sg-06a0beefd0ed45a07"
   subnets:
-    private:
-      us-east-1a: { id: subnet-0ebeafd6054e83d84 }
-      us-east-1b: { id: subnet-0e62b2a66ea4235c7 }
+    #private:
+    #  us-east-1a: { id: subnet-0ebeafd6054e83d84 }
+    #  us-east-1b: { id: subnet-0e62b2a66ea4235c7 }
      # us-east-1c: { id: subnet-0564dca4816439969 }
     public:
       us-east-1a: { id: subnet-0441e1c0571e6d4a6 }
@@ -79,7 +79,7 @@ iam:
     permissionPolicyARNs: ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
 
 managedNodeGroups:
-  - name: eks-pooc-ng
+  - name: eks-poc-ng
     instanceType: t3.large
     amiFamily: AmazonLinux2023
     privateNetworking: True # Ensures nodes are launched in private subnets
