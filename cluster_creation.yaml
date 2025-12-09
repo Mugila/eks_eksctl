@@ -4,13 +4,14 @@ kind: ClusterConfig
 metadata:
   name: eks-poc
   region: us-east-1
-  version: "1.30"
+  version: "1.31"
   tags:
-    wp:terraform: "false"
-    wp:environment: "dev"
-    wp:cost-center: "ops"
-    wp:owner: "ops"
     wp:managed-by: "eksctl"
+    cluster: "eks-poc"
+    owner: "ops"
+    purpose: dev  # Purpose of the cluster (e.g., dev, test, production)
+    scope: poc # Scope or boundary of usage (e.g., team-specific, project-specific)
+  version: "1.31"    # This is the latest Kubernetes version currently supported by Harness SMP
    # karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
@@ -79,7 +80,7 @@ iam:
 
 managednodeGroups:
   - name: eks-pooc-ng
-    instanceType: t3a.medium
+    instanceType: t3a.large
     amiFamily: AmazonLinux2023
     #privateNetworking: true # Ensures nodes are launched in private subnets
    # updateConfig:
