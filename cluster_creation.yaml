@@ -129,7 +129,7 @@ managednodeGroups:
       #instanceProfileARN: "arn:aws:iam::509399617800:instance-profile/eksNodeRole"
       #instanceRoleARN: "arn:aws:iam::509399617800:role/eksNodeRole"
     tags:
-      alpha.eksctl.io/cluster-name: eks-poc
+      alpha.eksctl.io/cluster-name: "eks-poc"
       alpha.eksctl.io/nodegroup-name: "ops_build_eks_nodegroup"
       alpha.eksctl.io/nodegroup-type: "managed"
       nodegroup-role: "worker-node"
