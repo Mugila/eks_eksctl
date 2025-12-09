@@ -11,7 +11,7 @@ metadata:
     wp:cost-center: "ops"
     wp:owner: "ops"
     wp:managed-by: "eksctl"
-    karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
+   # karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
   id: vpc-0f941eed71c3b0179
@@ -52,8 +52,8 @@ managednodeGroups:
     instanceType: t3a.medium
     amiFamily: AmazonLinux2023
     #privateNetworking: true # Ensures nodes are launched in private subnets
-    updateConfig:
-      maxUnavailablePercentage: 50
+   # updateConfig:
+    #  maxUnavailablePercentage: 10
     disableIMDSv1: false
     desiredCapacity: 2
     minSize: 2
@@ -69,10 +69,10 @@ managednodeGroups:
     securityGroups:
       withShared: true
       attachIDs: ["sg-06a0beefd0ed45a07"]
-    maxPodsPerNode: 35
+    maxPodsPerNode: 17
     subnets:
-      - subnet-0441e1c0571e6d4a6
-      - subnet-0b352436511bed6c4
+      - subnet-0ebeafd6054e83d84
+      - subnet-0e62b2a66ea4235c7
   #    - subnet-0564dca4816439969	 
     iam:
       instanceProfileARN: "arn:aws:iam::509399617800:instance-profile/eksNodeRole"
@@ -106,7 +106,7 @@ addons:
 addonsConfig:    
    autoApplyPodIdentityAssociations: true
 
-karpenter:
-  version: '0.37.0' # Exact version must be provided
-  createServiceAccount: true # default is false
-  withSpotInterruptionQueue: true #adds all required policies and rules for supporting Spot Interruption Queue, default is false
+#karpenter:
+ # version: '0.37.0' # Exact version must be provided
+ # createServiceAccount: true # default is false
+ # withSpotInterruptionQueue: true #adds all required policies and rules for supporting Spot Interruption Queue, default is false
