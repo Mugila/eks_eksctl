@@ -34,17 +34,16 @@ cloudWatch:
     logRetentionInDays: 7
 iam:
  withOIDC: true
-
-serviceAccounts:	
-- metadata:
+ serviceAccounts:	
+ - metadata:
       name: aws-load-balancer-controller
       namespace: kube-system
-  wellKnownPolicies:
+   wellKnownPolicies:
       awsLoadBalancerController: true  
-- metadata:
+ - metadata:
       name: external-dns
       namespace: kube-system
-  wellKnownPolicies:
+   wellKnownPolicies:
       externalDNS: true
 
 managednodeGroups:
