@@ -41,7 +41,7 @@ iam:
  vpcResourceControllerPolicy: true
  withOIDC: true
  podIdentityAssociations: 
- serviceAccounts:	
+ #serviceAccounts:	
   - namespace: kube-system
     serviceAccountName: aws-load-balancer-controller
     roleName: pod-identity-role-alb
