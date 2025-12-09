@@ -99,7 +99,7 @@ managednodeGroups:
       publicKeyPath: "/root/.ssh/devops.pub"
     securityGroups:
       withShared: true
-      attachIDs: sg-06a0beefd0ed45a07
+      attachIDs: ["sg-06a0beefd0ed45a07"]
     maxPodsPerNode: 17
     subnets:
       - subnet-0ebeafd6054e83d84
