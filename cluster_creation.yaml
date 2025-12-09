@@ -82,7 +82,7 @@ managedNodeGroups:
   - name: eks-pooc-ng
     instanceType: t3.large
     amiFamily: AmazonLinux2023
-    privateNetworking: false # Ensures nodes are launched in private subnets
+    privateNetworking: True # Ensures nodes are launched in private subnets
    # updateConfig:
     #  maxUnavailablePercentage: 10
     disableIMDSv1: True
