@@ -11,7 +11,7 @@ metadata:
     owner: "ops"
     purpose: dev  # Purpose of the cluster (e.g., dev, test, production)
     scope: poc # Scope or boundary of usage (e.g., team-specific, project-specific)
-  version: "1.31"    # This is the latest Kubernetes version currently supported by Harness SMP
+  version: "1.31" # This is the latest Kubernetes version currently supported by Harness SMP
    # karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
