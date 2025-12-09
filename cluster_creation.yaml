@@ -14,11 +14,9 @@ metadata:
     karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
+  id: vpc-0f941eed71c3b0179
   #publicAccessCIDRs: ["10.0.2.0/24", "10.0.9.0/25"]
   securityGroup: sg-06a0beefd0ed45a07
-  clusterEndpoints:
-    privateAccess: true
-    publicAccess: true
   subnets:
     private:
       us-east-1a: { id: subnet-0ebeafd6054e83d84 }
@@ -28,6 +26,9 @@ vpc:
       us-east-1a: { id: subnet-0441e1c0571e6d4a6 }
       us-east-1b: { id: subnet-0b352436511bed6c4 }
       #us-east-1c: { id: subnet-02ab36d3b3700e7fa }
+  clusterEndpoints:
+    privateAccess: true
+    publicAccess: true
 cloudWatch:
    clusterLogging:
     enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -50,10 +51,10 @@ managednodeGroups:
   - name: eks-pooc-ng
     instanceType: t3a.medium
     amiFamily: AmazonLinux2023
-    privateNetworking: true # Ensures nodes are launched in private subnets
+    #privateNetworking: true # Ensures nodes are launched in private subnets
     updateConfig:
       maxUnavailablePercentage: 50
-    disableIMDSv1: true
+    disableIMDSv1: false
     desiredCapacity: 2
     minSize: 2
     maxSize: 2
