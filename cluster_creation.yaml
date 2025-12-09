@@ -4,24 +4,24 @@ kind: ClusterConfig
 metadata:
   name: eks-poc
   region: us-east-1
-  version: "1.31"
+  version: "1.30"
   tags:
     wp:managed-by: "eksctl"
     cluster: "eks-poc"
     owner: "ops"
     purpose: dev  # Purpose of the cluster (e.g., dev, test, production)
     scope: poc # Scope or boundary of usage (e.g., team-specific, project-specific)
-    version: "1.31" # This is the latest Kubernetes version currently supported by Harness SMP
+    version: "1.30" # This is the latest Kubernetes version currently supported by Harness SMP
    # karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
   id: vpc-0f941eed71c3b0179
-  autoAllocateIPv6: false
-  manageSharedNodeSecurityGroupRules: true
-  nat:
-    gateway: Disable
+  #autoAllocateIPv6: false
+ # manageSharedNodeSecurityGroupRules: false
+  #nat:
+   # gateway: Disable
   #publicAccessCIDRs: ["10.0.2.0/24", "10.0.9.0/25"]
-  securityGroup: sg-06a0beefd0ed45a07
+  securityGroup: ["sg-06a0beefd0ed45a07"]
   subnets:
     private:
       us-east-1a: { id: subnet-0ebeafd6054e83d84 }
@@ -78,14 +78,14 @@ iam:
     roleName: pod-identity-role-cloudwatch-agent
     permissionPolicyARNs: ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
 
-managednodeGroups:
+managedNodeGroups:
   - name: eks-pooc-ng
-    instanceType: t3a.large
+    instanceType: t3.large
     amiFamily: AmazonLinux2023
     privateNetworking: false # Ensures nodes are launched in private subnets
    # updateConfig:
     #  maxUnavailablePercentage: 10
-    disableIMDSv1: false
+    disableIMDSv1: True
     disablePodIMDS: false
     desiredCapacity: 2
     minSize: 2
@@ -99,7 +99,7 @@ managednodeGroups:
       enableSsm: false
       publicKeyPath: "/root/.ssh/devops.pub"
     securityGroups:
-      withShared: true
+      withShared: false #This disables the creation and attachment of the "shared" security group. 
       attachIDs: ["sg-06a0beefd0ed45a07"]
     maxPodsPerNode: 17
     subnets:
