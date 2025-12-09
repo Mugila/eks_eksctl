@@ -96,7 +96,7 @@ managedNodeGroups:
 #    volumeKmsKeyID:  # please see https://docs.aws.amazon.com/autoscaling/ec2/userguide/key
     ssh: # use existing EC2 key
       allow: true
-      enableSsm: false
+      #enableSsm: false # cannot disable SSM and built into AMI 
       publicKeyPath: "/root/.ssh/devops.pub"
     securityGroups:
       withShared: false #This disables the creation and attachment of the "shared" security group. 
