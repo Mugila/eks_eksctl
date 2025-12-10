@@ -16,6 +16,7 @@ metadata:
 
 vpc:
   id: vpc-0f941eed71c3b0179
+  publicAccessCIDRs:  ["10.0.0.0/16"] # Allow access from anywhere (for demonstration, restrict in production)
   #autoAllocateIPv6: false
  # manageSharedNodeSecurityGroupRules: false
   #nat:
@@ -34,7 +35,7 @@ vpc:
   clusterEndpoints:
     privateAccess: false # True explicitly enables the private endpoint for the EKS API server within your VPC
     publicAccess: true # True explicitly enables the public endpoint for the EKS API server.
-    publicAccessCIDRs:  ["10.0.0.0/16"] # Allow access from anywhere (for demonstration, restrict in production)
+    
 cloudWatch:
    clusterLogging:
     enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
