@@ -82,15 +82,15 @@ iam:
 
 managedNodeGroups:
   - name: eks-poc-ng
-    instanceType: t2.micro
+    instanceType: t3a.small 
     amiFamily: AmazonLinux2023
     privateNetworking: True # True Ensures nodes are launched in private subnets
    # updateConfig:
     #  maxUnavailablePercentage: 10
     disableIMDSv1: True
     disablePodIMDS: false
-    desiredCapacity: 3
-    minSize: 3
+    desiredCapacity: 2
+    minSize: 2
     maxSize: 3
     volumeSize: 20
     volumeType: gp3
