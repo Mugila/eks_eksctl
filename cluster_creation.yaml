@@ -82,16 +82,16 @@ iam:
 
 managedNodeGroups:
   - name: eks-poc-ng
-    instanceType: t3a.medium
+    instanceType: t2.micro
     amiFamily: AmazonLinux2023
     privateNetworking: True # True Ensures nodes are launched in private subnets
    # updateConfig:
     #  maxUnavailablePercentage: 10
     disableIMDSv1: True
     disablePodIMDS: false
-    desiredCapacity: 2
-    minSize: 2
-    maxSize: 2
+    desiredCapacity: 3
+    minSize: 3
+    maxSize: 3
     volumeSize: 20
     volumeType: gp3
 #    volumeEncrypted: true
@@ -158,23 +158,23 @@ addons:
   - name: eks-pod-identity-agent
     version: latest
     resolveConflicts: overwrite
-    #useDefaultPodIdentityAssociations: true
+    useDefaultPodIdentityAssociations: true
   - name: vpc-cni
     version: latest # Example version
     resolveConflicts: overwrite
-    #useDefaultPodIdentityAssociations: true
+    useDefaultPodIdentityAssociations: true
     #attachPolicyARNs:
      #- arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     # Optional: Add specific config for the CNI if needed
   - name: kube-proxy
     version: latest
     resolveConflicts: overwrite
-    #useDefaultPodIdentityAssociations: true
+    useDefaultPodIdentityAssociations: true
     # Optional: Configure settings here
   - name: coredns
     version: latest 
     resolveConflicts: overwrite
-    #useDefaultPodIdentityAssociations: true
+    useDefaultPodIdentityAssociations: true
   - name: aws-ebs-csi-driver # Example for a common add-on
     version: latest 
     resolveConflicts: overwrite
