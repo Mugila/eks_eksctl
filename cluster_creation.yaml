@@ -15,7 +15,7 @@ metadata:
     karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
-  id: vpc-0f941eed71c3b0179
+  #id: vpc-0f941eed71c3b0179
   publicAccessCIDRs:  ["10.0.0.0/16"] # Allow access from anywhere (for demonstration, restrict in production)
   #autoAllocateIPv6: false
  # manageSharedNodeSecurityGroupRules: false
