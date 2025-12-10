@@ -35,7 +35,7 @@ vpc:
     privateAccess: true # True explicitly enables the private endpoint for the EKS API server within your VPC
     publicAccess: true # True explicitly enables the public endpoint for the EKS API server.
     publicAccessCIDRs: # Optional: Restrict public access to specific CIDR blocks
-     - "10.0.0.0/16" # Allow access from anywhere (for demonstration, restrict in production)
+     - ["10.0.0.0/16"] # Allow access from anywhere (for demonstration, restrict in production)
 cloudWatch:
    clusterLogging:
     enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -125,6 +125,9 @@ managedNodeGroups:
       attachPolicyARNs:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+        - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
         #- arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
         #- arn:aws:iam::1111111111:policy/kube2iam
       #attachPolicyARNs: https://dev.to/aws-builders/eks-iam-deep-dive-136d https://schema.eksctl.io/
