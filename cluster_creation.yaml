@@ -32,10 +32,9 @@ vpc:
       us-east-1b: { id: subnet-0b352436511bed6c4 }
       #us-east-1c: { id: subnet-02ab36d3b3700e7fa }
   clusterEndpoints:
-    privateAccess: true # True explicitly enables the private endpoint for the EKS API server within your VPC
+    privateAccess: false # True explicitly enables the private endpoint for the EKS API server within your VPC
     publicAccess: true # True explicitly enables the public endpoint for the EKS API server.
-    publicAccessCIDRs: # Optional: Restrict public access to specific CIDR blocks
-     - 10.0.0.0/16 # Allow access from anywhere (for demonstration, restrict in production)
+    publicAccessCIDRs: "10.0.0.0/16" # Allow access from anywhere (for demonstration, restrict in production)
 cloudWatch:
    clusterLogging:
     enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
