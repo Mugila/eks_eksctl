@@ -12,7 +12,7 @@ metadata:
     purpose: dev  # Purpose of the cluster (e.g., dev, test, production)
     scope: poc # Scope or boundary of usage (e.g., team-specific, project-specific)
     version: "1.30" # This is the latest Kubernetes version currently supported by Harness SMP
-   # karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
+    karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
 
 vpc:
   id: vpc-0f941eed71c3b0179
@@ -82,7 +82,7 @@ iam:
 
 managedNodeGroups:
   - name: eks-poc-ng
-    instanceType: t3.large
+    instanceType: t3a.medium
     amiFamily: AmazonLinux2023
     privateNetworking: True # True Ensures nodes are launched in private subnets
    # updateConfig:
@@ -175,7 +175,7 @@ addonsConfig:
 # automatically resolve (and apply) the recommended pod identity configuration  
    autoApplyPodIdentityAssociations: true
 
-#karpenter:
- # version: '0.37.0' # Exact version must be provided
- # createServiceAccount: true # default is false
- # withSpotInterruptionQueue: true #adds all required policies and rules for supporting Spot Interruption Queue, default is false
+karpenter:
+  version: '0.37.0' # Exact version must be provided
+  createServiceAccount: true # default is false
+  withSpotInterruptionQueue: true #adds all required policies and rules for supporting Spot Interruption Queue, default is false
