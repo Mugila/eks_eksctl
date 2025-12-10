@@ -34,8 +34,8 @@ vpc:
   clusterEndpoints:
     privateAccess: true # True explicitly enables the private endpoint for the EKS API server within your VPC
     publicAccess: true # True explicitly enables the public endpoint for the EKS API server.
-    #publicAccessCIDRs: # Optional: Restrict public access to specific CIDR blocks
-     # - "0.0.0.0/0" # Allow access from anywhere (for demonstration, restrict in production)
+    publicAccessCIDRs: # Optional: Restrict public access to specific CIDR blocks
+     - "10.0.0.0/16" # Allow access from anywhere (for demonstration, restrict in production)
 cloudWatch:
    clusterLogging:
     enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -142,7 +142,10 @@ managedNodeGroups:
       nodegroup-role: "worker-node"
        # EC2 tags required for cluster-autoscaler auto-discovery - these tags are automatically applied to a managed nodegroup autoscaling group
       k8s.io/cluster-autoscaler/enabled: "true"
-      k8s.io/cluster-autoscaler/managednodes-quickstart: "owned"   
+      k8s.io/cluster-autoscaler/managednodes-quickstart: "owned"  
+    #privateCluster: # This option is required only when complete cluster is set to private
+     #enabled: true  # instructs eksctl to not create the necessary AWS VPC endpoints (for services like ECR, S3, etc.) assuming that are already present in VPC)
+     #skipEndpointCreation: true
     labels: 
       nodegroup-role: "worker" 
 
@@ -152,23 +155,28 @@ addons:
   - name: eks-pod-identity-agent
     version: latest
     resolveConflicts: overwrite
+    #useDefaultPodIdentityAssociations: true
   - name: vpc-cni
     version: latest # Example version
     resolveConflicts: overwrite
+    #useDefaultPodIdentityAssociations: true
     #attachPolicyARNs:
      #- arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     # Optional: Add specific config for the CNI if needed
   - name: kube-proxy
     version: latest
     resolveConflicts: overwrite
+    #useDefaultPodIdentityAssociations: true
     # Optional: Configure settings here
   - name: coredns
     version: latest 
     resolveConflicts: overwrite
-    
-#  - name: aws-ebs-csi-driver # Example for a common add-on
-#    wellKnownPolicies: # Simplifies IAM setup
-#      ebsCSIController: true
+    #useDefaultPodIdentityAssociations: true
+  - name: aws-ebs-csi-driver # Example for a common add-on
+    version: latest 
+    resolveConflicts: overwrite
+    wellKnownPolicies: # Simplifies IAM setup
+      ebsCSIController: true
   
   
 addonsConfig:  
