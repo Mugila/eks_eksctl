@@ -171,9 +171,9 @@ iam:
       name: external-dns
       namespace: kube-system
     attachPolicyDocument: |
-    {
-    "Version": "2012-10-17",
-    "Statement": [
+     {
+      "Version": "2012-10-17",
+       "Statement": [
         {
             "Effect": "Allow",
             "Action": [
