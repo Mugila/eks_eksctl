@@ -21,5 +21,7 @@ helm upgrade --install external-dns external-dns/external-dns --version 1.19.0 \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
   --set serviceAccount.create=false \
+  --set namespace=kube-system \
   --set policy=sync 
+  
  # oci://registry-1.docker.io/bitnamicharts/external-dns --namespace kube-system
