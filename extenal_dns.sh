@@ -15,7 +15,7 @@ aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm repo update
 #helm upgrade --wait --timeout 900s --install externaldns-release \
-helm install --namespace kube-system external-dns external-dns/external-dns \
+helm install  external-dns external-dns/external-dns --namespace kube-system \
   --set provider.name=aws \
   --set aws.zoneType=public \
   --set txtOwnerId="${HOSTED_ZONE_ID}" \
