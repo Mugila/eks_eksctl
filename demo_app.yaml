@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-app
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: s3-reader
+  namespace: test-app
+  annotations:
+    # Optional: Add if using IRSA for migration
+    eks.amazonaws.com/role-arn: arn:aws:iam::509399617800:role/pod-identity-role-s3 # $POD_ROLE_ARN
+automountServiceAccountToken: false  # Security best practice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: awscli-app
+  name: awscli-app
+  namespace: test-app
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: awscli-app
+  template:
+    metadata:
+      labels:
+        app: awscli-app
+    spec:
+      serviceAccountName: s3-reader
+      containers:
+      - name: aws-cli-app
+        image: amazon/aws-cli:latest
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          runAsUser: 1
+        command: ["sleep", "infinity"]
+                                       
