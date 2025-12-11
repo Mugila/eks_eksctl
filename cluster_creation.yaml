@@ -13,8 +13,6 @@ metadata:
     scope: poc # Scope or boundary of usage (e.g., team-specific, project-specific)
     version: "1.30" # This is the latest Kubernetes version currently supported by Harness SMP
     karpenter.sh/discovery: eks-poc  #${CLUSTER_NAME}
-    
-creationTimeout: 45m # The default is often 20-30 minutes
 
 vpc:
   id: vpc-0f941eed71c3b0179
@@ -77,7 +75,7 @@ addons:
 addonsConfig:  
 # automatically resolve (and apply) the recommended pod identity configuration  
    autoApplyPodIdentityAssociations: true
-
+creationTimeout: 45m # The default is often 20-30 minutes
 managedNodeGroups:
   - name: eks-poc-ng
     instanceType: t3a.medium 
