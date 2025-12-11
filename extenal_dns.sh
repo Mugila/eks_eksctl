@@ -12,6 +12,8 @@ aws route53 list-resource-record-sets --hosted-zone-id  ${HOSTED_ZONE_ID}  --que
 kubectl get sa external-dns -n kube-system -o yaml  
 #Install the ExternalDNS Add-On
 aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
+helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
+helm repo update
 helm upgrade --wait --timeout 900s --install externaldns-release \
   --set provider=aws \
   --set aws.region=${CLUSTER_REGION} \
