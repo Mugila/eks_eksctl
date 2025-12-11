@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 kubectl config current-context
 export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME="eks-poc"
