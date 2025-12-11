@@ -16,12 +16,13 @@ helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm repo update
 #helm upgrade --wait --timeout 900s --install externaldns-release \
 helm upgrade --install external-dns external-dns/external-dns --version 1.19.0 \
+  --set namespace kube-system \
   --set provider.name=aws \
+  --set aws.zoneType=public \
   --set txtOwnerId="${HOSTED_ZONE_ID}" \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
   --set serviceAccount.create=false \
-  --set namespace=kube-system \
   --set policy=sync 
   
  # oci://registry-1.docker.io/bitnamicharts/external-dns --namespace kube-system
