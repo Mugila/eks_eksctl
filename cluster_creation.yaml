@@ -180,14 +180,7 @@ iam:
     createServiceAccount: true
     roleName: pod-identity-role-efs
     wellKnownPolicies:
-      efsCSIController: true      
-
-  - namespace: kube-system
-    serviceAccountName: external-dns
-    createServiceAccount: true
-    roleName: pod-identity-role-external-dns
-    wellKnownPolicies:
-      externalDNS: true          
+      efsCSIController: true              
 
   - namespace: cert-manager
     serviceAccountName: cert-manager
