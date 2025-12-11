@@ -14,12 +14,13 @@ kubectl get sa external-dns -n kube-system -o yaml
 aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm repo update
-helm upgrade --wait --timeout 900s --install externaldns-release \
-  --set provider=aws \
-  --set aws.region=${CLUSTER_REGION} \
+#helm upgrade --wait --timeout 900s --install externaldns-release \
+helm upgrade --install external-dns external-dns/external-dns --version 1.19.0
+  --set provider.name=aws \
+  #--set aws.region=${CLUSTER_REGION} \
   --set txtOwnerId=${HOSTED_ZONE_ID} \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
   --set serviceAccount.create=false \
-  --set policy=sync \
-  oci://registry-1.docker.io/bitnamicharts/external-dns --namespace kube-system
+  --set policy=sync 
+ # oci://registry-1.docker.io/bitnamicharts/external-dns --namespace kube-system
