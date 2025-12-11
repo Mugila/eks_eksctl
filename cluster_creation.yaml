@@ -47,36 +47,48 @@ iam:
  #serviceAccounts:	
   - namespace: kube-system
     serviceAccountName: aws-load-balancer-controller
+    createServiceAccount: true
     roleName: pod-identity-role-alb
     wellKnownPolicies:
       awsLoadBalancerController: true
 
+  - namespace: default
+    serviceAccountName: s3-reader
+    createServiceAccount: true
+    roleName: pod-identity-role-s3
+    permissionPolicyARNs: ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
+
   - namespace: kube-system
     serviceAccountName: efs-csi-controller-sa
+    createServiceAccount: true
     roleName: pod-identity-role-efs
     wellKnownPolicies:
       efsCSIController: true      
 
   - namespace: kube-system
     serviceAccountName: external-dns
+    createServiceAccount: true
     roleName: pod-identity-role-external-dns
     wellKnownPolicies:
       externalDNS: true          
 
   - namespace: cert-manager
     serviceAccountName: cert-manager
+    createServiceAccount: true
     roleName: pod-identity-role-cert-manager
     wellKnownPolicies:
       certManager: true         
 
   - namespace: kube-system
     serviceAccountName: cluster-autoscaler
+    createServiceAccount: true
     roleName: pod-identity-role-cluster-autoscaler
     wellKnownPolicies:
       autoScaler: true  
 
   - namespace: amazon-cloudwatch
     serviceAccountName: aws-node
+    createServiceAccount: true
     roleName: pod-identity-role-cloudwatch-agent
     permissionPolicyARNs: ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
 

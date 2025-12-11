@@ -1,0 +1,11 @@
+apiVersion: eksctl.io/v1alpha5
+kind: PodIdentityAssociation
+metadata:
+  name: s3-reader-association # A unique name for the association
+spec:
+  clusterName: eks-poc
+  namespace: default
+  serviceAccountName: s3-reader
+  createServiceAccount: true # Set to true to automatically create the K8s Service Account
+  permissionPolicyARNs: ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
+  # ... other optional fields like wellKnownPolicies, permissionsBoundaryARN, tags
