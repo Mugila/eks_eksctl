@@ -153,7 +153,50 @@ managedNodeGroups:
 
 iam:
  vpcResourceControllerPolicy: true
- withOIDC: true
+ withOIDC: true This ensures the OIDC provider is created/associated if it doesn't exist
+ serviceAccounts:
+  - metadata:
+      name: s3-reader
+      namespace: default
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess # Attach an existing AWS managed policy
+
+  - metadata:
+      name: aws-load-balancer-controller
+      namespace: kube-system
+    wellKnownPolicies:
+      awsLoadBalancerController: true
+
+  - metadata:
+      name: external-dns
+      namespace: kube-system
+    attachPolicyDocument: |
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": [
+                "arn:aws:route53:::hostedzone/Z04559112EZU5BH7HHOSM"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones",
+                "route53:ListResourceRecordSets",
+                "route53:ListTagsForResource"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+       ]
+     }
+     
  podIdentityAssociations: 
  #serviceAccounts:	
   - namespace: test-app
