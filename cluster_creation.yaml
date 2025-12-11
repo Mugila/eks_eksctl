@@ -51,8 +51,14 @@ iam:
     roleName: pod-identity-role-alb
     wellKnownPolicies:
       awsLoadBalancerController: true
+  
+  - namespace: external-dns 
+    serviceAccountName: external-dns
+    createServiceAccount: true
+    roleName: pod-identity-role-external-dns
+    permissionPolicyARNs: ["arn:aws:iam::509399617800:policy/external_dns_iam_policy"]
 
-  - namespace: default
+  - namespace: test-app
     serviceAccountName: s3-reader
     createServiceAccount: true
     roleName: pod-identity-role-s3
