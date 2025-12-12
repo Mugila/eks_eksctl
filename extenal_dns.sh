@@ -22,10 +22,17 @@ helm install  external-dns external-dns/external-dns --namespace kube-system \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
   --set serviceAccount.create=false \
-  --set policy=sync 
-kubectl logs $(kubectl get pods -A --field-selector=status.phase=Running  | egrep -o 'external-dns[A-Za-z0-9-]+') -n kube-system --tail=2 | egrep -i "All records are already up to date"
+  --set policy=sync \
+  --wait
 
- # watch logs continuosly for errors  kubectl logs -f $(kubectl get pods -A --field-selector=status.phase=Running  | egrep -o 'external-dns[A-Za-z0-9-]+') -n kube-system --tail=2 | egrep -i "error"
+#check logs from ALB controller pods 
+for pod in $(kubectl get pods -n kube-system -l app.kubernetes.io/name=external-dns -o jsonpath='{.items[*].metadata.name}'); do
+    echo "--- Logs from $pod ---"
+    kubectl logs $pod -n kube-system --all-containers=true | grep "All records are already up to date"
+done
+
+
+ # watch logs continuosly for errors  kubectl logs -f $(kubectl get pods -A --field-selector=status.phase=Running  | egrep -o 'external-dns[A-Za-z0-9-]+') -n kube-system --tail=2 | egrep -i "All records are already up to date"
   # validate the external dns pod status 
   #kubectl describe pods external-dns-5cd67f9577-rbzd7 -n kube-system 
  # oci://registry-1.docker.io/bitnamicharts/external-dns --namespace kube-system

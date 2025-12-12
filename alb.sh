@@ -34,3 +34,9 @@ kubectl get deployment -n kube-system aws-load-balancer-controller
 kubectl get crds | grep -iE "elbv2"
 
 echo "AWS Load Balancer Controller installation script finished."
+
+#check logs from ALB controller pods 
+for pod in $(kubectl get pods -n kube-system-l app.kubernetes.io/name=aws-load-balancer-controller -o jsonpath='{.items[*].metadata.name}'); do
+    echo "--- Logs from $pod ---"
+    kubectl logs $pod -n kube-system --all-containers=true | grep "starting server"
+done
