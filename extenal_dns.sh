@@ -23,5 +23,9 @@ helm install  external-dns external-dns/external-dns --namespace kube-system \
   --set serviceAccount.name=external-dns \
   --set serviceAccount.create=false \
   --set policy=sync 
-  
+kubectl logs $(kubectl get pods -A --field-selector=status.phase=Running  | egrep -o 'external-dns[A-Za-z0-9-]+') -n kube-system --tail=2 | egrep -i "All records are already up to date"
+
+ # watch logs continuosly for errors  kubectl logs -f $(kubectl get pods -A --field-selector=status.phase=Running  | egrep -o 'external-dns[A-Za-z0-9-]+') -n kube-system --tail=2 | egrep -i "error"
+  # validate the external dns pod status 
+  #kubectl describe pods external-dns-5cd67f9577-rbzd7 -n kube-system 
  # oci://registry-1.docker.io/bitnamicharts/external-dns --namespace kube-system
