@@ -26,7 +26,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
     --set clusterName="${CLUSTER_NAME}" \
     --set serviceAccount.create=false \
     --set serviceAccount.name="${LBC_SERVICE_ACCOUNT_NAME}" \
-    --set "${VPC_ID}"
+    --set vpcId="${VPC_ID}"
 
 echo "Verifying installation..."
 # Verify the deployment status
