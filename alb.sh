@@ -9,7 +9,7 @@ AWS_REGION="us-east-1"
 CLUSTER_NAME="eks-poc"
 LBC_SERVICE_ACCOUNT_NAME="aws-load-balancer-controller"
 LBC_NAMESPACE="kube-system"
-VPC_ID="aws eks describe-cluster --name $CLUSTER_NAME --region $AWS_REGION --query "cluster.resourcesVpcConfig.vpcId" --output text"
+VPC_ID=$(aws eks describe-cluster --name eks-poc --region us-east-1 --query cluster.resourcesVpcConfig.vpcId --output text)
 
 echo "Adding the EKS Helm repository..."
 # Add the EKS chart repository to Helm
