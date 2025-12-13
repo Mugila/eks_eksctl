@@ -1,0 +1,50 @@
+https://devopscube.com/aws-load-balancer-controller-on-eks/
+
+
+root@ip-10-0-7-9:~/eks_eksctl/ALB# kubectl -n app1 get po,deploy,svc
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/app1-7dddd5646f-8b6c2   1/1     Running   0          6h7m
+pod/app1-7dddd5646f-qdssh   1/1     Running   0          6h7m
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app1   2/2     2            2           6h7m
+
+NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/app1   NodePort   172.20.113.68   <none>        80:32603/TCP   6h7m
+root@ip-10-0-7-9:~/eks_eksctl/ALB# kubectl -n app2  get po,deploy,svc
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/app2-7bc64754f9-8bddw   1/1     Running   0          6h7m
+pod/app2-7bc64754f9-vpkwn   0/1     Pending   0          6h7m
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app2   1/2     2            1           6h7m
+
+ALB_DNS=$(kubectl -n app1 get ingress nginx-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}') && dig +short ${ALB_DNS}
+ALB_DNS=$(kubectl -n app2 get ingress nginx-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}') && dig +short ${ALB_DNS}
+echo $ALB_DNS 
+
+dig +short ${ALB_DNS}
+
+Put a entry in /etc/hsots 
+curl -Ivk  http://app1.techiescamp.com  cehck for status code 200 
+
+curl -Ivk  http://app1.techiescamp.com
+
+cat /etc/hosts 
+34.193.196.92 app1.techiescamp.com app2.techiescamp.com
+52.0.99.75 app1.techiescamp.com app2.techiescamp.com
+
+kubectl get pods -n kube-system  -l app=load-balancer-controller
+Checking logs 
+for pod in $(kubectl get pods -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller -o jsonpath='{.items[*].metadata.name}'); do     echo "--- Logs from $pod ---";     kubectl logs $pod -n kube-system  --all-containers=true | grep "starting server"; done
+ cleaning up the resources 
+
+ kubectl get pods -n kube-system  --show-label 
+ kubectl get pods --all-namespaces
+ kubectl get namespaces --field-selector=status.phase=Active or kubectl get namespaces -A
+
+kubectl delete all --all -n app1
+kubectl delete all --all -n app2
+
+kubectl delete ingress nginx-ingress -n app1
+kubectl delete ingress httpd-ingress -n app2

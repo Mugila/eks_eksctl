@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: app1
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    #alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-1:987654321:certificate/37c33c94-e3be-41cc-9ec8-fd16b2873bd4
+    #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/load-balancer-name: myapp
+    alb.ingress.kubernetes.io/group.name: myapp
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    kubernetes.io/ingress.class: alb
+spec:
+  ingressClassName: alb
+  rules:
+    - host: nginx.aadhavan.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app1
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpd-ingress
+  namespace: app2
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    #alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-1:987654321:certificate/37c33c94-e3be-41cc-9ec8-fd16b2873bd4
+    #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/load-balancer-name: myapp
+    alb.ingress.kubernetes.io/group.name: myapp
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    #alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    kubernetes.io/ingress.class: alb
+spec:
+  ingressClassName: alb
+  rules:
+    - host: aadhavan.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app2
+                port:
+                  number: 80
