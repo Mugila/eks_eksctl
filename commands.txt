@@ -10,3 +10,56 @@ git push -u origin main
 git remote add origin https://github.com/Mugila/eks_eksctl.git
 git branch -M main
 git push -u origin main
+
+### uninstall failed  helm release 
+
+root@ip-10-0-7-9:~/eks_eksctl# helm list --all-namespaces 
+NAME        	NAMESPACE  	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+external-dns	kube-system	1       	2025-12-11 22:31:36.715507669 +0000 UTC	deployed	external-dns-1.19.0	0.19.0     
+karpenter   	karpenter  	1       	2025-12-11 16:26:08.801163341 +0000 UTC	deployed	karpenter-0.37.0   	0.37.0  
+
+root@ip-10-0-7-9:~/eks_eksctl# helm list --all-namespaces
+NAME               	NAMESPACE  	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+external-dns       	kube-system	1       	2025-12-11 22:31:36.715507669 +0000 UTC	deployed	external-dns-1.19.0	0.19.0     
+externaldns-release	kube-system	3       	2025-12-11 21:56:37.947138986 +0000 UTC	failed  	external-dns-9.0.3 	0.18.0     
+karpenter          	karpenter  	1       	2025-12-11 16:26:08.801163341 +0000 UTC	deployed	karpenter-0.37.0   	0.37.0     
+root@ip-10-0-7-9:~/eks_eksctl# helm get values external-dns -n kube-system 
+USER-SUPPLIED VALUES:
+aws:
+  zoneType: public
+domainFilters:
+- aadhavan.us
+policy: sync
+provider:
+  name: aws
+serviceAccount:
+  create: false
+  name: external-dns
+txtOwnerId: Z04559112EZU5BH7HHOSM
+root@ip-10-0-7-9:~/eks_eksctl# helm get values karpenter  -n karpenter
+USER-SUPPLIED VALUES:
+aws:
+  defaultInstanceProfile: eksctl-KarpenterNodeInstanceProfile-eks-poc
+clusterEndpoint: https://309D9AF433BE36CBC807C75B50152EC2.gr7.us-east-1.eks.amazonaws.com
+clusterName: eks-poc
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::509399617800:role/eksctl-eks-poc-iamservice-role
+  create: true
+  name: karpenter
+settings:
+  clusterEndpoint: https://309D9AF433BE36CBC807C75B50152EC2.gr7.us-east-1.eks.amazonaws.com
+  clusterName: eks-poc
+  defaultInstanceProfile: eksctl-KarpenterNodeInstanceProfile-eks-poc
+  interruptionQueueName: eks-poc
+
+
+root@ip-10-0-7-9:~/eks_eksctl# helm uninstall externaldns-release  --namespace kube-system
+release "externaldns-release" uninstalled
+root@ip-10-0-7-9:~/eks_eksctl# helm list 
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
+root@ip-10-0-7-9:~/eks_eksctl# helm list --all-namespaces 
+NAME        	NAMESPACE  	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+external-dns	kube-system	1       	2025-12-11 22:31:36.715507669 +0000 UTC	deployed	external-dns-1.19.0	0.19.0     
+karpenter   	karpenter  	1       	2025-12-11 16:26:08.801163341 +0000 UTC	deployed	karpenter-0.37.0   	0.37.0     
+root@ip-10-0-7-9:~/eks_eksctl# 

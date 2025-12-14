@@ -183,8 +183,37 @@ iam:
           - route53:ListHostedZones
           - route53:ListResourceRecordSets
           - route53:ListTagsForResource
+          - route53:GetChange
          Resource:
           - "*"
+
+  - metadata:
+      name: cert-manager
+      namespace: kube-system
+    attachPolicy: 
+       Version: '2012-10-17'
+       Statement:
+       - Effect: Allow
+         Action:
+          - route53:ChangeResourceRecordSets
+         Resource:
+          - arn:aws:route53:::hostedzone/Z04559112EZU5BH7HHOSM
+       - Effect: Allow
+         Action:
+          - route53:ListHostedZones
+          - route53:ListResourceRecordSets
+          - route53:ListTagsForResource
+          - route53:ListHostedZonesByName
+          - route53:GetChange
+          - acm:RequestCertificate
+          - acm:DescribeCertificate
+          - acm:DeleteCertificate
+          - acm:ListCertificates
+          - acm:AddTagsToCertificate
+          - acm:RemoveTagsFromCertificate
+         Resource:
+          - "*"
+
  podIdentityAssociations: 
  #serviceAccounts:	
   - namespace: test-app
