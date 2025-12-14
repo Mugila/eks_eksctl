@@ -63,3 +63,15 @@ NAME        	NAMESPACE  	REVISION	UPDATED                                	STATUS
 external-dns	kube-system	1       	2025-12-11 22:31:36.715507669 +0000 UTC	deployed	external-dns-1.19.0	0.19.0     
 karpenter   	karpenter  	1       	2025-12-11 16:26:08.801163341 +0000 UTC	deployed	karpenter-0.37.0   	0.37.0     
 root@ip-10-0-7-9:~/eks_eksctl# 
+
+
+
+echo "The EKS cluster name is: $CLUSTER_NAME"
+
+# Example: Update your kubeconfig file using the variable
+aws eks update-kubeconfig --name "$CLUSTER_NAME" --region <YOUR_AWS_REGION>
+
+# Example: Describe the cluster's OIDC issuer
+aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text
+
+https://medium.com/@mb20261/aws-cli-v2-by-examples-mastering-amazon-eks-management-with-kubectl-integration-a6096895ebfc
