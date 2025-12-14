@@ -48,3 +48,82 @@ kubectl delete all --all -n app2
 
 kubectl delete ingress nginx-ingress -n app1
 kubectl delete ingress httpd-ingress -n app2
+
+
+root@ip-10-0-7-9:~/eks_eksctl/ALB# kubectl get ingress -A
+NAMESPACE   NAME            CLASS   HOSTS               ADDRESS   PORTS   AGE
+app1        nginx-ingress   alb     nginx.aadhavan.us             80      11m
+app2        httpd-ingress   alb     aadhavan.us                   80      11m
+root@ip-10-0-7-9:~/eks_eksctl/ALB# 
+
+kubectl delete ingress nginx-ingress -n app1
+  812  kubectl delete ingress httpd-ingress -n app2
+
+
+aws route53 list-hosted-zones \
+  --query "HostedZones[?Name=='aadhavan.us.'].[Id,Name]" \
+  --output text \
+  --profile dev-account
+
+aws route53 list-resource-record-sets \
+  --hosted-zone-id ZABCDEFGHIJKLMN \
+  --query "ResourceRecordSets[?ends_with(Name, 'dev.example.com.') && (Type == 'A' || Type == 'AAAA' || Type == 'TXT')]" \
+  --output text \
+  --profile dev-account
+
+  https://www.eksworkshop.com/docs/fundamentals/exposing/ingress/external-dns
+
+  https://www.eksworkshop.com/docs/fundamentals/exposing/ingress/multiple-ingress
+  To wait until the load balancer has finished provisioning you can run this command:
+
+  curl --head -X GET --retry 30 --retry-all-errors --retry-delay 15 --connect-timeout 30 --max-time 60 \
+  -k $(kubectl get ingress -n catalog catalog-multi -o jsonpath="{.status.loadBalancer.ingress[*].hostname}")
+  
+  
+  Try accessing the new Ingress URL in the browser as before to check the web UI still works:
+ 
+  curl --head -X GET --retry 30 --retry-all-errors --retry-delay 15 --connect-timeout 30 --max-time 60 \
+  -k $(kubectl get ingress -n catalog catalog-multi -o jsonpath="{.status.loadBalancer.ingress[*].hostname}")
+  
+
+  Now try accessing a path we directed to the catalog service:
+  
+  ADDRESS=$(kubectl get ingress -n catalog catalog-multi -o jsonpath="{.status.loadBalancer.ingress[*].hostname}")
+curl $ADDRESS/catalog/products | jq .
+
+
+
+kubectl -n ui exec -it \
+  deployment/ui -- bash -c "curl -i http://ui.retailstore.com/actuator/health/liveness; echo"
+
+
+
+Scipt to update ALB DNS to route 53
+
+  # Get your hosted zone ID
+HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name akhileshmishra.tech --query "HostedZones[0].Id" --output text | sed 's/\/hostedzone\///')
+echo "Hosted Zone ID: $HOSTED_ZONE_ID"
+
+# Get your ALB DNS name
+ALB_DNS=$(kubectl get ingress 3-tier-app-eks-ingress -n 3-tier-app-eks -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "ALB DNS Name: $ALB_DNS"
+
+# Create A record alias for apex domain (akhileshmishra.tech)
+aws route53 change-resource-record-sets \
+--hosted-zone-id $HOSTED_ZONE_ID \
+--change-batch '{
+"Changes": [
+{
+"Action": "UPSERT",
+"ResourceRecordSet": {
+"Name": "akhileshmishra.tech",
+"Type": "A",
+"AliasTarget": {
+"HostedZoneId": "Z32O12XQLNTSW2",
+"DNSName": "'$ALB_DNS'",
+"EvaluateTargetHealth": true
+}
+}
+}
+]
+}'
