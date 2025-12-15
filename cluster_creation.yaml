@@ -189,7 +189,7 @@ iam:
 
   - metadata:
       name: cert-manager
-      namespace: kube-system
+      namespace: cert-manager
     attachPolicy: 
        Version: '2012-10-17'
        Statement:
