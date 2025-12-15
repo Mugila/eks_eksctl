@@ -80,3 +80,10 @@ https://medium.com/@mb20261/aws-cli-v2-by-examples-mastering-amazon-eks-manageme
 
  eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
 eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
+
+
+create only service account from existing config file 
+eksctl delete iamserviceaccount --cluster=eks-poc  --name=cert-manager --namespace=kube-system
+eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
+eksctl delete   cluster -f cluster_creation.yaml 
+eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
