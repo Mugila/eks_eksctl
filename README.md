@@ -16,3 +16,5 @@ https://github.com/anveshmuppeda/kubernetes.  ###hands on Guide#############
 
 https://medium.com/@muppedaanvesh/a-hands-on-guide-to-aws-eks-iam-roles-for-service-accounts-irsa-%EF%B8%8F-558c7a3e7c69  ## steps to create IRSA using AWS cli ,eksctl and cloudformation ###
 https://docs.aws.amazon.com/eks/latest/eksctl/pod-identity-associations.html
+https://www.eksworkshop.com/docs/security/amazon-eks-pod-identity/use-pod-identity
+https://repost.aws/knowledge-center/eks-troubleshoot-oidc-and-irsa

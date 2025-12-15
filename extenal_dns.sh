@@ -2,7 +2,8 @@
 set -x
 kubectl config current-context
 export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
-export CLUSTER_NAME="eks-poc"
+export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
+#export CLUSTER_NAME="eks-poc"
 export CLUSTER_REGION="us-east-1"
 export AWS_ROUTE53_DOMAIN="aadhavan.us"
 export CLUSTER_VPC=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query "cluster.resourcesVpcConfig.vpcId" --output text)

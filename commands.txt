@@ -75,3 +75,8 @@ aws eks update-kubeconfig --name "$CLUSTER_NAME" --region <YOUR_AWS_REGION>
 aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text
 
 https://medium.com/@mb20261/aws-cli-v2-by-examples-mastering-amazon-eks-management-with-kubectl-integration-a6096895ebfc
+
+
+
+ eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
+eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
