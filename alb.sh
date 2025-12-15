@@ -5,7 +5,7 @@ set -x
 #https://github.com/aws/eks-charts/tree/master/stable/aws-load-balancer-controller
 
 # --- Configuration Variables ---
-AWS_REGION="us-east-1"
+#AWS_REGION="us-east-1"
 #CLUSTER_NAME="eks-poc"
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 CLUSTER_REGION="us-east-1"

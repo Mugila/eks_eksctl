@@ -13,7 +13,7 @@ export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr 
 LBC_SERVICE_ACCOUNT_NAME="cert-manager"
 LBC_NAMESPACE="kube-system"
 
-VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_NAME} --query cluster.resourcesVpcConfig.vpcId --output text)
+VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query cluster.resourcesVpcConfig.vpcId --output text)
 aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 
 # Add the Jetstack Helm repository
