@@ -22,7 +22,7 @@ helm repo add jetstack https://charts.jetstack.io --force-update
 # Install cert-manager with CRDs https://artifacthub.io/packages/helm/cert-manager/cert-manager 
 helm install cert-manager jetstack/cert-manager \
 --namespace "${LBC_NAMESPACE}" \  # Installs the main components into cert-manager
---version V1.19.2 \
+--version v1.19.2 \
 --set installCRDs=true \ # Automatically installs the necessary Custom Resource Definitions (CRDs) as part of the release
 --set serviceAccount.create=false \
 --set serviceAccount.name=default \  # Specifies the name of the existing service account to use.
