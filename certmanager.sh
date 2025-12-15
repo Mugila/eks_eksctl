@@ -11,7 +11,7 @@ CLUSTER_REGION="us-east-1"
 export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 LBC_SERVICE_ACCOUNT_NAME="cert-manager"
-LBC_NAMESPACE="cert-manager"
+LBC_NAMESPACE=cert-manager
 
 VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query cluster.resourcesVpcConfig.vpcId --output text)
 aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
@@ -21,7 +21,7 @@ helm repo add jetstack https://charts.jetstack.io --force-update
 #helm repo update
 # Install cert-manager with CRDs https://artifacthub.io/packages/helm/cert-manager/cert-manager 
 helm install cert-manager jetstack/cert-manager \
---namespace "${LBC_NAMESPACE}" \  # Installs the main components into cert-manager
+--namespace ${LBC_NAMESPACE} \  # Installs the main components into cert-manager
 --version v1.19.2 \
 --set installCRDs=true \ # Automatically installs the necessary Custom Resource Definitions (CRDs) as part of the release
 --set serviceAccount.create=false \
