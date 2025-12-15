@@ -22,7 +22,8 @@ helm install  external-dns external-dns/external-dns --namespace kube-system \
   --set serviceAccount.create=false \
   --set policy=sync \
   --wait
-
+  
+sleep 10 
 #check logs from ALB controller pods 
 for pod in $(kubectl get pods -n kube-system -l app.kubernetes.io/name=external-dns -o jsonpath='{.items[*].metadata.name}'); do
     echo "--- Logs from $pod ---"
