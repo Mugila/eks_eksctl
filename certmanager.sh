@@ -1,16 +1,24 @@
-# --- Configuration Variables ---
+#!/bin/bash
+set -x
+#kubectl config current-context
+
+aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 
 #https://cert-manager.io/docs/installation/best-practice/
-AWS_REGION="us-east-1"
-CLUSTER_NAME="eks-poc"
+#AWS_REGION="us-east-1"
+#CLUSTER_NAME="eks-poc"
+export CLUSTER_REGION="us-east-1"
+export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
+export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 LBC_SERVICE_ACCOUNT_NAME="cert-manager"
 LBC_NAMESPACE="kube-system"
 
 VPC_ID=$(aws eks describe-cluster --name eks-poc --region us-east-1 --query cluster.resourcesVpcConfig.vpcId --output text)
+aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 
 # Add the Jetstack Helm repository
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
+helm repo add jetstack https://charts.jetstack.io --force-update
+#helm repo update
 
 # Install cert-manager with CRDs
 helm install cert-manager jetstack/cert-manager \
