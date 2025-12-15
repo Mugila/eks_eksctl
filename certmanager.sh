@@ -11,7 +11,7 @@ CLUSTER_REGION="us-east-1"
 export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 LBC_SERVICE_ACCOUNT_NAME="cert-manager"
-LBC_NAMESPACE="kube-system"
+LBC_NAMESPACE="cert-manager"
 
 VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query cluster.resourcesVpcConfig.vpcId --output text)
 aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
@@ -22,8 +22,8 @@ helm repo add jetstack https://charts.jetstack.io --force-update
 
 # Install cert-manager with CRDs https://artifacthub.io/packages/helm/cert-manager/cert-manager 
 helm install cert-manager jetstack/cert-manager \
---namespace "${LBC_NAMESPACE}" \  # Installs the main components into kube-system
---create-namespace \
+--namespace "${LBC_NAMESPACE}" \  # Installs the main components into cert-manager
+#--create-namespace \
 #--set clusterResourceNamespace=kube-system \
 --version v1.19.2 \
  # Tells cert-manager to look for things like DNS provider secrets in kube-system too, matching the main installation namespace. 
