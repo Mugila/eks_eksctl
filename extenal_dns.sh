@@ -1,10 +1,7 @@
-#!/bin/bash
-set -x
-kubectl config current-context
-export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
+
+#CLUSTER_NAME="eks-poc"
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
-#export CLUSTER_NAME="eks-poc"
-export CLUSTER_REGION="us-east-1"
+CLUSTER_REGION="us-east-1"
 export AWS_ROUTE53_DOMAIN="aadhavan.us"
 export CLUSTER_VPC=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query "cluster.resourcesVpcConfig.vpcId" --output text)
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "${AWS_ROUTE53_DOMAIN}." --query 'HostedZones[0].Id' --o text | awk -F "/" {'print $NF'})
