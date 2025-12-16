@@ -57,14 +57,14 @@ metadata:
     alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
     #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
     alb.ingress.kubernetes.io/inbound-cidrs: 0.0.0.0/0
-    external-dns.alpha.kubernetes.io/hostname: aadhavan.us
+    external-dns.alpha.kubernetes.io/hostname: httpd.aadhavan.us
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/success-codes: "200"
     kubernetes.io/ingressClassName: alb
 spec:
   ingressClassName: alb
   rules:
-    - host: aadhavan.us
+    - host: httpd.aadhavan.us
       http:
         paths:
           - path: /
