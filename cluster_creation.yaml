@@ -152,16 +152,16 @@ managedNodeGroups:
       nodegroup-role: "worker" 
 
   - name: eks-poc-ng2
-    instanceType: t2.micro
+    instanceType: t3a.medium
     amiFamily: AmazonLinux2023
     privateNetworking: True # True Ensures nodes are launched in private subnets
    # updateConfig:
     #  maxUnavailablePercentage: 10
     disableIMDSv1: True
     disablePodIMDS: false
-    desiredCapacity: 2
-    minSize: 2
-    maxSize: 2
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 1
     volumeSize: 20
     volumeType: gp3
     ssh: # use existing EC2 key
