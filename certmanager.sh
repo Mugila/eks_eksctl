@@ -21,7 +21,7 @@ helm repo add jetstack https://charts.jetstack.io --force-update
 #helm repo update
 # Install cert-manager with CRDs https://artifacthub.io/packages/helm/cert-manager/cert-manager 
 helm install cert-manager jetstack/cert-manager \
---namespace ${LBC_NAMESPACE} \  # Installs the main components into cert-manager
+--namespace cert-manager \  # Installs the main components into cert-manager
 --version v1.19.2 \
 --set installCRDs=true \ # Automatically installs the necessary Custom Resource Definitions (CRDs) as part of the release
 --set serviceAccount.create=false \
@@ -31,7 +31,7 @@ helm install cert-manager jetstack/cert-manager \
 #--set clusterResourceNamespace=kube-system \
 
  # Tells cert-manager to look for things like DNS provider secrets in kube-system too, matching the main installation namespace. 
---set crds.enabled=true 
+#--set crds.enabled=true 
 #--set crds.keep=true
 
 sleep 10
