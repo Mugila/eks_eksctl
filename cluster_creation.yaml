@@ -81,7 +81,7 @@ addonsConfig:
 
 managedNodeGroups:
   - name: eks-poc-ng
-    instanceType: t3a.medium 
+    instanceType: t3a.small
     amiFamily: AmazonLinux2023
     privateNetworking: True # True Ensures nodes are launched in private subnets
    # updateConfig:
@@ -102,7 +102,7 @@ managedNodeGroups:
     securityGroups:
       withShared: false #This disables the creation and attachment of the "shared" security group. 
       attachIDs: ["sg-06a0beefd0ed45a07"]
-    maxPodsPerNode: 17
+    maxPodsPerNode: 11
     subnets:
       - subnet-0ebeafd6054e83d84
       - subnet-0e62b2a66ea4235c7
