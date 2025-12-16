@@ -13,6 +13,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
     #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
     external-dns.alpha.kubernetes.io/hostname: nginx.aadhavan.us
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
@@ -47,6 +48,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
     #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
     external-dns.alpha.kubernetes.io/hostname: aadhavan.us
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
