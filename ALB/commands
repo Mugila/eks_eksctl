@@ -45,6 +45,7 @@ for pod in $(kubectl get pods -n kube-system  -l app.kubernetes.io/name=aws-load
 
 kubectl delete all --all -n app1
 kubectl delete all --all -n app2
+kubectl delete ingress --all --all-namespaces
 
 kubectl delete ingress nginx-ingress -n app1
 kubectl delete ingress httpd-ingress -n app2

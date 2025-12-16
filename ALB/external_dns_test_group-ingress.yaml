@@ -8,21 +8,21 @@ metadata:
     #alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-1:987654321:certificate/37c33c94-e3be-41cc-9ec8-fd16b2873bd4
     #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/group.order: '10'
+    alb.ingress.kubernetes.io/group.order: 10
     alb.ingress.kubernetes.io/healthcheck-path: /
     alb.ingress.kubernetes.io/load-balancer-name: myapp
     alb.ingress.kubernetes.io/group.name: myapp
     service.beta.kubernetes.io/aws-load-balancer-type: external
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip # if the type of Kubernetes service is ClusterIP then you would configure the target type as ip
-    alb.ingress.kubernetes.io/target-type: instance #alb.ingress.kubernetes.io/target-type: instance # if the type of Kubernetes service is NodePort then you would need to configure the target type as instance
+    #alb.ingress.kubernetes.io/target-type: instance #alb.ingress.kubernetes.io/target-type: instance # if the type of Kubernetes service is NodePort then you would need to configure the target type as instance
     alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
     #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
     alb.ingress.kubernetes.io/inbound-cidrs: 0.0.0.0/0
     external-dns.alpha.kubernetes.io/hostname: nginx.aadhavan.us
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/success-codes: "200"
-    kubernetes.io/ingress.class: alb
+    kubernetes.io/ingressClassName: alb
 spec:
   ingressClassName: alb
   rules:
@@ -48,7 +48,7 @@ metadata:
     #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/healthcheck-path: /
-    alb.ingress.kubernetes.io/group.order: '11'
+    alb.ingress.kubernetes.io/group.order: 11
     alb.ingress.kubernetes.io/load-balancer-name: myapp
     alb.ingress.kubernetes.io/group.name: myapp
     service.beta.kubernetes.io/aws-load-balancer-type: external
@@ -60,7 +60,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: aadhavan.us
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/success-codes: "200"
-    kubernetes.io/ingress.class: alb
+    kubernetes.io/ingressClassName: alb
 spec:
   ingressClassName: alb
   rules:
