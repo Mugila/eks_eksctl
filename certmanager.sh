@@ -21,7 +21,7 @@ helm repo add jetstack https://charts.jetstack.io --force-update
 #helm repo update
 # Install cert-manager with CRDs https://artifacthub.io/packages/helm/cert-manager/cert-manager 
 helm install cert-manager jetstack/cert-manager \
- --namespace "${LBC_NAMESPACE}" \  # Installs the main components into cert-manager
+ --namespace "${LBC_NAMESPACE}" \  
  --version v1.19.2 \
  --set crds.enabled=true \
  --set serviceAccount.create=false \
@@ -34,7 +34,7 @@ helm install cert-manager jetstack/cert-manager \
 #--set crds.enabled=true 
 #--set crds.keep=true
 
-sleep 10
+sleep 10s
 # check certmanager pods in kube-system
 kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager
 kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager-cainjector
