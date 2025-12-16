@@ -216,3 +216,65 @@ kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running  
 
 
 Create a new node with t3 small 
+
+root@ip-10-0-7-9:~/eks_eksctl# eksctl create nodegroup --config-file=cluster_creation.yaml --include=eks-poc-ng
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods -A -o=custom-columns=NAMESPACE:.metadata.namespace,POD:.metadata.name,NODE:.spec.nodeName
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods -A -o wide
+NAMESPACE      NAME                                            READY   STATUS    RESTARTS   AGE   IP           NODE                        NOMINATED NODE   READINESS GATES
+app1           app1-7dddd5646f-fznrs                           1/1     Running   0          78m   10.0.8.7     ip-10-0-8-75.ec2.internal   <none>           <none>
+app2           app2-7bc64754f9-xmc62                           1/1     Running   0          78m   10.0.8.52    ip-10-0-8-75.ec2.internal   <none>           <none>
+cert-manager   cert-manager-cainjector-84df87b75c-295q4        1/1     Running   0          59m   10.0.8.120   ip-10-0-8-75.ec2.internal   <none>           <none>
+cert-manager   cert-manager-fbd88c775-47j4d                    1/1     Running   0          59m   10.0.8.74    ip-10-0-8-75.ec2.internal   <none>           <none>
+cert-manager   cert-manager-webhook-95dbdbb-psbfd              1/1     Running   0          59m   10.0.8.21    ip-10-0-8-69.ec2.internal   <none>           <none>
+karpenter      karpenter-7b9469d845-fxw2f                      1/1     Running   0          59m   10.0.8.37    ip-10-0-8-69.ec2.internal   <none>           <none>
+karpenter      karpenter-7b9469d845-svqkl                      1/1     Running   0          78m   10.0.8.11    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    aws-load-balancer-controller-74f87ff7b4-ld4wc   1/1     Running   0          59m   10.0.8.61    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    aws-load-balancer-controller-74f87ff7b4-p4mcj   1/1     Running   0          59m   10.0.8.108   ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    aws-node-2dwm9                                  2/2     Running   0          40m   10.0.8.69    ip-10-0-8-69.ec2.internal   <none>           <none>
+kube-system    aws-node-bqzmr                                  2/2     Running   0          65m   10.0.8.75    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    coredns-9686cdd4d-wkkhn                         1/1     Running   0          59m   10.0.8.102   ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    coredns-9686cdd4d-wwptd                         1/1     Running   0          59m   10.0.8.27    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    ebs-csi-controller-59cfdcf6c8-fv6hv             6/6     Running   0          59m   10.0.8.72    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    ebs-csi-controller-59cfdcf6c8-vgpnn             6/6     Running   0          59m   10.0.8.62    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    ebs-csi-node-t4jgk                              3/3     Running   0          65m   10.0.8.66    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    ebs-csi-node-x7vdz                              3/3     Running   0          40m   10.0.8.105   ip-10-0-8-69.ec2.internal   <none>           <none>
+kube-system    eks-pod-identity-agent-cjnpj                    1/1     Running   0          40m   10.0.8.69    ip-10-0-8-69.ec2.internal   <none>           <none>
+kube-system    eks-pod-identity-agent-zkwcv                    1/1     Running   0          65m   10.0.8.75    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    external-dns-5cd67f9577-62pxf                   1/1     Running   0          59m   10.0.8.54    ip-10-0-8-69.ec2.internal   <none>           <none>
+kube-system    kube-proxy-5q87w                                1/1     Running   0          65m   10.0.8.75    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    kube-proxy-6pjpx                                1/1     Running   0          40m   10.0.8.69    ip-10-0-8-69.ec2.internal   <none>           <none>
+kube-system    metrics-server-59c6c74c8d-htfhj                 1/1     Running   0          59m   10.0.8.23    ip-10-0-8-75.ec2.internal   <none>           <none>
+kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running   0          59m   10.0.8.60    ip-10-0-8-75.ec2.internal   <none>           <none>
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces --field-selector spec.nodeName=ip-10-0-8-69.ec2.internal
+NAMESPACE      NAME                                 READY   STATUS    RESTARTS   AGE
+cert-manager   cert-manager-webhook-95dbdbb-psbfd   1/1     Running   0          62m
+karpenter      karpenter-7b9469d845-fxw2f           1/1     Running   0          62m
+kube-system    aws-node-2dwm9                       2/2     Running   0          43m
+kube-system    ebs-csi-node-x7vdz                   3/3     Running   0          43m
+kube-system    eks-pod-identity-agent-cjnpj         1/1     Running   0          43m
+kube-system    external-dns-5cd67f9577-62pxf        1/1     Running   0          62m
+kube-system    kube-proxy-6pjpx                     1/1     Running   0          43m
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces --field-selector spec.nodeName=ip-10-0-8-75.ec2.internal
+NAMESPACE      NAME                                            READY   STATUS    RESTARTS   AGE
+app1           app1-7dddd5646f-fznrs                           1/1     Running   0          81m
+app2           app2-7bc64754f9-xmc62                           1/1     Running   0          81m
+cert-manager   cert-manager-cainjector-84df87b75c-295q4        1/1     Running   0          63m
+cert-manager   cert-manager-fbd88c775-47j4d                    1/1     Running   0          63m
+karpenter      karpenter-7b9469d845-svqkl                      1/1     Running   0          81m
+kube-system    aws-load-balancer-controller-74f87ff7b4-ld4wc   1/1     Running   0          63m
+kube-system    aws-load-balancer-controller-74f87ff7b4-p4mcj   1/1     Running   0          63m
+kube-system    aws-node-bqzmr                                  2/2     Running   0          68m
+kube-system    coredns-9686cdd4d-wkkhn                         1/1     Running   0          63m
+kube-system    coredns-9686cdd4d-wwptd                         1/1     Running   0          63m
+kube-system    ebs-csi-controller-59cfdcf6c8-fv6hv             6/6     Running   0          63m
+kube-system    ebs-csi-controller-59cfdcf6c8-vgpnn             6/6     Running   0          62m
+kube-system    ebs-csi-node-t4jgk                              3/3     Running   0          68m
+kube-system    eks-pod-identity-agent-zkwcv                    1/1     Running   0          68m
+kube-system    kube-proxy-5q87w                                1/1     Running   0          68m
+kube-system    metrics-server-59c6c74c8d-htfhj                 1/1     Running   0          63m
+kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running   0          62m
+
+
+kubectl get nodes -o wide --label-columns topology.kubernetes.io/zone

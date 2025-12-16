@@ -106,7 +106,13 @@ managedNodeGroups:
     subnets:
       - subnet-0ebeafd6054e83d84
       - subnet-0e62b2a66ea4235c7
-  #    - subnet-0564dca4816439969	 
+  #    - subnet-0564dca4816439969
+    nodeRepairConfig: # https://github.com/eksctl-io/eksctl/blob/main/examples/44-node-repair.yaml
+      enabled: true
+      # Stop repair actions when 3 nodes are unhealthy
+      maxUnhealthyNodeThresholdCount: 1
+      # Repair at most 2 unhealthy nodes in parallel
+      maxParallelNodesRepairedCount: 1	 
     iam:
       withAddonPolicies:
         imageBuilder: true

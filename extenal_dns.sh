@@ -16,9 +16,10 @@ helm repo update
 helm install  external-dns external-dns/external-dns --namespace kube-system \
   --set provider.name=aws \
   --set aws.zoneType=public \
-  --set txtOwnerId="${HOSTED_ZONE_ID}" \
+  #--set txtOwnerId="${HOSTED_ZONE_ID}" \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
+  --set txtOwnerId=external-dns \
   --set serviceAccount.create=false \
   --set policy=sync \
   --wait
