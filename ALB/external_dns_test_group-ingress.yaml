@@ -14,7 +14,8 @@ metadata:
     alb.ingress.kubernetes.io/group.name: myapp
     service.beta.kubernetes.io/aws-load-balancer-type: external
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/target-type: ip # if the type of Kubernetes service is ClusterIP then you would configure the target type as ip
+    alb.ingress.kubernetes.io/target-type: instance #alb.ingress.kubernetes.io/target-type: instance # if the type of Kubernetes service is NodePort then you would need to configure the target type as instance
     alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
     #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
     alb.ingress.kubernetes.io/inbound-cidrs: 0.0.0.0/0
@@ -51,8 +52,7 @@ metadata:
     alb.ingress.kubernetes.io/load-balancer-name: myapp
     alb.ingress.kubernetes.io/group.name: myapp
     service.beta.kubernetes.io/aws-load-balancer-type: external
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    #alb.ingress.kubernetes.io/target-type: instance # if the type of Kubernetes service is NodePort then you would need to configure the target type as instance
+    alb.ingress.kubernetes.io/scheme: internet-facing 
     alb.ingress.kubernetes.io/target-type: ip # if the type of Kubernetes service is ClusterIP then you would configure the target type as ip
     alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
     #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
