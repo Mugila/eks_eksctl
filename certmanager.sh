@@ -28,7 +28,14 @@ helm install cert-manager jetstack/cert-manager --namespace "${LBC_NAMESPACE}"  
 #--set crds.keep=true
 
 sleep 10s
-# check certmanager pods in kube-system
+# check certmanager pods  in kube-system
 kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager
-kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager-cainjector
-kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager-webhook
+kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cainjector
+kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=webhook
+
+#check logs 
+
+for pod in $(kubectl get pods -n kube-system -l app.kubernetes.io/name=cert-manager -o jsonpath='{.items[*].metadata.name}'); do
+    echo "--- Logs from $pod ---"
+    kubectl logs --tail=10 $pod -n kube-system --all-containers=true --tail=2
+done
