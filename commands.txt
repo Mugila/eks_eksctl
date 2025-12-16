@@ -87,3 +87,37 @@ eksctl delete iamserviceaccount --cluster=eks-poc  --name=cert-manager --namespa
 eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
 eksctl delete   cluster -f cluster_creation.yaml 
 eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
+
+
+Recreate serviceaccount cert-manager  with name space cert-manager 
+eksctl delete iamserviceaccount --cluster=eks-poc --name=cert-manager --namespace=cert-manager
+eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve
+
+
+
+full clean up of certmanager  (deleted namespace cert-manager installed through eksctl cluster config )
+https://cert-manager.io/docs/installation/kubectl/#uninstalling
+
+
+
+helm list -n cert-manager
+helm uninstall cert-manager  --namespace cert-manager  --dry-run
+kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.2/cert-manager.yaml
+kubectl delete lease -n cert-manager  cert-manager-cainjector-leader-election cert-manager-controller
+
+
+You can skip the failing post-install hook to get cert-manager installed, which makes further debugging easier.
+helm install cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.19.2   --set installCRDs=true   --set serviceAccount.create=false   --set serviceAccount.name=default   --set automountServiceAccountToken=true --set startupapicheck.timeout=5m  --no-hooks
+kubect get all -n cert-manager 
+
+helm install cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.19.2   --set installCRDs=true   --set serviceAccount.create=false   --set serviceAccount.name=default   --set automountServiceAccountToken=true --set startupapicheck.timeout=5m  --set webhook.timeoutSeconds=30
+
+
+kubectl get all -n cert-manager   get all resources running 
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl logs --previous pod/cert-manager-startupapicheck-7qcz9  -n cert-manager
+root@ip-10-0-7-9:~/eks_eksctl# kubectl logs pod/cert-manager-startupapicheck-7qcz9  -n cert-manager
+
+check events 
+kubectl get events --namespace cert-manager
+kubectl describe pods cert-manager-startupapicheck-7qcz9 -n cert-managerf
