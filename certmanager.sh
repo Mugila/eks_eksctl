@@ -36,6 +36,6 @@ helm install cert-manager jetstack/cert-manager \
 
 sleep 10
 # check certmanager pods in kube-system
-kubectl get pods --namespace kube-system -l app.kubernetes.io/name=cert-manager
-kubectl get pods --namespace kube-system -l app.kubernetes.io/name=cert-manager-cainjector
-kubectl get pods --namespace kube-system -l app.kubernetes.io/name=cert-manager-webhook
+kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager
+kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager-cainjector
+kubectl get pods --namespace "${LBC_NAMESPACE}" -l app.kubernetes.io/name=cert-manager-webhook
