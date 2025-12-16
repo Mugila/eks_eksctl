@@ -110,7 +110,7 @@ You can skip the failing post-install hook to get cert-manager installed, which 
 helm install cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.19.2   --set installCRDs=true   --set serviceAccount.create=false   --set serviceAccount.name=default   --set automountServiceAccountToken=true --set startupapicheck.timeout=5m  --no-hooks
 kubect get all -n cert-manager 
 
-helm install cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.19.2   --set installCRDs=true   --set serviceAccount.create=false   --set serviceAccount.name=default   --set automountServiceAccountToken=true --set startupapicheck.timeout=5m  --set webhook.timeoutSeconds=30
+helm install cert-manager jetstack/cert-manager   --namespace cert-manager     --set installCRDs=true   --set serviceAccount.create=false   --set serviceAccount.name=default   --set automountServiceAccountToken=true --set startupapicheck.timeout=5m  --set webhook.timeoutSeconds=30
 
 
 kubectl get all -n cert-manager   get all resources running 
@@ -121,3 +121,98 @@ root@ip-10-0-7-9:~/eks_eksctl# kubectl logs pod/cert-manager-startupapicheck-7qc
 check events 
 kubectl get events --namespace cert-manager
 kubectl describe pods cert-manager-startupapicheck-7qcz9 -n cert-managerf
+
+kubectl -n cert-manager  logs  -l app.kubernetes.io/name=cert-manager --follow 
+kubectl -n cert-manager  logs  -l app.kubernetes.io/name=cert-manager --tail=2
+
+
+cretae new node group
+eksctl create nodegroup --config-file=cluster_creation.yaml --include=eks-poc-ng2 
+eksctl get nodegroups --cluster=eks-poc
+
+delete nodegroup
+eksctl delete nodegroup --cluster=eks-poc --name=eks-poc-ng2
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get nodes -o wide 
+
+
+
+How to check number of pods running in each node 
+kubectl get pods --all-namespaces -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+Count	NodeName
+17	ip-10-0-8-40.ec2.internal
+7	ip-10-0-4-98.ec2.internal
+4	ip-10-0-8-125.ec2.internal
+root@ip-10-0-7-9:~/eks_eksctl# 
+
+
+
+kubectl -n app1 get all
+root@ip-10-0-7-9:~/eks_eksctl# kubectl scale deployment.apps/app1 --replicas=0 -n app1
+
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl scale deployment.apps/app1 --replicas=1 -n app1
+deployment.apps/app1 scaled
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods -n app1
+NAME                    READY   STATUS    RESTARTS   AGE
+
+
+### Drain and Migrate Workloads
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+Count	NodeName
+17	ip-10-0-8-40.ec2.internal
+7	ip-10-0-8-75.ec2.internal
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get nodes -o wide 
+NAME                        STATUS   ROLES    AGE     VERSION                INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION                    CONTAINER-RUNTIME
+ip-10-0-8-40.ec2.internal   Ready    <none>   6h17m   v1.30.14-eks-ecaa3a6   10.0.8.40     <none>        Amazon Linux 2023.9.20251208   6.1.158-180.294.amzn2023.x86_64   containerd://2.1.5
+ip-10-0-8-75.ec2.internal   Ready    <none>   2m55s   v1.30.14-eks-ecaa3a6   10.0.8.75     <none>        Amazon Linux 2023.9.20251208   6.1.158-180.294.amzn2023.x86_64   containerd://2.1.5
+
+
+Monitor the number pod on each node during the process
+kubectl cordon ip-10-0-8-40.ec2.internal
+kubectl drain ip-10-0-8-40.ec2.internal  --ignore-daemonsets --delete-emptydir-data
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get nodes -w
+NAME                        STATUS                     ROLES    AGE     VERSION
+ip-10-0-8-40.ec2.internal   Ready,SchedulingDisabled   <none>   6h24m   v1.30.14-eks-ecaa3a6
+ip-10-0-8-75.ec2.internal   Ready                      <none>   9m45s   v1.30.14-eks-ecaa3a6
+^Croot@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+Count	NodeName
+17	ip-10-0-8-75.ec2.internal
+4	ip-10-0-8-40.ec2.internal
+root@ip-10-0-7-9:~/eks_eksctl# 
+root@ip-10-0-7-9:~/eks_eksctl# 
+
+Delete the node 
+eksctl delete nodegroup --cluster=eks-poc --name=eks-poc-ng
+
+
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+Count	NodeName
+17	ip-10-0-8-75.ec2.internal
+root@ip-10-0-7-9:~/eks_eksctl# kubectl  get pods -A
+NAMESPACE      NAME                                            READY   STATUS    RESTARTS   AGE
+app1           app1-7dddd5646f-fznrs                           1/1     Running   0          31m
+app2           app2-7bc64754f9-xmc62                           1/1     Running   0          31m
+cert-manager   cert-manager-cainjector-84df87b75c-295q4        1/1     Running   0          13m
+cert-manager   cert-manager-fbd88c775-47j4d                    1/1     Running   0          13m
+cert-manager   cert-manager-webhook-95dbdbb-psbfd              0/1     Pending   0          12m
+karpenter      karpenter-7b9469d845-fxw2f                      0/1     Pending   0          13m
+karpenter      karpenter-7b9469d845-svqkl                      1/1     Running   0          31m
+kube-system    aws-load-balancer-controller-74f87ff7b4-ld4wc   1/1     Running   0          13m
+kube-system    aws-load-balancer-controller-74f87ff7b4-p4mcj   1/1     Running   0          13m
+kube-system    aws-node-bqzmr                                  2/2     Running   0          18m
+kube-system    coredns-9686cdd4d-wkkhn                         1/1     Running   0          12m
+kube-system    coredns-9686cdd4d-wwptd                         1/1     Running   0          13m
+kube-system    ebs-csi-controller-59cfdcf6c8-fv6hv             6/6     Running   0          13m
+kube-system    ebs-csi-controller-59cfdcf6c8-vgpnn             6/6     Running   0          12m
+kube-system    ebs-csi-node-t4jgk                              3/3     Running   0          18m
+kube-system    eks-pod-identity-agent-zkwcv                    1/1     Running   0          18m
+kube-system    external-dns-5cd67f9577-62pxf                   0/1     Pending   0          12m
+kube-system    kube-proxy-5q87w                                1/1     Running   0          18m
+kube-system    metrics-server-59c6c74c8d-htfhj                 1/1     Running   0          13m
+kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running   0          12m
+
+
+Create a new node with t3 small 
