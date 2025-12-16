@@ -196,15 +196,15 @@ managedNodeGroups:
         - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
         - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
       tags:
-       alpha.eksctl.io/cluster-name: "eks-poc"
-       alpha.eksctl.io/nodegroup-name: "ops_build_eks_nodegroup"
-       alpha.eksctl.io/nodegroup-type: "managed"
-       nodegroup-role: "worker-node"
+        alpha.eksctl.io/cluster-name: "eks-poc"
+        alpha.eksctl.io/nodegroup-name: "ops_build_eks_nodegroup"
+        alpha.eksctl.io/nodegroup-type: "managed"
+        nodegroup-role: "worker-node"
        # EC2 tags required for cluster-autoscaler auto-discovery - these tags are automatically applied to a managed nodegroup autoscaling group
-       k8s.io/cluster-autoscaler/enabled: "true"
-       k8s.io/cluster-autoscaler/managednodes-quickstart: "owned"  
+        k8s.io/cluster-autoscaler/enabled: "true"
+        k8s.io/cluster-autoscaler/managednodes-quickstart: "owned"  
       labels: 
-       nodegroup-role: "worker" 
+        nodegroup-role: "worker" 
 
 iam:
  vpcResourceControllerPolicy: true
