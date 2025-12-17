@@ -47,16 +47,12 @@ sleep 5
 kubectl get ingress -n  $ARGOCD_NAMESPACE
 echo "✅ Ingress resource created. The AWS ALB is being provisioned..."
 echo "It may take a few minutes for the ALB to become active."
-
-
-
 echo "Checking Argo pod statuses in namespace $ARGOCD_NAMESPACE..."
 
 # Get the status of all pods in the argo namespace and filter for unhealthy statuses
 UNHEALTHY_PODS=$(kubectl get pods -n "$ARGOCD_NAMESPACE" -o jsonpath='{.items[*].status.phase}' | grep -E 'Pending|Unknown|Error|Failed|ImagePullBackOff|CrashLoopBackOff' || true)
-
 if [ -n "$UNHEALTHY_PODS" ]; then
-    echo "ERROR: Found unhealthy Argo pods."
+    echo "ERROR:(❌) Found unhealthy Argo pods."
     echo "Unhealthy statuses found: $UNHEALTHY_PODS"
     # Optional: print details of unhealthy pods
     kubectl get pods -n "ARGOCD_NAMESPACE" --field-selector=status.phase!=Running,status.phase!=Succeeded
@@ -64,10 +60,10 @@ if [ -n "$UNHEALTHY_PODS" ]; then
 else
     # Also check if no pods exist at all, which might also be an issue depending on your use case
     if [ -z "$(kubectl get pods -n "$ARGOCD_NAMESPACE" -o jsonpath='{.items[*].metadata.name}' || true)" ]; then
-        echo "ERROR: No pods found in namespace $ARGOCD_NAMESPACE. Exiting."
+        echo "ERROR: (❌) No pods found in namespace $ARGOCD_NAMESPACE. Exiting."
         exit 1
     else
-        echo " ✅ All Argo pods are running or completed successfully."
+        echo "  ✅ All Argo pods are running or completed successfully."
     fi
 fi
 
@@ -79,7 +75,7 @@ while [ -z "$ALB_HOSTNAME" ]; do
     [ -z "$ALB_HOSTNAME" ] && sleep 20
 done
 
-echo "AWS ALB Hostname: $ALB_HOSTNAME"
+echo "AWS ALB Hostname: $ALB_HOSTNAME ✅ ALB created by argo ingress "
 
 sleep 120 
 
@@ -93,7 +89,7 @@ STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "http://$INGRESS_HOST")
 if [ "$STATUS_CODE" == "200" ]; then
     echo "✅ $INGRESS_HOST url is accessible and returned status $STATUS_CODE"
 else
-    echo "$INGRESS_HOST url returned status $STATUS_CODE. Check connectivity."
+    echo " (❌) $INGRESS_HOST url returned status $STATUS_CODE. Check connectivity."
     # You can add further actions here, e.g., sending an email alert
 fi
 
@@ -104,7 +100,7 @@ echo "Fetching Route 53 record alias target..."
 R53_TARGET_DNS_NAME=$(aws route53 list-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --query "ResourceRecordSets[?Name == '${INGRESS_HOST}.' && Type == 'A'].AliasTarget.DNSName" --output text )
 
 if [ -z "$R53_TARGET_DNS_NAME" ]; then
-    echo "Error: Could not retrieve Route 53 record target. Check Hosted Zone ID and Record Name."
+    echo "Error: (❌) Could not retrieve Route 53 record target. Check Hosted Zone ID and Record Name."
     exit 1
 fi
 
@@ -122,7 +118,7 @@ if [[ -z $initial_password ]]; then
   while [[ -z $initial_password ]]; do
     count=`expr $count + 1`
     if [ $count -gt 20 ]; then
-      echo -e "Timed out waiting for secret/argocd-initial-admin-secret to start"
+      echo -e "(❌)Timed out waiting for secret/argocd-initial-admin-secret to start"
       break
     fi
 
@@ -143,14 +139,14 @@ TOKEN=$(curl -s -k -X POST "http:/$INGRESS_HOST/api/v1/session" \
 
 # Check if the token was retrieved successfully
 if [ "$TOKEN" == "null" ] || [ -z "$TOKEN" ]; then
-  echo "Failed to get token. Check credentials and server URL."
+  echo "(❌)Failed to get token. Check credentials and server URL."
   exit 1
 fi
 
 #echo "Successfully retrieved token: $TOKEN"
 # Change the password using the token
 echo "Change the password"
-curl -k -X PUT "http://$NGRESS_HOST/api/v1/account/password" \
+curl -k -X PUT "http://$INGRESS_HOST/api/v1/account/password" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"currentPassword\":\"$initial_password\",\"newPassword\":\"$NEW_PASSWORD\"}"
@@ -173,9 +169,9 @@ echo -e "\n"
 
 # Compare the two names
 if [[ "$ALB_HOSTNAME". == "$R53_TARGET_DNS_NAME" ]]; then
-    echo "Success:✅ The ALB hostname and Route 53 record alias target match then process with changing the argo passowrd."
+    echo "Success:✅ The ALB hostname and Route 53 record alias target match which confirms that ARGO LB is mapped to  A record in Route 53."
     exit 0
 else
-    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated the ALB dns in route 53."
+    echo "Failure:(❌) The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated the ALB dns in route 53."
     exit 1
 fi
