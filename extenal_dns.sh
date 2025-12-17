@@ -19,11 +19,12 @@ helm install external-dns external-dns/external-dns --namespace "${LBC_NAMESPACE
   --set aws.zoneType=public \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
-  --set txtOwnerId=external-dns \
+  --set txtOwnerId="${HOSTED_ZONE_ID}" \
   --set serviceAccount.create=false \
   --set policy=sync \
   --wait 
 
+ #--set txtOwnerId=external-dns \
 #--set txtOwnerId="${HOSTED_ZONE_ID}" \
 sleep 10 
 #check logs from ALB controller pods 

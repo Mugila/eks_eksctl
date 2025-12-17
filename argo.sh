@@ -57,6 +57,11 @@ echo "AWS ALB Hostname: $ALB_HOSTNAME"
 
 sleep 120 
 
+echo "The load balancer will take some time to provision. Use this command to wait until Argo CD responds"
+curl --head -X GET --retry 20 --retry-all-errors --retry-delay 15 \
+  --connect-timeout 5 --max-time 10 -k \
+  http://$ALB_HOSTNAME
+
 
 #CHECK IF ALB hostname is updated in Route 53
 # Fetch the Route 53 record's alias target DNS name
@@ -82,10 +87,7 @@ else
     exit 1
 fi
 
-echo "The load balancer will take some time to provision. Use this command to wait until Argo CD responds"
-curl --head -X GET --retry 20 --retry-all-errors --retry-delay 15 \
-  --connect-timeout 5 --max-time 10 -k \
-  http://$ALB_HOSTNAME
+
 
 
 

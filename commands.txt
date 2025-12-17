@@ -289,8 +289,9 @@ cert-manager                	cert-manager	1       	2025-12-16 13:56:52.171428906
 external-dns                	kube-system 	1       	2025-12-16 13:21:19.253597494 +0000 UTC	deployed	external-dns-1.19.0                	0.19.0     
 karpenter                   	karpenter   	1       	2025-12-16 12:55:38.000057688 +0000 UTC	deployed	karpenter-0.37.0                   	0.37.0     
 my-argo-cd                  	argocd      	1       	2025-12-17 02:22:12.975173032 +0000 UTC	failed  	argo-cd-4.8.0                      	v2.3.4     
-root@ip-10-0-7-9:~/eks_eksctl# helm uninstall my-argo-cd  --namespace argocd 
-release "my-argo-cd" uninstalled
+root@ip-10-0-7-9:~/eks_eksctl# helm uninstall argocd  --namespace argocd 
+release "argocd" uninstalled
+kubectl delete  ingress argocd-server  -n argocd
 root@ip-10-0-7-9:~/eks_eksctl# kubectl get all  -n argocd 
 No resources found in argocd namespace. 
 
@@ -300,8 +301,15 @@ No resources found in argocd namespace.
 helm show values argo/argo-cd > values.yaml
 
 helm repo add argo https://argoproj.github.io/argo-helm
-helm repo update
-helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update argo
 
-helm install argocd argo/argo-cd --namespace argocd  --version 4.8.0 --values argo-non-ha.yaml --wait 
 
+helm install argocd argo/argo-cd --namespace argocd  --version 4.8.0 --values argo-non-ha.yaml --wait  --debug
+
+
+
+https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/ingress.md#option-1-ssl-passthrough
+https://github.com/argoproj/argo-cd/issues/8067
+https://github.com/argoproj/argo-helm/issues/2936
+https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+https://cnoe.io/docs/reference-implementation/aws
