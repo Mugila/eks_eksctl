@@ -13,17 +13,17 @@ aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm repo update
 #helm upgrade --wait --timeout 900s --install externaldns-release \
-helm install  external-dns external-dns/external-dns --namespace kube-system \
+helm install external-dns external-dns/external-dns --namespace kube-system \
   --set provider.name=aws \
   --set aws.zoneType=public \
-  #--set txtOwnerId="${HOSTED_ZONE_ID}" \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
   --set serviceAccount.name=external-dns \
   --set txtOwnerId=external-dns \
   --set serviceAccount.create=false \
   --set policy=sync \
-  --wait
+  --wait 
 
+#--set txtOwnerId="${HOSTED_ZONE_ID}" \
 sleep 10 
 #check logs from ALB controller pods 
 for pod in $(kubectl get pods -n kube-system -l app.kubernetes.io/name=external-dns -o jsonpath='{.items[*].metadata.name}'); do
