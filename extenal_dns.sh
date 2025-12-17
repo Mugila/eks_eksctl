@@ -6,6 +6,7 @@ export AWS_ROUTE53_DOMAIN="aadhavan.us"
 export CLUSTER_VPC=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query "cluster.resourcesVpcConfig.vpcId" --output text)
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "${AWS_ROUTE53_DOMAIN}." --query 'HostedZones[0].Id' --o text | awk -F "/" {'print $NF'})
 aws route53 list-resource-record-sets --hosted-zone-id  ${HOSTED_ZONE_ID}  --query "ResourceRecordSets[?Name == '${AWS_ROUTE53_DOMAIN}.']"
+LBC_NAMESPACE="kube-system"
 #verify that sa account is already created through eksct cluster creation
 kubectl get sa external-dns -n kube-system -o yaml  
 #Install the ExternalDNS Add-On
@@ -13,7 +14,7 @@ aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
 helm repo update
 #helm upgrade --wait --timeout 900s --install externaldns-release \
-helm install external-dns external-dns/external-dns --namespace kube-system \
+helm install external-dns external-dns/external-dns --namespace "${LBC_NAMESPACE}" \
   --set provider.name=aws \
   --set aws.zoneType=public \
   --set domainFilters\[0\]="${AWS_ROUTE53_DOMAIN}" \
