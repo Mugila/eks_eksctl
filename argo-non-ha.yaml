@@ -1,0 +1,28 @@
+# Disable the DEX server
+dex:
+  enabled: false
+
+# Ensure non-HA settings (default, but good practice to confirm)
+highAvailability:
+  enabled: false
+
+# Ensure single replicas for core components for non-HA
+server:
+  replicas: 1
+applicationController:
+  replicas: 1
+repoServer:
+  replicas: 1
+
+# Ensure non-HA Redis is used
+redis-ha:
+  enabled: false
+redis:
+  enabled: true
+
+# Change the Argo CD server Service type
+server:
+  service:
+    type: ClusterIP # Change to ClusterIP or NodePort as needed
+    # If using NodePort, you can specify one:
+    # nodePort: 30000

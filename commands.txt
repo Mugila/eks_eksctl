@@ -278,3 +278,30 @@ kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running  
 
 
 kubectl get nodes -o wide --label-columns topology.kubernetes.io/zone
+
+
+
+####### How to install ArgoCD 
+root@ip-10-0-7-9:~/eks_eksctl# helm list --all-namespaces
+NAME                        	NAMESPACE   	REVISION	UPDATED                                	STATUS  	CHART                              	APP VERSION
+aws-load-balancer-controller	kube-system 	1       	2025-12-16 13:20:00.710607102 +0000 UTC	deployed	aws-load-balancer-controller-1.16.0	v2.16.0    
+cert-manager                	cert-manager	1       	2025-12-16 13:56:52.171428906 +0000 UTC	deployed	cert-manager-v1.19.2               	v1.19.2    
+external-dns                	kube-system 	1       	2025-12-16 13:21:19.253597494 +0000 UTC	deployed	external-dns-1.19.0                	0.19.0     
+karpenter                   	karpenter   	1       	2025-12-16 12:55:38.000057688 +0000 UTC	deployed	karpenter-0.37.0                   	0.37.0     
+my-argo-cd                  	argocd      	1       	2025-12-17 02:22:12.975173032 +0000 UTC	failed  	argo-cd-4.8.0                      	v2.3.4     
+root@ip-10-0-7-9:~/eks_eksctl# helm uninstall my-argo-cd  --namespace argocd 
+release "my-argo-cd" uninstalled
+root@ip-10-0-7-9:~/eks_eksctl# kubectl get all  -n argocd 
+No resources found in argocd namespace. 
+
+
+
+### Exporting helm values from helm chart 
+helm show values argo/argo-cd > values.yaml
+
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+helm repo add argo https://argoproj.github.io/argo-helm
+
+helm install argocd argo/argo-cd --namespace argocd  --version 4.8.0 --values argo-non-ha.yaml --wait 
+
