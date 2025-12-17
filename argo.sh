@@ -36,7 +36,8 @@ echo "Starting Argo CD installation and ALB exposure process..."
 # We use the default values for the service, which is a ClusterIP,
 # and will expose it using an Ingress resource later.
 echo "Deploying Argo CD using Helm with custom value file for non HA deployment"
-helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  --debug
+helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  
+#helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  --debug  # use debug if you want to find any issues in the installation 
 sleep 30
 echo "Applying Ingress configuration to expose Argo CD via ALB"
 kubectl apply -f argo-ingress.yaml 
@@ -44,6 +45,29 @@ sleep 5
 kubectl get ingress -n  $ARGOCD_NAMESPACE
 echo "Ingress resource created. The AWS ALB is being provisioned..."
 echo "It may take a few minutes for the ALB to become active."
+
+
+
+echo "Checking Argo pod statuses in namespace $ARGOCD_NAMESPACE..."
+
+# Get the status of all pods in the argo namespace and filter for unhealthy statuses
+UNHEALTHY_PODS=$(kubectl get pods -n "$ARGOCD_NAMESPACE" -o jsonpath='{.items[*].status.phase}' | grep -E 'Pending|Unknown|Error|Failed|ImagePullBackOff|CrashLoopBackOff' || true)
+
+if [ -n "$UNHEALTHY_PODS" ]; then
+    echo "ERROR: Found unhealthy Argo pods."
+    echo "Unhealthy statuses found: $UNHEALTHY_PODS"
+    # Optional: print details of unhealthy pods
+    kubectl get pods -n "ARGOCD_NAMESPACE" --field-selector=status.phase!=Running,status.phase!=Succeeded
+    exit 1
+else
+    # Also check if no pods exist at all, which might also be an issue depending on your use case
+    if [ -z "$(kubectl get pods -n "$ARGOCD_NAMESPACE" -o jsonpath='{.items[*].metadata.name}' || true)" ]; then
+        echo "ERROR: No pods found in namespace $ARGOCD_NAMESPACE. Exiting."
+        exit 1
+    else
+        echo "All Argo pods are running or completed successfully."
+    fi
+fi
 
 # 6. Retrieve the ALB hostname
 echo "Waiting for Ingress hostname..."
@@ -85,25 +109,6 @@ fi
 #ARGOCD_PASSWORD=$(kubectl -n $ARGOCD_NAMESPACE get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 
-# 3. Grep Argo CD external IP 
-external_ip=`kubectl get svc argocd-server -n argocd -o json 2>/dev/null | jq -r '.status.loadBalancer.ingress[].hostname' 2>/dev/null`
-if [[ -z $external_ip ]]; then
-  echo -e "\nWaiting to start argocd-server"
-  count=0
-  while [[ -z $external_ip ]]; do
-    count=`expr $count + 1`
-    if [ $count -gt 10 ]; then
-      echo -e "Timed out waiting for argocd-server to start"
-      break
-    fi
-
-    echo -n "."
-    sleep 1
-    external_ip=`kubectl get svc argocd-server -n argocd -o json 2>/dev/null | jq -r '.status.loadBalancer.ingress[].hostname' 2>/dev/null`
-  done
-fi
-echo -e "\n"
-
 # 4. Argo CD admin user
 initial_user="admin"
 
@@ -125,23 +130,7 @@ if [[ -z $initial_password ]]; then
   done
 fi
 
-# 6. check wheather we are able to login Argo cd
-if [ -n "$initial_password" ]; then
-  echo -e "\nLogin to Argo CD" 
-  accessable_to_argocd=`nslookup -type=ns $external_ip | grep "Authoritative answers can be found from"`
-  count=0
-  while [ -z "$accessable_to_argocd" ]; do
-    count=`expr $count + 1`
-    if [ $count -gt 90 ]; then
-      echo -e "Timed out to login to Argo CD"
-      break
-    fi
 
-    echo -n "."
-    sleep 1
-    accessable_to_argocd=`nslookup -type=ns $external_ip | grep "Authoritative answers can be found from"`
-  done
-  argocd login "$external_ip" --username admin --password "$initial_password" --insecure
 
   # 7. change admin password
   new_password=`openssl rand -base64 6`
@@ -160,7 +149,7 @@ fi
 echo "*********************************************************************************************"
 echo "Argo CD is ready!"
 echo "Argo CD URL: http://$INGRESS_HOST"
-echo "External IP      : $external_ip"
+#echo "External IP      : $external_ip"
 echo "Initial User     : $initial_user"
 echo "Initial Password : $initial_password"
 echo "New Password     : $new_password"
