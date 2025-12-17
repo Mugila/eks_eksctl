@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
+set -x
 CLUSTER_REGION="us-east-1"
+ARGOCD_NAMESPACE="argocd"
+export AWS_ROUTE53_DOMAIN="argo.aadhavan.us"
 export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
-INGRESS_HOST="argocd.aadhavan.us"
+export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "${AWS_ROUTE53_DOMAIN}." --query 'HostedZones[0].Id' --o text | awk -F "/" {'print $NF'})
+#INGRESS_HOST="argo.aadhavan.us"
 
 VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query cluster.resourcesVpcConfig.vpcId --output text)
 
@@ -11,67 +14,69 @@ VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGI
 aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
 echo -e "\n"
 
-# 2. Create name space for Argo CD
-ns_argocd=`kubectl get ns -o json | jq -r '.items[] | .metadata.name' | grep argocd`
-if [ -z "$ns_argocd" ]; then
-  kubectl create namespace argocd
-else
-  echo -e "Namespace of argocd already exists\n"
+
+
+# 2. Create the Argo CD namespace
+echo "Creating Kubernetes namespace: $ARGOCD_NAMESPACE"
+kubectl create namespace $ARGOCD_NAMESPACE || echo "Namespace $ARGOCD_NAMESPACE already exists"
+
+# 3. Add the Argo CD Helm repository
+echo "Adding Argo CD Helm repository"
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update argo
+
+echo "Starting Argo CD installation and ALB exposure process..."
+# 4. Install Argo CD using Helm
+# We use the default values for the service, which is a ClusterIP,
+# and will expose it using an Ingress resource later.
+echo "Deploying Argo CD using Helm with custom value file for non HA deployment"
+helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  --debug
+sleep 30
+echo "Applying Ingress configuration to expose Argo CD via ALB"
+kubectl apply -f argo-ingress.yaml 
+sleep 5
+kubectl get ingress -n  $ARGOCD_NAMESPACE
+echo "Ingress resource created. The AWS ALB is being provisioned..."
+echo "It may take a few minutes for the ALB to become active."
+
+# 6. Retrieve the ALB hostname
+echo "Waiting for Ingress hostname..."
+# Loop until the ingress hostname is available
+while [ -z "$ALB_HOSTNAME" ]; do
+    ALB_HOSTNAME=$(kubectl get ingress argocd-server -n $ARGOCD_NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    [ -z "$ALB_HOSTNAME" ] && sleep 20
+done
+
+echo "AWS ALB Hostname: $ALB_HOSTNAME"
+
+#CHECK IF ALB hostname is updated in Route 53
+# Fetch the Route 53 record's alias target DNS name
+echo "Fetching Route 53 record alias target..."
+R53_TARGET_DNS_NAME=$(aws route53 list-resource-record-sets --hosted-zone-id "$HOSTED_ZONE_ID" --query "ResourceRecordSets[?Name == '$AWS_ROUTE53_DOMAIN' && (Type == 'A' || Type == 'AAAA')].AliasTarget.DNSName" --output text 2>/dev/null)
+
+if [ -z "$R53_TARGET_DNS_NAME" ]; then
+    echo "Error: Could not retrieve Route 53 record target. Check Hosted Zone ID and Record Name."
+    exit 1
 fi
 
-svc_argocd=`kubectl get svc -n argocd -o json | jq -r '.items[] | .metadata.name' | grep argocd-applicationset-controller`
-if [ -z "$svc_argocd" ]; then
-  echo -e "Start to apply ArgoCD manifest.\n"
-  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-  echo -e "\nApplying ArgoCD manifest"
-  count=0
-  while [ -z "$svc_argocd" ]; do
-    count=`expr $count + 1`
-    if [ $count -gt 10 ]; then
-      echo -e "Timed out to apply ArgoCD manifest\n"
-      break
-    fi
+# Route 53 AliasTargets include a trailing dot, while ALB DNSNames do not. 
+# We need to remove the trailing dot from the Route 53 output for a direct comparison.
+R53_TARGET_DNS_NAME_CLEANED=$(echo "$R53_TARGET_DNS_NAME" | sed 's/\.$//')
+echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
 
-    echo -n "."
-    sleep 1
-    svc_argocd=`kubectl get svc -n argocd -o json | jq -r '.items[] | .metadata.name' | grep argocd-applicationset-controller`
-  done
-  echo -e "\nSuccessfully applied ArgoCD manifest\n"
-  # kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
-   kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "ClusterIP"}}'
-  echo -e "Successfully changed ArgoCD server to LoadBalancer type\n"
+# Compare the two names
+if [ "$ALB_HOSTNAM" == "$R53_TARGET_DNS_NAME_CLEANED" ]; then
+    echo "Success: The ALB hostname and Route 53 record alias target match."
+    exit 0
 else
-  echo -e "ArgoCD manifest has already been applied\n"
+    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match."
+    exit 1
 fi
 
-echo "Creating Ingress configuration file: ingress-values.yaml"
-cat <<EOF > ingress-values.yaml
-# ingress-values.yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: argocd-server
-  namespace: argocd
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/healthcheck-path: /healthz
-spec:
-  ingressClassName: alb
-  rules:
-    - host: $INGRESS_HOST
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
-EOF
+## 7. Get the initial admin password
+#echo "Retrieving initial admin password"
+#ARGOCD_PASSWORD=$(kubectl -n $ARGOCD_NAMESPACE get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
 
 # 3. Grep Argo CD external IP 
 external_ip=`kubectl get svc argocd-server -n argocd -o json 2>/dev/null | jq -r '.status.loadBalancer.ingress[].hostname' 2>/dev/null`
@@ -96,7 +101,7 @@ echo -e "\n"
 initial_user="admin"
 
 # 5. Grep inittial password
-initial_password=`kubectl -n argocd get secret/argocd-initial-admin-secret -o jsonpath="{.data.password}" 2>/dev/null | base64 -d; echo`
+initial_password=`kubectl -n $ARGOCD_NAMESPACE get secret/argocd-initial-admin-secret -o jsonpath="{.data.password}" 2>/dev/null | base64 -d; echo`
 if [[ -z $initial_password ]]; then
   echo -e "\nWaiting to start secret/argocd-initial-admin-secret"
   count=0
@@ -109,7 +114,7 @@ if [[ -z $initial_password ]]; then
 
     echo -n "."
     sleep 1
-    initial_password=`kubectl -n argocd get secret/argocd-initial-admin-secret -o jsonpath="{.data.password}" 2>/dev/null | base64 -d; echo`
+    initial_password=`kubectl -n $ARGOCD_NAMESPACE get secret/argocd-initial-admin-secret -o jsonpath="{.data.password}" 2>/dev/null | base64 -d; echo`
   done
 fi
 
@@ -138,7 +143,7 @@ if [ -n "$initial_password" ]; then
   echo -e "\n"
 
   # 8. Delete  initial admin Secret
-  kubectl --namespace argocd delete secret/argocd-initial-admin-secret
+  kubectl --namespace $ARGOCD_NAMESPACE delete secret/argocd-initial-admin-secret
   echo -e "\n"
 else
   :
@@ -146,6 +151,8 @@ fi
 
 # 9. Argo CD
 echo "*********************************************************************************************"
+echo "Argo CD is ready!"
+echo "Argo CD URL: http://$ALB_HOSTNAME"
 echo "External IP      : $external_ip"
 echo "Initial User     : $initial_user"
 echo "Initial Password : $initial_password"
@@ -153,5 +160,3 @@ echo "New Password     : $new_password"
 echo "*********************************************************************************************"
 echo -e "\n"
 
-# 10. アプリケーションをデプロイする
-kubectl apply -f ./your_application.yaml
