@@ -74,7 +74,7 @@ fi
 #echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
 
 # Compare the two names
-if [ $ALB_HOSTNAME == $R53_TARGET_DNS_NAME ]; then
+if [ "$ALB_HOSTNAME" -eq "$R53_TARGET_DNS_NAME" ]; then
     echo "Success: The ALB hostname and Route 53 record alias target match."
     exit 0
 else
