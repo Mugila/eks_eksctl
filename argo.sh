@@ -55,10 +55,13 @@ done
 
 echo "AWS ALB Hostname: $ALB_HOSTNAME"
 
+sleep 120 
+
+
 #CHECK IF ALB hostname is updated in Route 53
 # Fetch the Route 53 record's alias target DNS name
 echo "Fetching Route 53 record alias target..."
-R53_TARGET_DNS_NAME=$(aws route53 list-resource-record-sets --hosted-zone-id "$HOSTED_ZONE_ID" --query "ResourceRecordSets[?Name == '$INGRESS_HOST' && (Type == 'A' || Type == 'AAAA')].AliasTarget.DNSName" --output text 2>/dev/null)
+R53_TARGET_DNS_NAME=$(aws route53 list-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --query "ResourceRecordSets[?Name == '${INGRESS_HOST}.' && Type == 'A'].AliasTarget.DNSName" --output text )
 
 if [ -z "$R53_TARGET_DNS_NAME" ]; then
     echo "Error: Could not retrieve Route 53 record target. Check Hosted Zone ID and Record Name."
@@ -67,15 +70,15 @@ fi
 
 # Route 53 AliasTargets include a trailing dot, while ALB DNSNames do not. 
 # We need to remove the trailing dot from the Route 53 output for a direct comparison.
-R53_TARGET_DNS_NAME_CLEANED=$(echo "$R53_TARGET_DNS_NAME" | sed 's/\.$//')
-echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
+#R53_TARGET_DNS_NAME_CLEANED=$(echo "$R53_TARGET_DNS_NAME" | sed 's/\.$//')
+#echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
 
 # Compare the two names
-if [ "$ALB_HOSTNAME" == "$R53_TARGET_DNS_NAME_CLEANED" ]; then
+if [ "$ALB_HOSTNAME" == "$R53_DNS_NAME" ]; then
     echo "Success: The ALB hostname and Route 53 record alias target match."
     exit 0
 else
-    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated has not updated the ALB dns in route 53."
+    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated the ALB dns in route 53."
     exit 1
 fi
 
