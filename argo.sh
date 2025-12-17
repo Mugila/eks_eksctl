@@ -7,6 +7,8 @@ export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "${AWS_ROUTE53_DOMAIN}." --query 'HostedZones[0].Id' --o text | awk -F "/" {'print $NF'})
 INGRESS_HOST="argo.aadhavan.us"
+USERNAME="admin" # Argo CD admin user
+NEW_PASSWORD="changeme"
 
 VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query cluster.resourcesVpcConfig.vpcId --output text)
 
@@ -43,7 +45,7 @@ echo "Applying Ingress configuration to expose Argo CD via ALB"
 kubectl apply -f argo-ingress.yaml 
 sleep 5
 kubectl get ingress -n  $ARGOCD_NAMESPACE
-echo "Ingress resource created. The AWS ALB is being provisioned..."
+echo "✅ Ingress resource created. The AWS ALB is being provisioned..."
 echo "It may take a few minutes for the ALB to become active."
 
 
@@ -65,7 +67,7 @@ else
         echo "ERROR: No pods found in namespace $ARGOCD_NAMESPACE. Exiting."
         exit 1
     else
-        echo "All Argo pods are running or completed successfully."
+        echo " ✅ All Argo pods are running or completed successfully."
     fi
 fi
 
@@ -86,6 +88,15 @@ curl --head -X GET --retry 20 --retry-all-errors --retry-delay 15 \
   --connect-timeout 5 --max-time 10 -k \
   http://$INGRESS_HOST
 
+STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "http://$INGRESS_HOST")
+
+if [ "$STATUS_CODE" == "200" ]; then
+    echo "✅ $INGRESS_HOST url is accessible and returned status $STATUS_CODE"
+else
+    echo "$INGRESS_HOST url returned status $STATUS_CODE. Check connectivity."
+    # You can add further actions here, e.g., sending an email alert
+fi
+
 
 #CHECK IF ALB hostname is updated in Route 53
 # Fetch the Route 53 record's alias target DNS name
@@ -97,21 +108,12 @@ if [ -z "$R53_TARGET_DNS_NAME" ]; then
     exit 1
 fi
 
-# Route 53 AliasTargets include a trailing dot, while ALB DNSNames do not. 
-# We need to remove the trailing dot from the Route 53 output for a direct comparison.
-#R53_TARGET_DNS_NAME_CLEANED=$(echo "$R53_TARGET_DNS_NAME" | sed 's/\.$//')
-#echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
-
-
 
 ## 7. Get the initial admin password
 #echo "Retrieving initial admin password"
 #ARGOCD_PASSWORD=$(kubectl -n $ARGOCD_NAMESPACE get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-
-# 4. Argo CD admin user
-initial_user="admin"
-
+echo "Retrieving initial admin password"
 # 5. Grep inittial password
 initial_password=`kubectl -n $ARGOCD_NAMESPACE get secret/argocd-initial-admin-secret -o jsonpath="{.data.password}" 2>/dev/null | base64 -d; echo`
 if [[ -z $initial_password ]]; then
@@ -131,19 +133,32 @@ if [[ -z $initial_password ]]; then
 fi
 
 
+#ARGOCD_SERVER="http://argo.aadhavan.us"
 
-  # 7. change admin password
-  new_password=`openssl rand -base64 6`
-  echo -e "\nChange your login password to $new_password"
-  argocd account update-password --account admin --current-password "$initial_password" --new-password "$new_password" --insecure
-  echo -e "\n"
+echo "Login to the argo "http://$INGRESS_HOST" server and retrieve the Token to change the password"
+# Get the auth token
+TOKEN=$(curl -s -k -X POST "http:/$INGRESS_HOST/api/v1/session" \
+  -H "Content-Type: application/json" \
+  -d "{\"username\":\"$USERNAME\",\"password\":\"$initial_password\"}" | jq -r '.token')
 
-  # 8. Delete  initial admin Secret
-  kubectl --namespace $ARGOCD_NAMESPACE delete secret/argocd-initial-admin-secret
-  echo -e "\n"
-else
-  :
+# Check if the token was retrieved successfully
+if [ "$TOKEN" == "null" ] || [ -z "$TOKEN" ]; then
+  echo "Failed to get token. Check credentials and server URL."
+  exit 1
 fi
+
+#echo "Successfully retrieved token: $TOKEN"
+# Change the password using the token
+echo "Change the password"
+curl -k -X PUT "http://$NGRESS_HOST/api/v1/account/password" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"currentPassword\":\"$initial_password\",\"newPassword\":\"$NEW_PASSWORD\"}"
+
+echo "Delete the initial admin password"
+# 8. Delete  initial admin Secret
+kubectl --namespace $ARGOCD_NAMESPACE delete secret/argocd-initial-admin-secret
+
 
 # 9. Argo CD
 echo "*********************************************************************************************"
@@ -152,13 +167,13 @@ echo "Argo CD URL: http://$INGRESS_HOST"
 #echo "External IP      : $external_ip"
 echo "Initial User     : $initial_user"
 echo "Initial Password : $initial_password"
-echo "New Password     : $new_password"
+echo "New Password     : $NEW_PASSWORD"
 echo "*********************************************************************************************"
 echo -e "\n"
 
 # Compare the two names
 if [[ "$ALB_HOSTNAME". == "$R53_TARGET_DNS_NAME" ]]; then
-    echo "Success: The ALB hostname and Route 53 record alias target match then process with changing the argo passowrd."
+    echo "Success:✅ The ALB hostname and Route 53 record alias target match then process with changing the argo passowrd."
     exit 0
 else
     echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated the ALB dns in route 53."
