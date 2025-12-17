@@ -146,7 +146,7 @@ fi
 #echo "Successfully retrieved token: $TOKEN"
 # Change the password using the token
 echo "Change the password"
-curl -k -X PUT "http://$INGRESS_HOST/api/v1/account/password" \
+curl -k -X PUT "http:/$INGRESS_HOST/api/v1/account/password" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"currentPassword\":\"$initial_password\",\"newPassword\":\"$NEW_PASSWORD\"}"
