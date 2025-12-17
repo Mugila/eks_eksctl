@@ -2,11 +2,11 @@
 set -x
 CLUSTER_REGION="us-east-1"
 ARGOCD_NAMESPACE="argocd"
-export AWS_ROUTE53_DOMAIN="argo.aadhavan.us"
+export AWS_ROUTE53_DOMAIN="aadhavan.us"
 export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "${AWS_ROUTE53_DOMAIN}." --query 'HostedZones[0].Id' --o text | awk -F "/" {'print $NF'})
-#INGRESS_HOST="argo.aadhavan.us"
+INGRESS_HOST="argo.aadhavan.us"
 
 VPC_ID=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query cluster.resourcesVpcConfig.vpcId --output text)
 
@@ -58,7 +58,7 @@ echo "AWS ALB Hostname: $ALB_HOSTNAME"
 #CHECK IF ALB hostname is updated in Route 53
 # Fetch the Route 53 record's alias target DNS name
 echo "Fetching Route 53 record alias target..."
-R53_TARGET_DNS_NAME=$(aws route53 list-resource-record-sets --hosted-zone-id "$HOSTED_ZONE_ID" --query "ResourceRecordSets[?Name == '$AWS_ROUTE53_DOMAIN' && (Type == 'A' || Type == 'AAAA')].AliasTarget.DNSName" --output text 2>/dev/null)
+R53_TARGET_DNS_NAME=$(aws route53 list-resource-record-sets --hosted-zone-id "$HOSTED_ZONE_ID" --query "ResourceRecordSets[?Name == '$INGRESS_HOST' && (Type == 'A' || Type == 'AAAA')].AliasTarget.DNSName" --output text 2>/dev/null)
 
 if [ -z "$R53_TARGET_DNS_NAME" ]; then
     echo "Error: Could not retrieve Route 53 record target. Check Hosted Zone ID and Record Name."
