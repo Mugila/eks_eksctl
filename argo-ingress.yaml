@@ -15,6 +15,7 @@ metadata:
     alb.ingress.kubernetes.io/group.order: '11'
     alb.ingress.kubernetes.io/load-balancer-name: myapp
     alb.ingress.kubernetes.io/group.name: myapp
+    alb.ingress.kubernetes.io/tags: cost-centre=A111, environment=DEV, function=ArgoCD, managed-by=redacted@example.com, owner=redacted@example.com
     service.beta.kubernetes.io/aws-load-balancer-type: external
     alb.ingress.kubernetes.io/scheme: internet-facing 
     alb.ingress.kubernetes.io/target-type: ip # if the type of Kubernetes service is ClusterIP then you would configure the target type as ip
@@ -23,7 +24,7 @@ metadata:
     alb.ingress.kubernetes.io/inbound-cidrs: 0.0.0.0/0
     external-dns.alpha.kubernetes.io/hostname: argo.aadhavan.us
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/success-codes: 200-399
     kubernetes.io/ingressClassName: alb
 spec:
   ingressClassName: alb
