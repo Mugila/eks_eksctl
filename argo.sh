@@ -18,7 +18,13 @@ echo -e "\n"
 
 # 2. Create the Argo CD namespace
 echo "Creating Kubernetes namespace: $ARGOCD_NAMESPACE"
-kubectl create namespace $ARGOCD_NAMESPACE || echo "Namespace $ARGOCD_NAMESPACE already exists"
+ns_argocd=`kubectl get ns -o json | jq -r '.items[] | .metadata.name' | grep argocd`
+if [ -z "$ns_argocd" ]; then
+  kubectl create namespace $ARGOCD_NAMESPACE
+else
+  echo -e "Namespace of argocd already exists\n"
+fi
+#kubectl create namespace $ARGOCD_NAMESPACE || echo "Namespace $ARGOCD_NAMESPACE already exists"
 
 # 3. Add the Argo CD Helm repository
 echo "Adding Argo CD Helm repository"
@@ -65,13 +71,20 @@ R53_TARGET_DNS_NAME_CLEANED=$(echo "$R53_TARGET_DNS_NAME" | sed 's/\.$//')
 echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
 
 # Compare the two names
-if [ "$ALB_HOSTNAM" == "$R53_TARGET_DNS_NAME_CLEANED" ]; then
+if [ "$ALB_HOSTNAME" == "$R53_TARGET_DNS_NAME_CLEANED" ]; then
     echo "Success: The ALB hostname and Route 53 record alias target match."
     exit 0
 else
-    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match."
+    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated has not updated the ALB dns in route 53."
     exit 1
 fi
+
+echo "The load balancer will take some time to provision. Use this command to wait until Argo CD responds"
+curl --head -X GET --retry 20 --retry-all-errors --retry-delay 15 \
+  --connect-timeout 5 --max-time 10 -k \
+  http://$ALB_HOSTNAME
+
+
 
 ## 7. Get the initial admin password
 #echo "Retrieving initial admin password"
