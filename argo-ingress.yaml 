@@ -1,0 +1,40 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server
+  namespace: argocd
+  annotations:
+    #alb.ingress.kubernetes.io/conditions.argocd-server-grpc: '[{"field":"http-header","httpHeaderConfig":{"httpHeaderName":"Content-Type","values":["application/grpc"]}}]'
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    #alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-1:987654321:certificate/37c33c94-e3be-41cc-9ec8-fd16b2873bd4
+    #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    #alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz
+    alb.ingress.kubernetes.io/group.order: '11'
+    alb.ingress.kubernetes.io/load-balancer-name: myapp
+    alb.ingress.kubernetes.io/group.name: myapp
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    alb.ingress.kubernetes.io/scheme: internet-facing 
+    alb.ingress.kubernetes.io/target-type: ip # if the type of Kubernetes service is ClusterIP then you would configure the target type as ip
+    alb.ingress.kubernetes.io/security-group: sg-06a0beefd0ed45a07
+    #alb.ingress.kubernetes.io/inbound-cidrs: 123.10.10.0/24,210.10.20.30/32
+    alb.ingress.kubernetes.io/inbound-cidrs: 0.0.0.0/0
+    external-dns.alpha.kubernetes.io/hostname: argo.aadhavan.us
+    #alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    kubernetes.io/ingressClassName: alb
+spec:
+  ingressClassName: alb
+  rules:
+    - host: argo.aadhavan.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
