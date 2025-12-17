@@ -60,7 +60,7 @@ sleep 120
 echo "The load balancer will take some time to provision. Use this command to wait until Argo CD responds"
 curl --head -X GET --retry 20 --retry-all-errors --retry-delay 15 \
   --connect-timeout 5 --max-time 10 -k \
-  http://$ALB_HOSTNAME
+  http://$INGRESS_HOST
 
 
 #CHECK IF ALB hostname is updated in Route 53
@@ -77,17 +77,6 @@ fi
 # We need to remove the trailing dot from the Route 53 output for a direct comparison.
 #R53_TARGET_DNS_NAME_CLEANED=$(echo "$R53_TARGET_DNS_NAME" | sed 's/\.$//')
 #echo "Route 53 Target DNS Name: $R53_TARGET_DNS_NAME_CLEANED"
-
-# Compare the two names
-if [[ "$ALB_HOSTNAME". == "$R53_TARGET_DNS_NAME" ]]; then
-    echo "Success: The ALB hostname and Route 53 record alias target match."
-    exit 0
-else
-    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated the ALB dns in route 53."
-    exit 1
-fi
-
-
 
 
 
@@ -170,7 +159,7 @@ fi
 # 9. Argo CD
 echo "*********************************************************************************************"
 echo "Argo CD is ready!"
-echo "Argo CD URL: http://$ALB_HOSTNAME"
+echo "Argo CD URL: http://$INGRESS_HOST"
 echo "External IP      : $external_ip"
 echo "Initial User     : $initial_user"
 echo "Initial Password : $initial_password"
@@ -178,3 +167,11 @@ echo "New Password     : $new_password"
 echo "*********************************************************************************************"
 echo -e "\n"
 
+# Compare the two names
+if [[ "$ALB_HOSTNAME". == "$R53_TARGET_DNS_NAME" ]]; then
+    echo "Success: The ALB hostname and Route 53 record alias target match then process with changing the argo passowrd."
+    exit 0
+else
+    echo "Failure: The ALB hostname and Route 53 record alias target DO NOT match amd argocd has not updated the ALB dns in route 53."
+    exit 1
+fi
