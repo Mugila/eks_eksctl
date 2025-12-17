@@ -22,6 +22,8 @@ redis:
 
 # Change the Argo CD server Service type
 server:
+  extraArgs:
+      - --insecure
   service:
     type: ClusterIP # Change to ClusterIP or NodePort as needed
     # If using NodePort, you can specify one:
