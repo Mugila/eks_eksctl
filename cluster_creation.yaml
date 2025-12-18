@@ -323,6 +323,12 @@ iam:
     roleName: pod-identity-role-cloudwatch-agent
     permissionPolicyARNs: ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
 
+  - namespace: test-app
+    serviceAccountName: ecr-cronjob-sa
+    createServiceAccount: true
+    roleName: pod-identity-role-ecr-auth
+    permissionPolicyARNs: ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+
 karpenter:
   version: '0.37.0' # Exact version must be provided
   createServiceAccount: true # default is false
