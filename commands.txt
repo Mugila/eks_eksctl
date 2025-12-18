@@ -99,6 +99,12 @@ full clean up of certmanager  (deleted namespace cert-manager installed through 
 https://cert-manager.io/docs/installation/kubectl/#uninstalling
 
 
+eksctl create addon -f  cluster_creation.yaml --approve. ##not required  already available  
+eksctl create podidentityassociation -f  cluster_creation.yaml 
+
+eksctl create podidentityassociation -f  cluster_creation.yaml  
+eksctl get podidentityassociations --cluster eks-poc 
+
 
 helm list -n cert-manager
 helm uninstall cert-manager  --namespace cert-manager  --dry-run
@@ -313,3 +319,68 @@ https://github.com/argoproj/argo-cd/issues/8067
 https://github.com/argoproj/argo-helm/issues/2936
 https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
 https://cnoe.io/docs/reference-implementation/aws
+
+
+root@ip-10-0-7-9:/usr/local/bin# VERSION=$(curl -L -s https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION)
+root@ip-10-0-7-9:/usr/local/bin# curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/download/v$VERSION/argocd-linux-amd64
+root@ip-10-0-7-9:/usr/local/bin# sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+root@ip-10-0-7-9:/usr/local/bin# argocd version --client
+
+
+argocd login argo.aadhavan.us --username admin --password jFpjqx5OzNmD9BAa --insecure 
+argocd login localhost:8080 --username admin --password jFpjqx5OzNmD9BAa --insecure 
+kubectl get svc argocd-server -n argocd -o json
+kubectl get ingress  argocd-server -n argocd -o json
+
+kubectl get ingress  argocd-server -n argocd -o wide
+
+
+
+
+https://github.com/aws-actions/amazon-ecr-login/issues/735
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ecr-credential-refresher
+  namespace: default # Replace with your namespace
+spec:
+  schedule: "0 */6 * * *" # Runs every 6 hours to refresh the ECR token before it expires in 12 hours
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: ecr-cronjob-sa
+          containers:
+          - name: aws-cli
+            image: amazon/aws-cli:latest # Ensure this image is accessible (e.g., public Docker Hub or another ECR with existing access)
+            command: ["/bin/sh", "-c"]
+            args:
+            - |
+              REGISTRY_URL=<account-id>.dkr.ecr.<region>.amazonaws.com; # Replace with your details
+              REGISTRY_PASSWORD=$(aws ecr get-login-password --region <region>);
+              kubectl delete secret aws-regcred -n default || true;
+              kubectl create secret generic aws-regcred \
+                --from-literal=.dockerconfigjson="{\"auths\":{\"${REGISTRY_URL}\":{\"auth\":\"$(echo -n AWS:${REGISTRY_PASSWORD} | base64)\"}}}" \
+                --type=kubernetes.io/dockerconfigjson -n default;
+          restartPolicy: OnFailure
+
+
+
+          The application pods that need to pull images from ECR should then reference this aws-regcred secret in their imagePullSecrets
+
+
+          apiVersion: apps/v1
+kind: Deployment
+# ... metadata ...
+spec:
+  # ... other specs ...
+  template:
+    spec:
+      imagePullSecrets:
+      - name: aws-regcred
+      containers:
+      - name: my-app-container
+        image: <account-id>.dkr.ecr.<region>
+        # ... other container specs ...
+
