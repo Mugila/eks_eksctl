@@ -133,6 +133,7 @@ managedNodeGroups:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
         - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
         - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
         #- arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
         #- arn:aws:iam::1111111111:policy/kube2iam
       #attachPolicyARNs: https://dev.to/aws-builders/eks-iam-deep-dive-136d https://schema.eksctl.io/
