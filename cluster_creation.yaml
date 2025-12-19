@@ -224,6 +224,12 @@ iam:
       - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess # Attach an existing AWS managed policy
 
   - metadata:
+      name: ecr-cronjob-sa
+      namespace: default
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly # Attach an existing AWS managed policy
+
+  - metadata:
       name: aws-load-balancer-controller
       namespace: kube-system
     wellKnownPolicies:
