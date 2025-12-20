@@ -15,6 +15,10 @@ spec:
           restartPolicy: OnFailure ##  Restart Policy in case container failed
           hostNetwork: true ## this is important for kubcetl to access the host
           serviceAccountName: ecr-cronjob-sa # Reference the service account
+          volumes:
+            - name: token
+              emptyDir:
+                medium: Memory
           initContainers:
           - name: get-token
             image: amazon/aws-cli:2.0.6
@@ -23,7 +27,7 @@ spec:
               - name: REGION
                 value: us-east-1  # Update if your ECR is in a different region
             volumeMounts:
-                - mountPath: /tmp
+                - mountPath: /token
                   name: token
             command:
                 - /bin/sh
@@ -40,7 +44,7 @@ spec:
               - name: ECR_REGISTRY
                 value: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo  # Replace with your own registry
             volumeMounts:
-              - mountPath: /tmp
+              - mountPath: /token
                 name: token
             command:
                 - /bin/bash
