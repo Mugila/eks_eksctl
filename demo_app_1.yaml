@@ -37,8 +37,8 @@ spec:
         #image: alpine/k8s:1.32.11
         image: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo:latest
         securityContext:
-          #runAsNonRoot: true
-          #allowPrivilegeEscalation: false
-          #runAsUser: 1
-        command: ["sleep", "infinity"]
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          runAsUser: 1
+        #command: ["sleep", "infinity"]  
          
