@@ -52,12 +52,13 @@ spec:
             command:
                 - /bin/bash
                 - -ce
-                - |
-                  kubectl create secret docker-registry $SECRET_NAME \
-                    --dry-run=client \
-                    --docker-server="$ECR_REGISTRY" \
-                    --docker-username=AWS \
-                    --docker-password=dummy \
-                    -o yaml | kubectl apply -f 
+                - date; echo Hello from the Kubernetes cluster 
+                #|
+                #  kubectl create secret docker-registry $SECRET_NAME \
+                #    --dry-run=client \
+                #    --docker-server="$ECR_REGISTRY" \
+                 #   --docker-username=AWS \
+                 #   --docker-password=dummy \
+                 #   -o yaml | kubectl apply -f 
             #restartPolicy: Never
             #restartPolicy: OnFailure. #only set for non-init containers 
