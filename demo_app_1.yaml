@@ -6,12 +6,12 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: s3-reader
+  name: ecr-cronjob-sa
   namespace: test-app
   annotations:
     # Optional: Add if using IRSA for migration
-    eks.amazonaws.com/role-arn: arn:aws:iam::509399617800:role/pod-identity-role-s3 # $POD_ROLE_ARN
-automountServiceAccountToken: false  # Security best practice
+    eks.amazonaws.com/role-arn: arn:aws:iam::509399617800:role/pod-identity-role-ecr-auth # $POD_ROLE_ARN
+automountServiceAccountToken: True  # Security best practice
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,10 +31,10 @@ spec:
       labels:
         app: awscli-app
     spec:
-      serviceAccountName: s3-reader
+      serviceAccountName: ecr-cronjob-sa
       containers:
       - name: aws-cli-app
-        image: amazon/aws-cli:latest
+        image: alpine/k8s:1.32.11
         securityContext:
           runAsNonRoot: true
           allowPrivilegeEscalation: false

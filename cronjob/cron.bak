@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aws-ecr-login
+spec:
+  #schedule: "*/5 * * * *"
+  schedule: "0 * * * *"
+  successfulJobsHistoryLimit: 3 # Retain 3 successful jobs
+  failedJobsHistoryLimit: 2 # Retain 2 failed jobs
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure ##  Restart Policy in case container failed
+          hostNetwork: true ## this is important for kubcetl to access the host
+          serviceAccountName: ecr-cronjob-sa # Reference the service account
+          containers:
+          - name: my-app
+            image: alpine/k8s:1.32.11
+            command:
+                - /bin/bash
+                - -ce
+                - |
+                 set -e
+
+                 # Install AWS CLI
+                 echo "Installing AWS CLI..."
+                 apk add --no-cache aws-cli
+
+                 echo "Fetching ECR authorization token..."
+                 TOKEN=$(aws ecr get-login-password --region $AWS_REGION)
+
+                 echo "Creating Docker config JSON..."
+                 DOCKER_CONFIG=$(echo -n "{\"auths\":{\"$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com\":{\"username\":\"AWS\",\"password\":\"$TOKEN\"}}}" | base64 -w 0)
+
+                 echo "Discovering all namespaces..."
+                 NAMESPACES=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
+                 echo "Found namespaces: $NAMESPACES"
+                 for NAMESPACE in $NAMESPACES; do
+                   echo "Updating secret in namespace: $NAMESPACE"
+
+                  # Create or update the secret
+                  kubectl create secret docker-registry ecr-registry-credentials \
+                    --docker-server=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com \
+                    --docker-username=AWS \
+                    --docker-password=$TOKEN \
+                    --namespace=$NAMESPACE \
+                    --dry-run=client -o yaml | kubectl apply -f -
+
+                  echo "Secret updated successfully in $NAMESPACE"
+                 done
+                 echo "ECR credentials refresh completed successfully!"
+            restartPolicy: OnFailure
