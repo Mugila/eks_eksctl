@@ -15,8 +15,6 @@ spec:
           restartPolicy: OnFailure ##  Restart Policy in case container failed
           hostNetwork: true ## this is important for kubcetl to access the host
           serviceAccountName: ecr-cronjob-sa # Reference the service account
-          successfulJobsHistoryLimit: 5
-          failedJobsHistoryLimit: 1
           initContainers:
           - name: init-myservice
             image: busybox
