@@ -21,18 +21,21 @@ spec:
                 medium: Memory
           initContainers:
           - name: get-token
-            image: amazon/aws-cli:2.0.6
+            image: m8u9p1j8/python-with-tools:latest
+            #image:  amazon/aws-cli:2.32.21
             imagePullPolicy: IfNotPresent
             env:
               - name: REGION
                 value: us-east-1  # Update if your ECR is in a different region
+              - name: AWS_ACCOUNT_ID
+                value: "509399617800"
             volumeMounts:
                 - mountPath: /token
                   name: token
             command:
                 - /bin/sh
                 - -ce
-                - aws ecr get-login-password --region ${REGION} > /token/ecr-token
+                - aws ecr get-login-password --region "${AWS_REGION}" | podman login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
           containers:
           - name: create-secret
             #image: bitnami/kubectl:latest
@@ -42,7 +45,7 @@ spec:
               - name: SECRET_NAME
                 value: ecrcred # Name of the Kubernetes secret that will be referenced in Argo CD Image Updater's pull-secret annotation
               - name: ECR_REGISTRY
-                value: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo  # Replace with your own registry
+                value: 509399617800.dkr.ecr.us-east-1.amazonaws.com  # Replace with your own registry
             volumeMounts:
               - mountPath: /token
                 name: token
@@ -54,7 +57,7 @@ spec:
                     --dry-run=client \
                     --docker-server="$ECR_REGISTRY" \
                     --docker-username=AWS \
-                    --docker-password="$(</token/ecr-token)" \
+                    --docker-password=dummy \
                     -o yaml | kubectl apply -f 
             #restartPolicy: Never
             #restartPolicy: OnFailure. #only set for non-init containers 
