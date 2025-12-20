@@ -290,6 +290,12 @@ iam:
     wellKnownPolicies:
       awsLoadBalancerController: true
   
+  - namespace: argocd
+    serviceAccountName: ecr-cronjob-sa
+    createServiceAccount: true
+    roleName: pod-identity-role-ecr-auth-argo
+    permissionPolicyARNs: ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+  
   - namespace: test-app 
     serviceAccountName: external-dns
     createServiceAccount: true
