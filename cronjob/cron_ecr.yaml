@@ -47,7 +47,7 @@ spec:
               - name: ECR_REGISTRY
                 value: 509399617800.dkr.ecr.us-east-1.amazonaws.com  # Replace with your own registry
             volumeMounts:
-              - mountPath: /token
+              - mountPath: /tmp
                 name: token
             command:
                 - /bin/bash
