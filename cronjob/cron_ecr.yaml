@@ -21,7 +21,7 @@ spec:
             imagePullPolicy: IfNotPresent
             env:
               - name: REGION
-                  value: us-east-1  # Update if your ECR is in a different region
+                value: us-east-1  # Update if your ECR is in a different region
             volumeMounts:
                 - mountPath: /token
                   name: token
@@ -36,12 +36,12 @@ spec:
             imagePullPolicy: IfNotPresent
             env:
               - name: SECRET_NAME
-                  value: ecrcred # Name of the Kubernetes secret that will be referenced in Argo CD Image Updater's pull-secret annotation
+                value: ecrcred # Name of the Kubernetes secret that will be referenced in Argo CD Image Updater's pull-secret annotation
               - name: ECR_REGISTRY
-                  value: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo  # Replace with your own registry
+                value: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo  # Replace with your own registry
             volumeMounts:
               - mountPath: /token
-                  name: token
+                name: token
             command:
                 - /bin/bash
                 - -ce
