@@ -35,7 +35,7 @@ spec:
       containers:
       - name: aws-cli-app
         #image: alpine/k8s:1.32.11
-        image: amazon/aws-cli:latest
+        image: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo:latest
         securityContext:
           #runAsNonRoot: true
           #allowPrivilegeEscalation: false
