@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: aws-ecr-login
+  namespace: test-app
+spec:
+  #schedule: "*/5 * * * *"
+  schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 3 # Retain 3 successful jobs
+  failedJobsHistoryLimit: 2 # Retain 2 failed jobs
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure ##  Restart Policy in case container failed
+          hostNetwork: true ## this is important for kubcetl to access the host
+          serviceAccountName: ecr-cronjob-sa # Reference the service account
+          initContainers:
+          - name: get-token
+            image: amazon/aws-cli:2.0.6
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: REGION
+                  value: us-east-1  # Update if your ECR is in a different region
+            volumeMounts:
+                - mountPath: /token
+                  name: token
+            command:
+                - /bin/sh
+                - -ce
+                - aws ecr get-login-password --region ${REGION} > /token/ecr-token
+          containers:
+          - name: create-secret
+            #image: bitnami/kubectl:latest
+            image: alpine/k8s:1.32.11
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: SECRET_NAME
+                  value: ecrcred # Name of the Kubernetes secret that will be referenced in Argo CD Image Updater's pull-secret annotation
+              - name: ECR_REGISTRY
+                  value: 509399617800.dkr.ecr.us-east-1.amazonaws.com/myapp-repo  # Replace with your own registry
+            volumeMounts:
+              - mountPath: /token
+                  name: token
+            command:
+                - /bin/bash
+                - -ce
+                - |
+                  kubectl create secret docker-registry $SECRET_NAME \
+                    --dry-run=client \
+                    --docker-server="$ECR_REGISTRY" \
+                    --docker-username=AWS \
+                    --docker-password="$(</token/ecr-token)" \
+                    -o yaml | kubectl apply -f 
+            #restartPolicy: Never
+            #restartPolicy: OnFailure. #only set for non-init containers 
