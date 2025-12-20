@@ -12,7 +12,7 @@ spec:
     spec:
       template:
         spec:
-          #restartPolicy: OnFailure ##  Restart Policy in case container failed
+          restartPolicy: OnFailure ##  Restart Policy in case container failed
           hostNetwork: true ## this is important for kubcetl to access the host
           serviceAccountName: ecr-cronjob-sa # Reference the service account
           containers:
@@ -24,5 +24,5 @@ spec:
                 - /bin/sh
                 - -c
                 - date; echo Hello from the Kubernetes cluster    
-            restartPolicy: Never
+            #restartPolicy: Never
             #restartPolicy: OnFailure. #only set for non-init containers 
