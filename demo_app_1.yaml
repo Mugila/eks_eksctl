@@ -36,8 +36,14 @@ spec:
       - name: aws-cli-app
         image: alpine/k8s:1.32.11
         securityContext:
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
-          runAsUser: 1
-        command: ["sleep", "infinity"]
-                                       
+          #runAsNonRoot: true
+          #allowPrivilegeEscalation: false
+          #runAsUser: 1
+        command: 
+         - /bin/bash
+         - -ce
+         - |
+          set -e
+           # Install AWS CLI
+           echo "Installing AWS CLI..."
+           apk add --no-cache aws-cli 
