@@ -5,7 +5,7 @@ metadata:
   namespace: test-app
 spec:
   #schedule: "*/5 * * * *"
-  schedule: "0 * * * *"
+  schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 3 # Retain 3 successful jobs
   failedJobsHistoryLimit: 2 # Retain 2 failed jobs
   jobTemplate:
@@ -15,6 +15,12 @@ spec:
           restartPolicy: OnFailure ##  Restart Policy in case container failed
           hostNetwork: true ## this is important for kubcetl to access the host
           serviceAccountName: ecr-cronjob-sa # Reference the service account
+          successfulJobsHistoryLimit: 5
+          failedJobsHistoryLimit: 1
+          initContainers:
+          - name: init-myservice
+            image: busybox
+            command: ['sh', '-c', 'echo "Initialization started, waiting 5 seconds..." && sleep 5 && echo "Initialization complete."']
           containers:
           - name: my-app
             #image: bitnami/kubectl:latest
