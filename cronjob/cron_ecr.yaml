@@ -21,7 +21,7 @@ spec:
                 medium: Memory
           initContainers:
           - name: get-token
-            image: m8u9p1j8/python-with-tools:latest
+            image: public.ecr.aws/m8u9p1j8/python-with-tools:latest
             #image:  amazon/aws-cli:2.32.21
             imagePullPolicy: IfNotPresent
             env:
