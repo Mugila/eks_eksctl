@@ -5,7 +5,7 @@ metadata:
   namespace: test-app
 spec:
   #schedule: "*/5 * * * *"
-  schedule: "*/5 * * * *"
+  schedule: "*/1 * * * *"
   successfulJobsHistoryLimit: 3 # Retain 3 successful jobs
   failedJobsHistoryLimit: 2 # Retain 2 failed jobs
   jobTemplate:
@@ -18,6 +18,7 @@ spec:
           initContainers:
           - name: init-myservice
             image: busybox
+            imagePullPolicy: IfNotPresent
             command: ['sh', '-c', 'echo "Initialization started, waiting 5 seconds..." && sleep 5 && echo "Initialization complete."']
           containers:
           - name: my-app
