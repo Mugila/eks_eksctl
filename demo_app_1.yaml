@@ -34,16 +34,11 @@ spec:
       serviceAccountName: ecr-cronjob-sa
       containers:
       - name: aws-cli-app
-        image: alpine/k8s:1.32.11
+        #image: alpine/k8s:1.32.11
+        image: amazon/aws-cli:latest
         securityContext:
           #runAsNonRoot: true
           #allowPrivilegeEscalation: false
           #runAsUser: 1
-        command: 
-         - /bin/bash
-         - -ce
-         - |
-          set -e
-           # Install AWS CLI
-           echo "Installing AWS CLI..."
-           apk add --no-cache aws-cli 
+        command: ["sleep", "infinity"]
+         
