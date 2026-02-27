@@ -341,7 +341,7 @@ kubectl get ingress  argocd-server -n argocd -o wide
 
 
 
-
+https://oneuptime.com/blog/post/2026-02-09-monitor-cronjob-missed-schedules/view.  troubleshooting cron job 
 https://github.com/aws-actions/amazon-ecr-login/issues/735
 
 apiVersion: batch/v1
