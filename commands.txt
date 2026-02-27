@@ -162,6 +162,11 @@ root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods -n app1
 NAME                    READY   STATUS    RESTARTS   AGE
 
 
+TO  check daemonsets across all namespaces 
+kubectl get daemonset --all-namespaces
+kubectl get daemonset -o wide --all-namespaces
+
+
 ### Drain and Migrate Workloads
 
 root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
