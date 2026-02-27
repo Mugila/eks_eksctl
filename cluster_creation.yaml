@@ -5,7 +5,7 @@ kind: ClusterConfig
 metadata:
   name: eks-poc
   region: us-east-1
-  version: "1.30"
+  version: "1.34"
   tags:
     wp:managed-by: "eksctl"
     cluster: "eks-poc"

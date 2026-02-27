@@ -78,7 +78,7 @@ https://medium.com/@mb20261/aws-cli-v2-by-examples-mastering-amazon-eks-manageme
 
 
 
- eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
+eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
 eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
 
 
@@ -384,3 +384,40 @@ spec:
         image: <account-id>.dkr.ecr.<region>
         # ... other container specs ...
 
+
+###### cron job checking logs and init containers  ==
+
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl get pods -n test-app 
+NAME                           READY   STATUS      RESTARTS   AGE
+aws-ecr-login-29437685-ttmwg   0/1     Completed   0          3m5s
+aws-ecr-login-29437686-2mwgz   0/1     Completed   0          2m5s
+aws-ecr-login-29437687-r49x8   0/1     Completed   0          65s
+aws-ecr-login-29437688-zcdst   0/1     Init:0/1    0          5s
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl logs aws-ecr-login-29437685-ttmwg  --all-containers   -n test-app 
+error: error from server (NotFound): pods "aws-ecr-login-29437685-ttmwg" not found in namespace "test-app"
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl logs aws-ecr-login-29437688-zcdst   --all-containers   -n test-app 
+Initialization started, waiting 5 seconds...
+Initialization complete.
+Sat Dec 20 20:08:07 UTC 2025
+Hello from the Kubernetes cluster
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl get pods -n test-app 
+NAME                           READY   STATUS      RESTARTS   AGE
+aws-ecr-login-29437687-r49x8   0/1     Completed   0          2m21s
+aws-ecr-login-29437688-zcdst   0/1     Completed   0          81s
+aws-ecr-login-29437689-v8j5g   0/1     Completed   0          21s
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl logs aws-ecr-login-29437688-zcdst   --all-containers   -n test-app 
+Initialization started, waiting 5 seconds...
+Initialization complete.
+Sat Dec 20 20:08:07 UTC 2025
+Hello from the Kubernetes cluster
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl logs aws-ecr-login-29437688-zcdst   init-myservice    -n test-app 
+Initialization started, waiting 5 seconds...
+Initialization complete.
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# watch kubect get pods,cronjobs -n test-app 
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# watch kubectl get pods,cronjobs -n test-app 
+
+root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl delete cronjob aws-ecr-login -n test-app
+cronjob.batch "aws-ecr-login" deleted
+
+
+https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
