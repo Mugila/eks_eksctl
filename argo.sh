@@ -39,11 +39,31 @@ echo "Starting Argo CD installation and ALB exposure process..."
 # and will expose it using an Ingress resource later.
 echo "Deploying Argo CD using Helm with custom value file for non HA deployment"
 helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  
+# Wait for argocd-server pods to be ready
+echo "Waiting for argocd-server pods to be ready ✅ ..."
+while true; do
+    PODS_READY=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | tr ' ' '\n' | sort | uniq)
+    if [ "$PODS_READY" = "True" ]; then
+        break
+    fi
+    sleep 5
+done
+echo "argocd-server pods are ready."
 #helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  --debug  # use debug if you want to find any issues in the installation 
-sleep 30
+#sleep 30
 echo "Applying Ingress configuration to expose Argo CD via ALB"
 kubectl apply -f argo-ingress.yaml 
 sleep 5
+# Wait for the LoadBalancer to be ready
+echo "Waiting for the argocd-server service to be ready..."
+while true; do
+    LB_STATUS=$(kubectl get svc argocd-server -n argocd -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    if [ -n "$LB_STATUS" ]; then
+        break
+    fi
+    sleep 5
+done
+echo "argocd-server service is ready ✅ ."
 kubectl get ingress -n  $ARGOCD_NAMESPACE
 echo "✅ Ingress resource created. The AWS ALB is being provisioned..."
 echo "It may take a few minutes for the ALB to become active."
