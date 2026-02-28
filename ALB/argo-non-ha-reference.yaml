@@ -1,0 +1,59 @@
+# values-fargate.yaml ARGO CUSTOMIZATION FILE 
+global:
+  image:
+    tag: v2.10.0
+
+controller:
+  replicas: 1   # Fargate pods start slower - keep replicas manageable
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1
+      memory: 2Gi
+
+server:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    type: ClusterIP   # Use Ingress, not LoadBalancer
+
+repoServer:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Redis - cannot use redis-ha with DaemonSet on Fargate
+redis:
+  enabled: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# Disable redis-ha (requires DaemonSets or StatefulSets with EBS)
+redis-ha:
+  enabled: false
+
+# Notifications controller
+notifications:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+
+configs:
+  params:
+    server.insecure: true  # Terminate TLS at the ALB
