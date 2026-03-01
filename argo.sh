@@ -49,6 +49,23 @@ while true; do
     sleep 5
 done
 echo "argocd-server pods are ready."
+
+# Configure Argo Rollout 
+helm install argo-rollouts argo/argo-rollouts \
+  --namespace argo-rollouts \
+  --create-namespace \
+  --set dashboard.enabled=true \
+  --set controller.replicas=1
+
+echo "Waiting for argorollout-server pods to be ready ✅ ..."
+while true; do
+    PODS_READY=$(kubectl get pods -n argo-rollouts -l app.kubernetes.io/name=argocd-rollouts -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | tr ' ' '\n' | sort | uniq)
+    if [ "$PODS_READY" = "True" ]; then
+        break
+    fi
+    sleep 5
+done
+
 #helm install argocd argo/argo-cd --namespace $ARGOCD_NAMESPACE --version 4.8.0 --values argo-non-ha.yaml --wait  --debug  # use debug if you want to find any issues in the installation 
 #sleep 30
 echo "Applying Ingress configuration to expose Argo CD via ALB"
