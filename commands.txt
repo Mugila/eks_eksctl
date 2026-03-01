@@ -426,3 +426,9 @@ cronjob.batch "aws-ecr-login" deleted
 
 
 https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
+
+
+High Availablity for configuring Argo CD 
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-alb-ingress/view
+https://oneuptime.com/blog/post/2026-02-02-argocd-high-availability/view
+https://oneuptime.com/blog/post/2026-02-12-set-up-argocd-for-gitops-on-eks/view
