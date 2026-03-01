@@ -429,6 +429,598 @@ https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
 
 
 High Availablity for configuring Argo CD 
-https://oneuptime.com/blog/post/2026-02-26-argocd-aws-alb-ingress/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-application-lifecycle/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-architecture-explained/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-promotion-workflows/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-repo-server-explained/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-reduce-git-api-calls/view important
+https://oneuptime.com/blog/post/2026-02-26-argocd-reduce-api-server-load/view important
+https://oneuptime.com/blog/post/2026-02-26-argocd-redis-cache-explained/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-redis-ha-mode/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-redis-sentinel/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-scrape-metrics-prometheus/view important
+https://oneuptime.com/blog/post/2026-02-26-argocd-secret-drift-detection/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-terminology-glossary/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-status-explained/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-status-vs-health-status/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-phases-presync-postsync/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-history/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-out-of-sync-resources-only/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-set-timeouts-manifest-generation/view
+https://oneuptime.com/blog/post/2026-02-26-scale-argocd-500-applications/view
+https://oneuptime.com/blog/post/2026-02-26-how-many-argocd-instances/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-during-node-maintenance/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-cert-commands/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-database-backup-schedules/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-single-vs-multiple-instances/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-pod-disruption-during-deployment/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-fintech-compliance/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-secrets-lifecycle-management/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-during-capacity-planning/view
 https://oneuptime.com/blog/post/2026-02-02-argocd-high-availability/view
 https://oneuptime.com/blog/post/2026-02-12-set-up-argocd-for-gitops-on-eks/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-ecommerce-zero-downtime/view
+https://oneuptime.com/blog/post/2026-02-26-cicd-checks-argocd-configurations/view
+https://oneuptime.com/blog/post/2026-02-26-helm-values-multiple-environments-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-per-service-vs-umbrella/view
+https://oneuptime.com/blog/post/2026-02-26-how-to-block-non-compliant-deployments-with-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-how-to-audit-policy-compliance-with-argocd/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-maintenance-windows/view
+https://oneuptime.com/blog/post/2026-02-26-helm-values-multiple-environments-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-secret-rotation-aws/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-handle-security-incidents/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-on-push-not-polling/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-us-eu-region-deployment/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gaming-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-how-to-enforce-pod-security-standards-with-argocd-and-kyverno/view. 
+https://oneuptime.com/blog/post/2026-02-26-argocd-managed-by-multiple-tools/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-on-push-not-polling/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-network-segmentation/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-image-pull-backoff-issues/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-options-annotation/view
+https://oneuptime.com/blog/post/2026-02-26-deploy-keda-scaledobjects-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-openebs/view
+
+https://oneuptime.com/blog/post/2026-02-26-upgrade-argocd-2-11-to-2-12/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-healthcare-hipaa/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-automatic-rollback-health-degradation/view
+
+
+
+
+https://oneuptime.com/blog/post/2026-02-26-best-git-repo-structure-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-how-to-implement-cluster-upgrades-with-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-handle-secrets-without-git/view
+https://oneuptime.com/blog/post/2026-02-26-automated-rollback-verification-failure-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-migrate-apps-to-applicationsets/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multi-region-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-audit-trails-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-applicationset-disaster-recovery/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-audit-project-access-changes/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-bootstrap-monitoring-stack/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-sonarqube/view
+
+https://oneuptime.com/blog/post/2026-02-26-how-to-handle-argocd-state-after-redis-failure/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-account-commands/view
+https://oneuptime.com/blog/post/2026-02-26-how-to-implement-cluster-upgrades-with-argocd/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-vs-kustomize/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-migrate-kubectl-apply/view
+https://oneuptime.com/blog/post/2026-02-26-unit-test-kustomize-overlays-before-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-schedule-based-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-unit-test-kustomize-overlays-before-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-fix-redis-connection-errors/view
+
+###jenkins CI integeration Rollback 
+https://oneuptime.com/blog/post/2026-02-26-argocd-add-eks-cluster/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-add-public-git-repository/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-list-command/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-of-apps-pattern-at-scale/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-of-apps-pattern-guide/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-wait-command/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-applicationset-per-team/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-approval-workflows-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-jenkins-pipeline-integration/view. very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-jenkins-pipeline/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-vs-jenkins/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-automatic-sync-retries/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-automated-rollback-ci-pipeline/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-auto-promote-staging-production/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-trigger-sync-ci-pipeline/view very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-trivy-scanning/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-traffic-policies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-argo-rollouts-progressive-delivery/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-argo-workflows-ci-cd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-argo-events-deployments/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-infrastructure-dependencies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-sso-login-failures/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-reconciliation-duration/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-kubecost-integration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-self-healing-vs-manual-sync/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-ecr-image-sources/view.  importany
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-during-storage-migration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-mean-time-recovery/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-list-applications-in-project/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-upgrade-strategy/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-runbook-certificate-expired/view
+
+https://oneuptime.com/blog/post/2026-02-26-how-to-handle-argocd-state-after-cluster-migration/view
+https://oneuptime.com/blog/post/2026-02-26-implement-slo-based-deployment-verification/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-disable-sso-local-accounts-only/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-backup-restore-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitlab-cicd-integration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-fix-slow-ui-loading/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-projects-multi-team-access-control/view
+https://oneuptime.com/blog/post/2026-02-26-understanding-argocd-notifications-secret-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-optimize-monorepos/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-git-operations/view
+
+https://oneuptime.com/blog/post/2026-02-26-how-to-handle-application-state-in-argocd-redis/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-tune-redis-high-throughput/view very important
+https://oneuptime.com/blog/post/2026-02-26-argocd-tune-repo-server-large-repos/view. very important
+https://oneuptime.com/blog/post/2026-02-26-argocd-troubleshooting-quick-reference/view. very important 
+
+
+https://oneuptime.com/blog/post/2026-02-26-implement-custom-verification-scripts-argocd/view  important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-repo-commands/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deployment-freezes-sync-windows/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-additional-configuration-methods/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-configure-ignore-differences/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-test-disaster-recovery/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-test-disaster-recovery/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-failover-scenarios/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-ecr-oci-registry/view.  important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-reduce-docker-image-pull-costs/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-fix-repo-server-out-of-memory/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-github-actions-integration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-serviceaccounts-clusterroles/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-configure-egress-rules/view  important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-cache-git-repos-locally/view. important 
+https://oneuptime.com/blog/post/2026-02-26-understanding-argocd-notifications-cm-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-bootstrap-new-kubernetes-cluster/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-bootstrap-new-kubernetes-cluster/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-require-signed-commits/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-during-kubernetes-upgrades/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-circuit-breaker-deployments/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-cicd-integration/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-pull-request-reviews-deployment-changes/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-remove-cluster/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-falco/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-iam-roles-service-accounts/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-cicd-integration/view important 
+https://oneuptime.com/blog/post/2026-02-26-understanding-argocd-notifications-cm-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-bootstrap-new-kubernetes-cluster/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-delete-project-safely/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-dex-server-options/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-lets-encrypt-certificates/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-pr-based-deployment-workflows/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multiple-availability-zones/view.    very important high availabality concepts 
+https://oneuptime.com/blog/post/2026-02-26-argocd-server-environment-variables/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-resource-budgets-per-team/view   important. 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-community-vs-enterprise-akuity/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-fix-controller-oomkilled/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-handle-etcd-failure/view.  important. 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-rate-limiting/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-podsecuritypolicies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-network-policies-clusters/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-alerts-outofsync-applications/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-github-commit-status/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-large-kustomize-overlays/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-podsecuritypolicies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-sops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-velero/view.  important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-golden-paths-deployment/view.  important. 
+https://oneuptime.com/blog/post/2026-02-26-argocd-vs-fluxcd-2026/view
+
+https://oneuptime.com/blog/post/2026-02-26-understanding-argocd-secret-what-each-key-stores/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-configure-login-page/view. important 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-canary-analysis-prometheus/view important
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-secret-management/view important 
+https://oneuptime.com/blog/post/2026-02-26-how-to-implement-federated-monitoring-with-argocd/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-branch-protection-repos/view. important 
+https://oneuptime.com/blog/post/2026-02-26-verify-deployment-success-argocd/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-eks-best-practices/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-migrate-applications-between-projects/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-mfa-configuration/view. important 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-manage-dns-externaldns/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-poddisruptionbudgets/view Important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-runbook-sso-login-broken/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-cluster-health/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-recover-from-corrupted-state/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sync-windows-specific-clusters/view
+https://oneuptime.com/blog/post/2026-02-26-migrate-kustomize-cli-to-argocd/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-dex-connector-github-organization/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-how-many-instances/view.  Important 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-health-checks-crds/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-opentelemetry-full-observability/view
+https://oneuptime.com/blog/post/2026-02-26-platform-teams-structure-argocd/view. important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-eks-irsa-auth/view important 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-active-passive-dr/view. Important 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitlab-ci-pipeline/view
+https://oneuptime.com/blog/post/2026-02-26-bootstrap-argocd-terraform/view
+https://oneuptime.com/blog/post/2026-02-26-configuration-drift-detection-gitops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-secure-gitops-pipeline/view important 
+
+https://oneuptime.com/blog/post/2026-02-26-configuration-drift-detection-gitops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-monitoring-alerting/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-resource-limits-components/view
+https://oneuptime.com/blog/post/2026-02-26-understanding-argocd-rbac-cm-configmap-every-key-explained/view
+https://oneuptime.com/blog/post/2026-02-26-implement-code-review-workflow-config-changes/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-repo-structure/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-alertmanager/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitlab-ci-pipeline/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-semantic-versioning-tracking/view   Important 
+https://oneuptime.com/blog/post/2026-02-26-implement-branch-strategy-argocd-repos/view. Very important  
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-remote-bases/view  important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-prometheus-grafana/view important
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-ecommerce-platforms/view very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-charts-s3-buckets/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-dex-connector-ldap/view. important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-resourcequotas/view. very important 
+https://oneuptime.com/blog/post/2026-02-26-verify-argocd-installation-healthy/view. very important
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-structure-git-repo-declarative-setup/view. very important
+https://oneuptime.com/blog/post/2026-02-26-argocd-pin-specific-git-commit/view  important
+https://oneuptime.com/blog/post/2026-02-26-structure-monorepo-for-argocd/view.  very important 
+https://oneuptime.com/blog/post/2026-02-26-structure-multi-repo-setup-argocd/view very important 
+https://oneuptime.com/blog/post/2026-02-26-gitops-anti-patterns/view very important 
+https://oneuptime.com/blog/post/2026-02-26-gitops-one-off-debug-operations/view  important 
+https://oneuptime.com/blog/post/2026-02-26-automate-creating-argocd-apps-with-shell-scripts/view    very important 
+https://oneuptime.com/blog/post/2026-02-26-automate-argocd-backup-with-kubernetes-cronjob/view
+https://oneuptime.com/blog/post/2026-02-26-automate-argocd-deployment-status-reporting/view Very important 
+https://oneuptime.com/blog/post/2026-02-26-automate-argocd-notification-channel-setup/view very important
+https://oneuptime.com/blog/post/2026-02-26-automate-argocd-project-creation-for-new-teams/view
+https://oneuptime.com/blog/post/2026-02-26-automate-argocd-user-onboarding/view   very important 
+https://oneuptime.com/blog/post/2026-02-26-automate-argocd-repository-credential-rotation/view very important 
+https://oneuptime.com/blog/post/2026-02-26-gitops-differs-traditional-cicd/view
+https://oneuptime.com/blog/post/2026-02-26-implement-config-repo-vs-app-repo-pattern/view very important
+https://oneuptime.com/blog/post/2026-02-26-implement-repository-templating-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-implement-gitops-without-breaking-workflows/view Very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-trunk-based-development/view.  very important 
+https://oneuptime.com/blog/post/2026-02-26-gitops-hotfixes-workflow/view  very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-track-git-branch/view imoprotant 
+https://oneuptime.com/blog/post/2026-02-26-argocd-track-git-tag/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-application-design/view  very important 
+https://oneuptime.com/blog/post/2026-02-26-how-to-implement-active-passive-deployments-across-clusters-with-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-upgrade-argocd-without-downtime/view  important 
+
+https://oneuptime.com/blog/post/2026-02-26-measure-gitops-adoption-success/view important 
+https://oneuptime.com/blog/post/2026-02-26-migrate-helm-cli-to-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-install-argocd-using-kustomize/view important 
+https://oneuptime.com/blog/post/2026-02-26-install-specific-version-argocd/view  important 
+
+https://oneuptime.com/blog/post/2026-02-26-upgrade-argocd-v2-to-v3/view very important 
+https://oneuptime.com/blog/post/2026-02-26-use-git-submodules-with-argocd/view very important 
+https://oneuptime.com/blog/post/2026-02-26-use-git-subtrees-with-argocd/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-application-design/view. very very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-secrets-manager/view very important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-diff-change-review/view important
+https://oneuptime.com/blog/post/2026-02-26-argocd-application-deleted-events/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-data-loss-recovery/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-failed-sync-hooks/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-restrict-application-namespaces/view. very important 
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-controller-queue-depth/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-newrelic/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-grafana/view
+
+
+###alb##
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-alb-ingress/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-ingress-redirect-loop/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-custom-domain/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-http2-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-behind-aws-alb/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-tls-termination-load-balancer/view
+https://oneuptime.com/blog/post/2026-02-26-configure-argocd-behind-reverse-proxy/view 
+https://oneuptime.com/blog/post/2026-02-26-argocd-manage-load-balancer-config/view. important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-ingress-resources/view
+
+##deployements ##
+https://oneuptime.com/blog/post/2026-02-26-deploy-grafana-dashboards-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-deploy-full-stack-app-with-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-deploy-kube-prometheus-stack-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-deploy-kyverno-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-deploy-microservices-with-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-deploy-nginx-with-argocd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-istio/view
+https://oneuptime.com/blog/post/2026-02-26-gitops-one-off-debug-operations/view
+
+##SSO 
+https://oneuptime.com/blog/post/2026-02-26-argocd-sso-aws-identity-center/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sso-gitlab-oauth/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sso-github-oauth/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-sso-auth0/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-saml-integration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-map-sso-groups-rbac-roles/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-dex-server-authentication/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-dex-oidc-integration/view
+
+###servicemesh methods
+https://oneuptime.com/blog/post/2026-02-24-how-to-debug-why-retries-are-not-working-in-istio/view
+https://oneuptime.com/blog/post/2026-02-24-how-to-configure-istio-for-object-storage-s3-gcs/view
+https://oneuptime.com/blog/post/2026-02-24-how-to-set-up-complete-multi-cluster-mesh-with-istio/view
+https://oneuptime.com/blog/post/2026-02-24-how-to-configure-telemetry-filtering-in-istio/view
+https://oneuptime.com/blog/post/2026-02-24-how-to-configure-istio-with-aws-vpc-cni/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-service-mesh-upgrades/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-service-mesh-authorization-policies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-service-mesh/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-serverless-gitops-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-service-mesh/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-manage-istio-destination-rules/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-linkerd/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-service-mesh/view
+
+Scaling
+https://oneuptime.com/blog/post/2026-02-26-argocd-scale-application-controller/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-scale-application-controller/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-scale-api-server/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-scale-actions-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-scale-100-clusters/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-scale-50-clusters/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-rolling-updates/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-right-size-components/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-restore-deleted-application/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-restart-deployment-action/view
+
+Argo Rollouts
+https://oneuptime.com/blog/post/2026-02-26-argocd-resume-pause-argo-rollouts/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-smoke-tests/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-notifications/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-blue-green-deployments/view
+
+User restrictions
+https://oneuptime.com/blog/post/2026-02-26-argocd-restrict-modify-sync-settings/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-restrict-delete-applications/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-restrict-terminal-access-rbac/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-restrict-users-specific-projects/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-readonly-access-specific-projects/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-rbac-multi-team-environments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-rbac-permission-denied-sso/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-rbac-glob-patterns/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-rbac-applicationsets/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-rbac-csv-vs-configmap/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-projects-team-isolation/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-project-scoped-repositories/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-project-source-restrictions/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-project-level-rbac/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-project-destination-restrictions/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-project-allow-deny-resource-kinds/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-prevent-secrets-in-git/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-preview-changes-before-sync/view
+https://oneuptime.com/blog?page=34&pageSize=25#:~:text=How%20to%20Prevent%20Privilege%20Escalation%20in%20ArgoCD
+https://oneuptime.com/blog/post/2026-02-26-argocd-policy-as-code-opa/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-pod-security-standards/view
+
+
+#Parameter override
+https://oneuptime.com/blog/post/2026-02-26-argocd-parameter-overrides-cli/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-parameter-overrides-helm/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-parameter-overrides-kustomize/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-override-helm-values/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-override-application-parameters/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-override-default-compare-behavior/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-override-default-health-checks/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-orphaned-resource-warnings/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-organize-plain-yaml-manifests/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-order-namespace-creation-sync-waves/view
+
+##Optimization###
+https://oneuptime.com/blog/post/2026-02-26-argocd-environment-specific-resource-limits/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-environment-promotion/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-environment-specific-configmaps/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-enforce-resource-limits/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-enforce-namespace-labels-annotations/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-enforce-image-pull-policies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-environment-specific-resource-limits/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-function-scaling-configuration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gpu-workloads/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-optimize-redis-large-deployments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-external-redis/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-optimize-resource-consumption/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-optimize-reconciliation-large-repos/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-reduce-memory-footprint/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-disk-usage/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-health-checks-velero-backups/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-health-metrics/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-component-health/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monitor-degraded-resources/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-external-certificate-managers/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-executive-dashboards/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-exclude-resources-from-sync/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-environment-variables-cheat-sheet/view
+
+Notifications
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-notification-delivery-failures/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-health-changed-events/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-setup-from-scratch/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-microsoft-teams/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-slack/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-success-vs-failure/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-webhook-endpoints/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-email/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-failed-syncs-only/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notification-triggers-sync-status/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notifications-aws-sqs/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notification-triggers-health-status/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notification-templates-cheat-sheet/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-notification-rate-limiting/view
+
+
+security
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-directory-generator/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-fetch-depth-performance/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-credential-caching/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-ssh-host-key-verification/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-webhook-azure-devops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-webhook-bitbucket/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-webhook-github/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-webhook-gitlab/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-webhooks-speed-reconciliation/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-github-app-credentials/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitlab-self-hosted-credentials/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-github-enterprise-git-credentials/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-handle-cve-vulnerabilities/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-block-vulnerable-images/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-harden-server-production/view important 
+https://oneuptime.com/blog/post/2026-02-26-argocd-network-policies-secure-components/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-namespace-level-isolation/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-namespace-per-environment-pattern/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-network-policies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multiple-sources-single-application/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multiple-sources-helm-kustomize/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multiple-plugins-single-application/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multi-arch-images/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-multiple-helm-values-files/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-mtls-configuration/view
+
+
+##Repo pattern
+https://oneuptime.com/blog/post/2026-02-26-argocd-handle-force-pushed-branches/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monorepo-vs-multi-repo/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-monorepo-pattern/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-ml-model-versioning/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-minimize-git-clone-times/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-migrate-imperative-to-declarative/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-manual-approval-gates-environments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-manage-repositories-declaratively/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-manage-projects-declaratively/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-manage-dev-staging-prod-environments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-large-application-manifests/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-labels-annotations/view. important
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomized-helm-plugin/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-repository-structure/view
+###Gitops Pattern 
+https://oneuptime.com/blog/post/2026-02-26-argocd-automated-rollback-ci-pipeline/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-repository-structure/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-security-hardening/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-best-practices-enterprise/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-git-branching-strategy-gitops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-live-state-vs-desired-state/view. important concept
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-gaming-backend/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-microservices/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-monolithic-applications/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-saas-platforms/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-government-fedramp-gitops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-machine-learning-pipelines/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-gitops-data-pipelines/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-github-enterprise-git-credentials/view
+
+#migration
+https://oneuptime.com/blog/post/2026-02-26-argocd-migration-strategy-planning/view
+
+
+#kustomize ##
+https://oneuptime.com/blog/post/2026-02-26-argocd-custom-labels-application-filtering/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-kustomize-applications/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-replacements/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-patches/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-override-images/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-overlays-environments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-overlays-environment-differences/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-name-suffix/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-overlays-environment-differences/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-overlays-environments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-name-prefix/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-generators/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-components/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-common-labels/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-common-annotations/view
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-kubeval-kubeconform-validate-manifests/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-kubectl-same-resources/view
+
+
+##helm
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-values-files/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-values-environment-differences/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-values-different-git-repos/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-umbrella-charts/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-secrets-plugin/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-secrets-cmp-plugin/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-repository-index-updates/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-release-name/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-external-values-multiple-sources/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-chart-version-pinning/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-chart-dependencies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-helm-app-of-apps-pattern/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-health-status-ci-scripts/view
+
+
+##Deployment finetuning
+https://oneuptime.com/blog/post/2026-02-26-argocd-crds-gitops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-create-first-application/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-create-slos-operations/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integration-tests-after-deployment/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-argo-workflows/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-argo-events/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-increase-log-verbosity-for-debugging/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-image-updater-ecr/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-ignore-secret-diff/view
+
+##various deployments 
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-mlflow/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-networkpolicies/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-poddisruptionbudgets/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-statefulsets/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-high-availability-mode/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-jobs-cronjobs/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-daemonsets/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-custom-resource-definitions/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-apache-spark-kubernetes/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-apache-kafka/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-with-kubectl/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-csi-drivers/view
+
+
+###troubleshooting
+
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-repo-server-issues/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-redis-issues/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-notification-delivery-failures/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-oci-pull-errors/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-repository-not-accessible/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-health-check-failures/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-dex-server-issues/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-debug-application-sync-failures-step-by-step/view
+
+
+AWS integeration
+https://oneuptime.com/blog/post/2026-02-26-argocd-aws-codepipeline-integration/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-azure-devops-repos-credentials/view
