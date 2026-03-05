@@ -814,6 +814,11 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-resume-pause-argo-rollouts/vie
 https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-smoke-tests/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-notifications/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-blue-green-deployments/view
+https://oneuptime.com/blog/post/2026-02-02-argocd-rollouts/view
+https://www.infraspec.dev/blog/argo-rollout-aws-alb/
+https://oneuptime.com/blog/post/2026-01-24-blue-green-deployments/view
+https://velog.io/@hanjoonhyuk/AWS-EKS-Workshop-Study-7%EC%A3%BC%EC%B0%A8-CICD
+https://qiita.com/yuuman/items/77742a2597866fa32a0b
 
 User restrictions
 https://oneuptime.com/blog/post/2026-02-26-argocd-restrict-modify-sync-settings/view
@@ -959,8 +964,14 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-migration-strategy-planning/vi
 
 
 #kustomize ##
+https://gap.gjensidige.io/docs/guides/ci-automation-with-kustomize
+https://oneuptime.com/blog/post/2026-02-09-kustomize-argocd-gitops/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-app-create-command/view
+https://ubogdan.com/2026/02/gitops-workflows-automating-kubernetes-deployments-with-argocd/
+https://www.linkedin.com/pulse/gitops-repo-structure-argocd-kustomize-helm-triet-minh-tran-bxxsc/
 https://oneuptime.com/blog/post/2026-02-26-argocd-custom-labels-application-filtering/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-kustomize-applications/view
+https://oneuptime.com/blog/post/2026-02-09-kustomize-argocd-gitops/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-replacements/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-patches/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-override-images/view
@@ -977,6 +988,10 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-kustomize-common-annotations/v
 
 https://oneuptime.com/blog/post/2026-02-26-argocd-kubeval-kubeconform-validate-manifests/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-kubectl-same-resources/view
+https://somaz.blog/category/cicd/kustomize-and-argocd-integration/
+https://devamkumar.medium.com/implementing-gitops-with-jenkins-and-argocd-a-beginners-practical-guide-f45ab3a30edf
+https://deniz-turkmen.medium.com/enhance-your-modern-ci-cd-workflow-with-gitlab-kustomize-kubernetes-and-argo-cd-integration-84c7fa2977cc
+https://oneuptime.com/blog/post/2026-02-20-kustomize-kubernetes-guide/view
 
 
 ##helm
@@ -1020,6 +1035,8 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-deploy-apache-kafka/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-debug-with-kubectl/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-csi-drivers/view
 
+https://oneuptime.com/blog/post/2026-01-25-docker-container-signal-handling/view.   very important 
+https://jaadds.medium.com/gracefully-terminating-pods-in-kubernetes-handling-sigterm-fb0d60c7e983
 
 ###troubleshooting
 
@@ -1046,3 +1063,34 @@ https://oneuptime.com/blog/post/2026-02-24-how-to-configure-istio-gateway-with-t
 https://oneuptime.com/blog/post/2026-02-24-how-to-deploy-istio-with-terraform/view
 https://oneuptime.com/blog/post/2026-02-23-how-to-debug-terraform-with-tf-log-environment-variable/view
 https://oneuptime.com/blog/post/2026-02-23-how-to-use-terraform-for-multi-region-active-active-deployments/view
+
+
+labs to try
+
+https://oneuptime.com/blog/post/2026-02-09-daemonset-node-selector-pools/view   Node pool lab 
+https://oneuptime.com/blog/post/2026-02-12-use-karpenter-for-eks-node-provisioning/view. karpenter 
+https://dev.to/aws-builders/navigating-aws-eks-with-terraform-configuring-karpenter-for-just-in-time-node-provisioning-5g45  karpenter 
+https://medium.com/@rishi_abhishek/configuring-a-shared-alb-in-amazon-eks-across-multiple-namespaces-a710ccb97f52  shared ALB across multiple ingress 
+https://dev.to/ifedayo/how-to-upgrade-aws-eks-node-groups-without-downtime-step-by-step-guide-4lgm
+https://devopscon.io/blog/kubernetes/streamlining-kubernetes-deployments-with-kustomize/
+https://devopscube.com/kustomize-tutorial/
+https://github.com/techiescamp/kustomize/tree/main
+https://kubex.ai/kubernetes-tools/kustomize/.  Must try lab to learn the kustomize concept
+https://oneuptime.com/blog/post/2026-02-20-kubernetes-hpa-cpu-memory/view   Must try lab to learn HPA  Concept
+https://jay75chauhan.medium.com/kubernetes-taints-and-tolerations-node-selectors-and-node-affinity-b5e39b112bcc.  Must try Lab concepts 
+https://aws.plainenglish.io/mastering-kubernetes-scheduling-the-complete-guide-to-node-affinity-taints-and-tolerations-c3f5c463528a
+https://harsh05.medium.com/kubernetes-scheduling-node-selectors-node-affinity-and-taints-tolerations-explained-ebb521c1aa05 Must try Lab concepts 
+
+https://dev.to/ifedayo/how-to-upgrade-aws-eks-node-groups-without-downtime-step-by-step-guide-4lgm. Replace Nodes without downtime
+https://oneuptime.com/blog/post/2026-02-09-eks-upgrade-managed-node-groups/view.  Must try lab for Node replacement 
+https://www.fairwinds.com/blog/guide-securely-upgrading-eks-clusters
+https://kubex.ai/kubernetes-tools/kubernetes-best-practices/
+https://oneuptime.com/blog/post/2026-01-25-deploy-kustomize-argocd/view.  Lab to test kustomization
+https://oneuptime.com/blog/post/2026-02-09-kustomize-overlays-environments/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-region-specific-configuration/view
+https://medium.com/@nsalexamy/deploy-kubernetes-apps-to-multiple-environments-with-kustomize-helm-and-argocd-a-complete-gitops-be760b222dcc
+https://www.fosstechnix.com/kubernetes-kustomize-tutorial-with-examples/
+https://builder.aws.com/content/36Vj3ltQX8MBOlDbuZ2kSgZMqDZ/understanding-configmaps-and-ingress-in-kubernetes-a-beginners-guide
+https://www.freecodecamp.org/news/prepare-for-the-kubernetes-administrator-certification-and-pass/
+https://mlops.community/how-to-get-started-with-kubernetes-a-practical-guide/. Lab to try all concept 
+https://oneuptime.com/blog/post/2026-01-30-docker-images-test-stages/view
