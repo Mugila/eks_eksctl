@@ -1179,7 +1179,9 @@ fi
     echo "Failed to acquire lock after $MAX_RETRIES attempts"
     exit 1
 
+https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view
 https://medium.com/@tobi.akinlade.co/building-production-grade-observability-for-aws-ecs-a-complete-step-by-step-guide-a7e32aa3ff01. best method to capture drift detection in Cloudwatch
+https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view
 https://oneuptime.com/blog/post/2026-02-12-configure-ecs-task-placement-strategies/view
 https://medium.com/@kwanlauris/keycloak-high-availability-setup-in-aws-ecs-cluster-9de41eea5e2e
 https://medium.com/@o.hanhaliuk/beat-the-burst-optimizing-aws-alb-and-ecs-fargate-for-sudden-traffic-spikes-part-1-0ed52d8b142b
