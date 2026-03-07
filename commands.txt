@@ -1080,6 +1080,11 @@ https://oneuptime.com/blog/post/2026-02-20-kubernetes-hpa-cpu-memory/view   Must
 https://jay75chauhan.medium.com/kubernetes-taints-and-tolerations-node-selectors-and-node-affinity-b5e39b112bcc.  Must try Lab concepts 
 https://aws.plainenglish.io/mastering-kubernetes-scheduling-the-complete-guide-to-node-affinity-taints-and-tolerations-c3f5c463528a
 https://harsh05.medium.com/kubernetes-scheduling-node-selectors-node-affinity-and-taints-tolerations-explained-ebb521c1aa05 Must try Lab concepts 
+https://oneuptime.com/blog/post/2026-02-09-eks-upgrade-managed-node-groups/view important 
+https://oneuptime.com/blog/post/2026-01-16-docker-graceful-shutdown-signals/view  imortnat 
+https://oneuptime.com/blog/post/2026-01-30-docker-images-test-stages/view
+
+https://oneuptime.com/blog/post/2026-01-25-docker-container-signal-handling/view important
 
 https://dev.to/ifedayo/how-to-upgrade-aws-eks-node-groups-without-downtime-step-by-step-guide-4lgm. Replace Nodes without downtime
 https://oneuptime.com/blog/post/2026-02-09-eks-upgrade-managed-node-groups/view.  Must try lab for Node replacement 
@@ -1094,3 +1099,102 @@ https://builder.aws.com/content/36Vj3ltQX8MBOlDbuZ2kSgZMqDZ/understanding-config
 https://www.freecodecamp.org/news/prepare-for-the-kubernetes-administrator-certification-and-pass/
 https://mlops.community/how-to-get-started-with-kubernetes-a-practical-guide/. Lab to try all concept 
 https://oneuptime.com/blog/post/2026-01-30-docker-images-test-stages/view
+
+
+https://dev.to/aws-builders/ecs-bluegreen-deployment-with-codedeploy-and-terraform-3gf1
+https://oneuptime.com/blog/post/2026-02-12-codedeploy-ecs-deployments/view
+https://builder.aws.com/content/3542MxUKovICf66K4U8mkC7yNEt/amazon-ecs-now-supports-built-in-linear-and-canary-deployments
+https://oneuptime.com/blog/post/2026-02-12-configure-ecs-service-deployment-alarms/view
+https://medium.com/@tobi.akinlade.co/building-production-grade-observability-for-aws-ecs-a-complete-step-by-step-guide-a7e32aa3ff01
+https://repost.aws/questions/QURNOdtX5DSn-g0dOPs1ncTA/update-capacity-provider-for-ecs-cluster-through-cloudformation
+
+https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-resource-dependencies-in-complex-projects/view
+https://dev.to/dortort/a-practical-guide-to-terraform-dependency-management-441m
+Dependency Ordering Best Practices
+
+Foundation Layer (no dependencies):
+  - VPC, Subnets, Route Tables
+
+Security Layer (depends on Foundation):
+  - Security Groups, NACLs, IAM Roles
+
+Data Layer (depends on Foundation + Security):
+  - RDS, DynamoDB, S3, ElastiCache
+
+Compute Layer (depends on all above):
+  - ECS, Lambda, EC2
+
+Application Layer (depends on Compute):
+  - DNS, CDN, Monitoring
+Component 3: Drift Detection
+This is the key to drift detection:
+
+terraform plan -detailed-exitcode
+Exit Code 0: Success, no changes needed (no drift)
+Exit Code 1: Error occurred (configuration issue)
+Exit Code 2: Success, changes detected (DRIFT!)
+
+Most people think any non-zero exit code is an error. But exit code 2 is success — it successfully detected changes!
+
+https://singhray.medium.com/how-to-resolved-terraform-force-recreation-in-production-without-downtime-acbee08cb75e
+https://oneuptime.com/blog/post/2026-01-24-terraform-lifecycle-rules/viewlll 
+https://oneuptime.com/blog/post/2026-02-12-recover-terraform-state-corruption-aws-backend/view
+https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-resource-dependencies-in-complex-projects/view
+https://singhray.medium.com/how-to-resolved-terraform-force-recreation-in-production-without-downtime-acbee08cb75e
+https://oneuptime.com/blog/post/2026-02-23-how-to-handle-concurrent-terraform-runs-in-cicd/view
+
+https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view#:~:text=Strategy%202:%20Serialize%20Pipeline%20Runs,/terraform.tfstate%20main.tf
+Implementation Example (in a CI script):
+START=$(date +%s)
+terraform apply -auto-approve -lock-timeout=600s
+END=$(date +%s)
+DURATION=$((END - START))
+echo "Apply took ${DURATION} seconds"
+if [ $DURATION -gt 300 ]; then
+  echo "WARNING: Apply took over 5 minutes, possible lock contention"
+fi
+
+ MAX_RETRIES=5
+    RETRY_DELAY=30
+
+    for i in $(seq 1 $MAX_RETRIES); do
+      echo "Attempt $i of $MAX_RETRIES"
+
+      if terraform plan -no-color -out=tfplan 2>&1; then
+        echo "Plan succeeded"
+        exit 0
+      fi
+
+      # Check if the failure was due to a lock
+      if terraform plan -no-color -out=tfplan 2>&1 | grep -q "Error acquiring the state lock"; then
+        echo "State is locked. Waiting ${RETRY_DELAY}s before retry..."
+        sleep $RETRY_DELAY
+        RETRY_DELAY=$((RETRY_DELAY * 2))  # Exponential backoff
+      else
+        echo "Plan failed for a non-lock reason"
+        exit 1
+      fi
+    done
+
+    echo "Failed to acquire lock after $MAX_RETRIES attempts"
+    exit 1
+
+https://medium.com/@tobi.akinlade.co/building-production-grade-observability-for-aws-ecs-a-complete-step-by-step-guide-a7e32aa3ff01. best method to capture drift detection in Cloudwatch
+https://oneuptime.com/blog/post/2026-02-12-configure-ecs-task-placement-strategies/view
+https://medium.com/@kwanlauris/keycloak-high-availability-setup-in-aws-ecs-cluster-9de41eea5e2e
+https://medium.com/@o.hanhaliuk/beat-the-burst-optimizing-aws-alb-and-ecs-fargate-for-sudden-traffic-spikes-part-1-0ed52d8b142b
+
+https://oneuptime.com/blog/post/2026-02-12-ecs-task-networking-awsvpc-mode/view
+https://bhanuprathapreddy.medium.com/ecs-best-practices-networking-67230640590b
+https://medium.com/@bounouh.fedi/avoiding-common-pitfalls-with-ecs-capacity-providers-and-auto-scaling-24899ab6fc25
+https://oneuptime.com/blog/post/2026-02-12-use-ecs-capacity-provider-auto-scaling/view
+https://repost.aws/questions/QUvQeV97pOSu-4cwIN6AS-Ag/using-mixed-instance-asg-policies-for-multi-architecture-ecs-clusters
+https://containersonaws.com/pattern/ecs-ec2-capacity-provider-scaling/
+https://dev.to/aws-builders/ecs-native-bluegreen-is-here-with-strong-hooks-and-dark-canary-8ff
+https://oneuptime.com/blog/post/2026-02-12-configure-ecs-service-deployment-alarms/view
+https://oneuptime.com/blog/post/2026-02-12-configure-ecs-task-placement-strategies/view
+https://dev.to/aws-builders/ecs-bluegreen-deployment-with-codedeploy-and-terraform-3gf1
+
+https://github.com/felipelaptrin/ecs-load-test
+https://felipetrindade.com/ecs-load-testing/
+https://kitemetric.com/blogs/beat-the-burst-optimizing-aws-alb-and-ecs-fargate-for-sudden-traffic-spikes
