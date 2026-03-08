@@ -59,7 +59,7 @@ helm install argo-rollouts argo/argo-rollouts \
 
 echo "Waiting for argorollout-server pods to be ready ✅ ..."
 while true; do
-    PODS_READY=$(kubectl get pods -n argo-rollouts -l app.kubernetes.io/name=argocd-rollouts -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | tr ' ' '\n' | sort | uniq)
+    PODS_READY=$(kubectl get pods -n argo-rollouts -l app.kubernetes.io/name=argo-rollouts -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | tr ' ' '\n' | sort | uniq)
     if [ "$PODS_READY" = "True" ]; then
         break
     fi

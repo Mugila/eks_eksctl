@@ -267,6 +267,14 @@ kube-system    ebs-csi-node-x7vdz                   3/3     Running   0         
 kube-system    eks-pod-identity-agent-cjnpj         1/1     Running   0          43m
 kube-system    external-dns-5cd67f9577-62pxf        1/1     Running   0          62m
 kube-system    kube-proxy-6pjpx                     1/1     Running   0          43m
+
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pods --all-namespaces -o wide  --field-selector spec.nodeName=ip-10-0-4-210.ec2.internal
+NAMESPACE      NAME                                            READY   STATUS    RESTARTS   AGE     IP           NODE                         NOMINATED NODE   READINESS GATES
+cert-manager   cert-manager-84857f6b4-49c9k                    1/1     Running   0          9m49s   10.0.4.190   ip-10-0-4-210.ec2.internal   <none>           <none>
+karpenter      karpenter-5dd4665567-gg9ls                      1/1     Running   0          32m     10.0.4.149   ip-10-0-4-210.ec2.internal   <none>           <none>
+kube-system    aws-load-balancer-controller-86d6f5f58f-66r5k   1/1     Running   0          9m      10.0.4.216   ip-10-0-4-210.ec2.internal   <none>           <none>
+kube-system    aws-node-l86d6                                  2/2     Running   0          40m     10.0.4.210   ip-10-0-4-210.ec2.internal   <none>           <none>
+kube-system    coredns-6fd7c76c7f-5xkkq                        1/1     Running   0          45m     10.0.4.204   ip-10-0-4-210.ec2.internal   <none>           <non
 root@ip-10-0-7-9:~/eks_eksctl# kubectl get pods --all-namespaces --field-selector spec.nodeName=ip-10-0-8-75.ec2.internal
 NAMESPACE      NAME                                            READY   STATUS    RESTARTS   AGE
 app1           app1-7dddd5646f-fznrs                           1/1     Running   0          81m
@@ -288,6 +296,22 @@ kube-system    metrics-server-59c6c74c8d-htfhj                 1/1     Running  
 kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running   0          62m
 
 
+Grp pods with specifi fabels 
+https://oneuptime.com/blog/post/2026-02-09-kubectl-custom-columns-output-format/view
+
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pods -A  -o custom-columns=NAME:.metadata.name,CONTAINER:.spec.containers[0].name,PORT:.spec.containers[0].ports[0].containerPort
+NAME                                            CONTAINER                      PORT
+cert-manager-84857f6b4-49c9k                    cert-manager-controller        9402
+cert-manager-cainjector-5cd89979d6-4rt48        cert-manager-cainjector        9402
+
+
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pods -A  -o custom-columns=POD:.metadata.name,IMAGE:.spec.containers[0].image,PULL-POLICY:.spec.containers[0].imagePullPolicy
+POD                                             IMAGE                                                                                                                PULL-POLICY
+cert-manager-84857f6b4-49c9k                    quay.io/jetstack/cert-manager-controller:v1.19.2                                                                     IfNotPresent
+cert-manager-cainjector-5cd89979d6-4rt48        quay.io/jetstack/cert-manager-cainjector:v1.19.2                                                                     IfNotPresent
+cert-manager-webhook-8fc5dcf5f-hbsqw            quay.io/jetstack/cert-manager-webhook:v1.19.2                                                                        IfNotPresent
+
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get nodes -o wide  --show-labels 
 kubectl get nodes -o wide --label-columns topology.kubernetes.io/zone
 
 
@@ -305,6 +329,8 @@ release "argocd" uninstalled
 kubectl delete  ingress argocd-server  -n argocd
 root@ip-10-0-7-9:~/eks_eksctl# kubectl get all  -n argocd 
 No resources found in argocd namespace. 
+
+helm uninstall argo-rollouts  --namespace argo-rollouts
 
 
 
@@ -425,7 +451,24 @@ root@e69ade208526:~/ops-tools/eks_eksctl/cronjob# kubectl delete cronjob aws-ecr
 cronjob.batch "aws-ecr-login" deleted
 
 
+How to get Poddistribution budget from all namespaces 
+
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pdb -A -o wide
+NAMESPACE     NAME                 MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+karpenter     karpenter            N/A             1                 1                     28m
+kube-system   coredns              N/A             1                 1                     41m
+kube-system   ebs-csi-controller   N/A             1                 1                     34m
+kube-system   metrics-server       N/A             1                 1                     33m
+
+kubectl get pods -A -o wide 
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pods -A -o wide 
+NAMESPACE      NAME                                            READY   STATUS    RESTARTS   AGE     IP           NODE                         NOMINATED NODE   READINESS GATES
+cert-manager   cert-manager-84857f6b4-49c9k                    1/1     Running   0          6m57s   10.0.4.190   ip-10-0-4-210.ec2.internal   <none>           <none>
+cert-manager   cert-manager-cainjector-5cd89979d6-4rt48        1/1     Running   0          6m57s   10.0.8.99    ip-10-0-8-35.ec2.internal    <none>           <none>
+cert-manager   cert-manager-webhook-8fc5dcf5f-hbsqw            1/1     Running   0          6m57s   10.0.8.75    ip-10-0-8-35.ec2.internal    <none>          
+
 https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
+
 
 
 High Availablity for configuring Argo CD 
@@ -810,6 +853,7 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-restore-deleted-application/vi
 https://oneuptime.com/blog/post/2026-02-26-argocd-restart-deployment-action/view
 
 Argo Rollouts
+https://oneuptime.com/blog/post/2026-02-02-argocd-rollouts/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-resume-pause-argo-rollouts/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-smoke-tests/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-notifications/view
@@ -1245,7 +1289,6 @@ terraform init \
 
 echo "Initialized Terraform for project: ${PROJECT_NAME}"
 
-./validate_and_format.sh /path/to/your/terraform/module
 
 
 ####
