@@ -8,7 +8,7 @@ metadata:
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     #alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-1:987654321:certificate/37c33c94-e3be-41cc-9ec8-fd16b2873bd4
     #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 81}]'
     alb.ingress.kubernetes.io/healthcheck-path: /
     #alb.ingress.kubernetes.io/healthcheck-path: /healthz
     alb.ingress.kubernetes.io/group.order: '12'
