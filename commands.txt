@@ -1101,12 +1101,19 @@ https://mlops.community/how-to-get-started-with-kubernetes-a-practical-guide/. L
 https://oneuptime.com/blog/post/2026-01-30-docker-images-test-stages/view
 
 
+
+
 https://dev.to/aws-builders/ecs-bluegreen-deployment-with-codedeploy-and-terraform-3gf1
 https://oneuptime.com/blog/post/2026-02-12-codedeploy-ecs-deployments/view
 https://builder.aws.com/content/3542MxUKovICf66K4U8mkC7yNEt/amazon-ecs-now-supports-built-in-linear-and-canary-deployments
 https://oneuptime.com/blog/post/2026-02-12-configure-ecs-service-deployment-alarms/view
 https://medium.com/@tobi.akinlade.co/building-production-grade-observability-for-aws-ecs-a-complete-step-by-step-guide-a7e32aa3ff01
 https://repost.aws/questions/QURNOdtX5DSn-g0dOPs1ncTA/update-capacity-provider-for-ecs-cluster-through-cloudformation
+https://oneuptime.com/blog/post/2026-02-23-how-to-use-module-depends-on-in-terraform/view
+http://oneuptime.com/blog/post/2026-02-23-terraform-replace-command-resource-recreation/view
+https://oneuptime.com/blog/post/2026-02-21-ansible-multi-region-deployments/view
+https://oneuptime.com/blog/post/2026-02-12-recover-terraform-state-corruption-aws-backend/view
+https://oneuptime.com/blog/post/2026-02-12-terraform-state-conflicts-locking-issues/view
 
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-resource-dependencies-in-complex-projects/view
 https://dev.to/dortort/a-practical-guide-to-terraform-dependency-management-441m
@@ -1142,6 +1149,8 @@ https://oneuptime.com/blog/post/2026-02-12-recover-terraform-state-corruption-aw
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-resource-dependencies-in-complex-projects/view
 https://singhray.medium.com/how-to-resolved-terraform-force-recreation-in-production-without-downtime-acbee08cb75e
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-concurrent-terraform-runs-in-cicd/view
+https://www.firefly.ai/academy/terraform-locals
+https://cycode.com/blog/secrets-in-terraform/
 
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view#:~:text=Strategy%202:%20Serialize%20Pipeline%20Runs,/terraform.tfstate%20main.tf
 Implementation Example (in a CI script):
@@ -1179,12 +1188,118 @@ fi
     echo "Failed to acquire lock after $MAX_RETRIES attempts"
     exit 1
 
+#!/bin/bash
+# Script to target only changed resources
+set -e
+
+# Generate plan and store output
+PLAN_OUT="tf.plan"
+terraform plan -detailed-exitcode -out=${PLAN_OUT} -no-color | tee plan.txt
+
+# Parse plan for changes, creating -target arguments
+RESOURCES=$(grep -E '^\s*([~+-]|[-+]{2})' plan.txt | \
+            grep -vE '\(\s*known\s+after\s+apply\s*\)' | \
+            awk '{print $2}' | \
+            sed 's/^[[:space:]]*//' | \
+            sort -u | \
+            sed 's/^/-target=/')
+
+# Apply changes if any exist
+if [ -z "$RESOURCES" ]; then
+    echo "No changes detected, skipping apply."
+else
+    echo "Applying changes for: $RESOURCES"
+    terraform apply -auto-approve $RESOURCES
+fi
+
+# Cleanup
+rm -f ${PLAN_OUT} plan.txt
+
+# configs/project-a.env
+export TF_BACKEND_BUCKET="terraform-state-project-a"
+export TF_BACKEND_KEY="infrastructure/terraform.tfstate"
+export TF_BACKEND_REGION="us-east-1"
+export TF_BACKEND_DYNAMODB_TABLE="terraform-locks-project-a"
+
+#!/bin/bash
+# scripts/init-project.sh
+
+set -e
+
+PROJECT_NAME=$1
+
+if [ -z "$PROJECT_NAME" ]; then
+    echo "Usage: $0 <project-name>"
+    exit 1
+fi
+
+# Load project-specific configuration
+source "configs/${PROJECT_NAME}.env"
+
+# Initialize Terraform with backend configuration
+terraform init \
+    -backend-config="bucket=${TF_BACKEND_BUCKET}" \
+    -backend-config="key=${TF_BACKEND_KEY}" \
+    -backend-config="region=${TF_BACKEND_REGION}" \
+    -backend-config="dynamodb_table=${TF_BACKEND_DYNAMODB_TABLE}"
+
+echo "Initialized Terraform for project: ${PROJECT_NAME}"
+
+./validate_and_format.sh /path/to/your/terraform/module
+
+
+####
+
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
+# Define the directory containing your Terraform files (default to current directory)
+TERRAFORM_DIR=${1:-.}
+
+cd "$TERRAFORM_DIR" || { echo "Error: Directory $TERRAFORM_DIR not found."; exit 1; }
+
+echo ":: Running terraform init..."
+# Initialize the directory without a backend for speed, as we only need validation.
+terraform init -backend=false -input=false
+
+echo ":: Checking Terraform formatting..."
+# Check if files are formatted correctly and show differences if not.
+# The --check flag makes the command return a non-zero exit code if files need formatting.
+if ! terraform fmt -check -recursive -diff; then
+    echo ""
+    echo "Error: The following Terraform files are not properly formatted."
+    echo "Run 'terraform fmt -recursive' in the $TERRAFORM_DIR directory to fix."
+    exit 1
+fi
+echo "All Terraform files are properly formatted."
+
+echo ":: Running terraform validate..."
+# Validate the configuration for syntax and internal consistency.
+terraform validate
+
+echo "Success: Terraform formatting and validation passed."
+
+
+
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view
 https://medium.com/@tobi.akinlade.co/building-production-grade-observability-for-aws-ecs-a-complete-step-by-step-guide-a7e32aa3ff01. best method to capture drift detection in Cloudwatch
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view
 https://oneuptime.com/blog/post/2026-02-12-configure-ecs-task-placement-strategies/view
 https://medium.com/@kwanlauris/keycloak-high-availability-setup-in-aws-ecs-cluster-9de41eea5e2e
 https://medium.com/@o.hanhaliuk/beat-the-burst-optimizing-aws-alb-and-ecs-fargate-for-sudden-traffic-spikes-part-1-0ed52d8b142b
+
+
+Tewrrfaorm multi account
+https://oneuptime.com/blog/post/2025-12-18-different-terraform-backends-each-project/view
+https://blog.brainboard.co/terraform-multiple-provider-instances/
+https://medium.com/twodigits/automating-terraform-deployments-with-jenkins-aws-and-slack-notifications-dcacca3109ac important 
+https://praneethreddybilakanti.medium.com/terraform-with-shell-scripts-e6007f975a90  important 
+https://levelup.gitconnected.com/aws-multi-account-multi-region-bootstrapping-with-terraform-39aeed097ad2
+https://oneuptime.com/blog/post/2026-02-23-how-to-create-cross-account-iam-roles-in-terraform/view
+https://aws.amazon.com/blogs/infrastructure-and-automation/manage-multiaccount-multi-region-infrastructure-terraform-aws-cloud9/
+https://www.develeap.com/Manage-Multiple-AWS-Accounts-Like-a-Pro-with-Terraform/
 
 https://oneuptime.com/blog/post/2026-02-12-ecs-task-networking-awsvpc-mode/view
 https://bhanuprathapreddy.medium.com/ecs-best-practices-networking-67230640590b
