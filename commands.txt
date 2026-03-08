@@ -452,6 +452,7 @@ cronjob.batch "aws-ecr-login" deleted
 
 
 How to get Poddistribution budget from all namespaces 
+https://oneuptime.com/blog/post/2026-02-09-kubectl-custom-columns-output-format/view
 
 root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pdb -A -o wide
 NAMESPACE     NAME                 MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
@@ -466,6 +467,16 @@ NAMESPACE      NAME                                            READY   STATUS   
 cert-manager   cert-manager-84857f6b4-49c9k                    1/1     Running   0          6m57s   10.0.4.190   ip-10-0-4-210.ec2.internal   <none>           <none>
 cert-manager   cert-manager-cainjector-5cd89979d6-4rt48        1/1     Running   0          6m57s   10.0.8.99    ip-10-0-8-35.ec2.internal    <none>           <none>
 cert-manager   cert-manager-webhook-8fc5dcf5f-hbsqw            1/1     Running   0          6m57s   10.0.8.75    ip-10-0-8-35.ec2.internal    <none>          
+
+How to troubleshoot ingress that is not deleted properly 
+
+Patch the server and termintate it 
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl patch ingress argocd-server -n argocd  -p '{"metadata":{"finalizers":[]}}' --type=merge
+ingress.networking.k8s.io/argocd-server patched
+ kubectl delete -f argo-ingress.yaml -n  argocd
+kubectl logs -n kube-system deployment/aws-load-balancer-controller
+kubectl get ingress <name> -o yaml.
+kubectl delete ingress argocd-server -n argocd
 
 https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
 

@@ -57,6 +57,9 @@ helm install argo-rollouts argo/argo-rollouts \
   --set dashboard.enabled=true \
   --set controller.replicas=1
 
+# Verify installation
+kubectl wait --for=condition=Ready pods --all -n argo-rollouts --timeout=120s
+
 echo "Waiting for argorollout-server pods to be ready ✅ ..."
 while true; do
     PODS_READY=$(kubectl get pods -n argo-rollouts -l app.kubernetes.io/name=argo-rollouts -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | tr ' ' '\n' | sort | uniq)
