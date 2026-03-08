@@ -75,19 +75,19 @@ echo "Applying Ingress configuration to expose Argo CD via ALB"
 kubectl apply -f argo-ingress.yaml 
 sleep 5
 # Wait for the LoadBalancer to be ready
-echo "Waiting for the argocd-server service to be ready..."
-while true; do
-    LB_STATUS=$(kubectl get svc argocd-server -n argocd -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-    if [ -n "$LB_STATUS" ]; then
-        break
-    fi
-    sleep 5
-done
-echo "argocd-server service is ready ✅ ."
-kubectl get ingress -n  $ARGOCD_NAMESPACE
-echo "✅ Ingress resource created. The AWS ALB is being provisioned..."
-echo "It may take a few minutes for the ALB to become active."
-echo "Checking Argo pod statuses in namespace $ARGOCD_NAMESPACE..."
+#echo "Waiting for the argocd-server service to be ready..."
+#while true; do
+#    LB_STATUS=$(kubectl get svc argocd-server -n argocd -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+#    if [ -n "$LB_STATUS" ]; then
+#        break
+#    fi
+#    sleep 5
+#done
+#echo "argocd-server service is ready ✅ ."
+#kubectl get ingress -n  $ARGOCD_NAMESPACE
+#echo "✅ Ingress resource created. The AWS ALB is being provisioned..."
+#echo "It may take a few minutes for the ALB to become active."
+#echo "Checking Argo pod statuses in namespace $ARGOCD_NAMESPACE..."
 
 # Get the status of all pods in the argo namespace and filter for unhealthy statuses
 UNHEALTHY_PODS=$(kubectl get pods -n "$ARGOCD_NAMESPACE" -o jsonpath='{.items[*].status.phase}' | grep -E 'Pending|Unknown|Error|Failed|ImagePullBackOff|CrashLoopBackOff' || true)
