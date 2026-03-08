@@ -453,6 +453,7 @@ cronjob.batch "aws-ecr-login" deleted
 
 How to get Poddistribution budget from all namespaces 
 https://oneuptime.com/blog/post/2026-02-09-kubectl-custom-columns-output-format/view
+https://dev.to/jajera/argo-cd-ingress-stuck-find-fix-kf9
 
 root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get pdb -A -o wide
 NAMESPACE     NAME                 MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
@@ -477,7 +478,18 @@ ingress.networking.k8s.io/argocd-server patched
 kubectl logs -n kube-system deployment/aws-load-balancer-controller
 kubectl get ingress <name> -o yaml.
 kubectl delete ingress argocd-server -n argocd
+kubectl get svc argocd-server -n argocd '-o=jsonpath={.status.loadBalancer.ingress[0].hostname}'
 
+ kubectl get svc argocd-server -o yaml  -n argocd  
+Confirm the Ingress Is Stuckstate 
+
+kubectl get ingress -A -o custom-columns='NS:.metadata.namespace,NAME:.metadata.name,DELETING:.metadata.deletionTimestamp,ADDRESS:.status.loadBalancer.ingress[0].hostname'
+check for stale ssl redirect
+
+kubectl get ingress argocd-server -n argocd -o jsonpath='{.metadata.annotations}' | tr ',' '\n' | grep -E "listen-ports|ssl-redirect|certificate"
+
+check logs
+kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "argocd|certificate|CreateListener|error|failed|delet"
 https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
 
 
