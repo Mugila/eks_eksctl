@@ -7,6 +7,7 @@ export CLUSTER_ACCOUNT=$(aws sts get-caller-identity --query Account --o text)
 export CLUSTER_NAME=$(aws eks list-clusters --query clusters --output text | tr '\t' '\n' | grep 'poc')
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "${AWS_ROUTE53_DOMAIN}." --query 'HostedZones[0].Id' --o text | awk -F "/" {'print $NF'})
 INGRESS_HOST="argo.aadhavan.us"
+INGRESS_HOST_ROLLOUT="argorollouts.aadhavan.us"
 USERNAME="admin" # Argo CD admin user
 NEW_PASSWORD="changeme"
 
@@ -95,6 +96,10 @@ sleep 5
 #echo "It may take a few minutes for the ALB to become active."
 #echo "Checking Argo pod statuses in namespace $ARGOCD_NAMESPACE..."
 
+echo "Applying Ingress configuration to expose Argo Rollout via ALB"
+kubectl apply -f argo-rollouts-dashboard-ingress.yaml
+sleep 
+
 # Get the status of all pods in the argo namespace and filter for unhealthy statuses
 UNHEALTHY_PODS=$(kubectl get pods -n "$ARGOCD_NAMESPACE" -o jsonpath='{.items[*].status.phase}' | grep -E 'Pending|Unknown|Error|Failed|ImagePullBackOff|CrashLoopBackOff' || true)
 if [ -n "$UNHEALTHY_PODS" ]; then
@@ -113,9 +118,9 @@ else
     fi
 fi
 
-# 6. Retrieve the ALB hostname
-echo "Waiting for Ingress hostname..."
-# Loop until the ingress hostname is available
+# 6. Retrieve the ALB hostname for ARGOCD
+echo "Waiting for Ingress hostname to be provisioned for ARGOCD ..."
+# Loop until the ingress hostname is available available for Argocd 
 while [ -z "$ALB_HOSTNAME" ]; do
     ALB_HOSTNAME=$(kubectl get ingress argocd-server -n $ARGOCD_NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
     [ -z "$ALB_HOSTNAME" ] && sleep 20
@@ -202,10 +207,21 @@ echo "Delete the initial admin password"
 kubectl --namespace $ARGOCD_NAMESPACE delete secret/argocd-initial-admin-secret
 
 
+# 6. Retrieve the ALB hostname for ARGoROllout
+echo "Waiting for Ingress hostname to be provisioned for ARGOCD ..."
+# Loop until the ingress hostname is available available for Argocd 
+while [ -z "$ALB_HOSTNAME_ARGOROLLOUT" ]; do
+    ALB_HOSTNAME_ARGOROLLOUT=$(kubectl get ingress argo-rollouts-dashboard -n argo-rollouts -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    [ -z "$ALB_HOSTNAME_ROLLOUT" ] && sleep 20
+done
+
+echo "AWS ALB Hostname: $ALB_HOSTNAME_ARGOROLLOUT ✅ ALB created by argo rollout "
+
 # 9. Argo CD
 echo "*********************************************************************************************"
 echo "Argo CD is ready!"
 echo "Argo CD URL: http://$INGRESS_HOST"
+echo "Argo Rollout URL: http//$INGRESS_HOST_ROLLOUT
 #echo "External IP      : $external_ip"
 echo "Initial User     : $initial_user"
 echo "Initial Password : $initial_password"
