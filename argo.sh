@@ -55,7 +55,13 @@ helm install argo-rollouts argo/argo-rollouts \
   --namespace argo-rollouts \
   --create-namespace \
   --set dashboard.enabled=true \
-  --set controller.replicas=1
+  --set dashboard.ingress.enabled=true \
+  --set controller.replicas=1 \
+  --set dashboard.ingress.hosts[0]="argorollouts.aadhavan.us" \
+  --set dashboard.ingress.ingressClassName=alb \
+  --set dashboard.service.port=80
+
+  #--set dashboard.service.type=LoadBalancer \ 
 
 # Verify installation
 kubectl wait --for=condition=Ready pods --all -n argo-rollouts --timeout=120s

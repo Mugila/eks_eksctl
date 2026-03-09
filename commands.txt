@@ -490,10 +490,16 @@ kubectl get ingress argocd-server -n argocd -o jsonpath='{.metadata.annotations}
 
 check logs
 kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "argocd|certificate|CreateListener|error|failed|delet"
+# Check controller logs for errors
+kubectl logs -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller --tail=100
 https://www.devops-nirvana.com/how-to-zero-downtime-upgrade-kubernetes/
+kubectl get service -o yaml  -n argo-rollouts
 
+Export Argorollout dashboard  troubleshooting 
 
-
+root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl get svc argo-rollouts-dashboard -n argo-rollouts
+NAME                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+argo-rollouts-dashboard   ClusterIP   172.20.97.170   <none>        3100/TCP   82m
 High Availablity for configuring Argo CD 
 https://oneuptime.com/blog/post/2026-02-26-argocd-application-lifecycle/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-architecture-explained/view
@@ -875,7 +881,56 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-right-size-components/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-restore-deleted-application/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-restart-deployment-action/view
 
+EKS CLUSTER SECURITY 
+https://dev.to/aws-builders/security-considerations-for-multi-cluster-cloud-architecture-ha-eks-with-databases-1edp
+https://dev.to/aws-builders/security-considerations-for-multi-cluster-cloud-architecture-ha-eks-with-databases-1edp
+
+Karpenter
+https://oneuptime.com/blog/post/2026-02-09-daemonset-node-selector-pools/view
+https://oneuptime.com/blog/post/2026-02-12-use-karpenter-for-eks-node-provisioning/view
+https://dev.to/aws-builders/navigating-aws-eks-with-terraform-configuring-karpenter-for-just-in-time-node-provisioning-5g45
+
+https://aws.plainenglish.io/implementing-karpenter-on-aws-eks-fast-cost-efficient-autoscaling-production-ready-1ba3d107ced6
+https://blog.joelpinder.co.uk/kubernetes-scale-to-zero-with-karpenter-9ed4c7e724ed
+https://github.com/joelp172/kubernetes-scale-to-zero/tree/main
+https://github.com/chrismld/efficient-compute-demos/tree/master/keda?trk=feed-detail_comments-list_comment-text
+https://oneuptime.com/blog/post/2026-03-06-deploy-karpenter-node-autoscaler-flux-cd/view
+
+Boto3  and cloudformation 
+https://towardsthecloud.com/blog/aws-sdk-execute-boto3-methods-multiple-aws-accounts
+https://oneuptime.com/blog/post/2026-02-12-cloudformation-stack-sets-multi-account-deployment/view
+https://aws.plainenglish.io/what-are-cloudformation-stacksets-f97931949d2a
+https://dev.to/tarlan-huseynov/aws-multi-account-iac-sandwich-2blk
+
+EKs cluster upgrade
+https://reintech.io/blog/automating-amazon-eks-upgrades-patch-management important 
+https://dev.to/ismailkovvuru/a-complete-guide-to-eks-upgrades-zero-downtime-full-automation-and-enterprise-scale-strategies-16gd
+https://oneuptime.com/blog/post/2026-02-09-eks-cloudformation-addons/view
+https://builder.aws.com/content/2zMHI2SMLSaqyRmOxrSL95EG9zZ/amazon-eks-upgrade-guidance-v130-to-131
+https://rajprataprps.medium.com/amazon-eks-upgrade-journey-from-1-25-to-1-28-staying-ahead-of-aws-eos-before-it-hits-a72b78f51a01 
+https://mahira-technology.medium.com/demystifying-aws-cloudformation-crafting-an-amazon-eks-infrastructure-8ef18beb5482. important
+https://www.cloudnativedeepdive.com/optimizing-aws-elastic-kubernetes-service-eks/
+https://www.linkedin.com/pulse/slash-eks-costs-avoid-hidden-fees-keeping-your-clusters-kushwah-3v6pf/
+https://devsecops.puziol.com.br/en/kubernetes/installations/eks/best-practices/
+https://medium.com/@good_panther/solving-cloudformation-drift-in-blue-green-deployments-with-custom-resources-6ad3bc4c3a4d.   Key concepts discuused
+
+ARGOCD Lab
+https://dev.to/ndzenyuy/deploy-an-amazon-clone-app-on-eks-with-kustomize-and-argocd-with-gitops-best-practices-58de
+https://medium.com/@shadaabsikander/using-single-alb-for-multiple-ingresses-c79f17d7d160
+https://aws.plainenglish.io/gitops-with-argo-cd-on-amazon-eks-github-integration-alb-ingress-and-app-of-apps-2fe3f3bcd01f. important 
+https://oneuptime.com/blog/post/2026-02-09-blue-green-cluster-upgrade-strategy/view
+https://medium.com/data-and-beyond/argo-rollouts-advanced-strategies-for-smooth-deployments-9fc1ebd64c7a
+https://www.linkedin.com/pulse/production-grade-blue-green-deployment-cicd-pipeline-aws-rathod-k8xbc/
+https://dev.to/jumptotech/argo-cd-full-power-demonstration-already-deployed-app-165b
+https://aws.plainenglish.io/gitops-with-argo-cd-on-amazon-eks-github-integration-alb-ingress-and-app-of-apps-2fe3f3bcd01f
+https://oneuptime.com/blog/post/2026-02-26-configure-argocd-behind-reverse-proxy/view
+https://aws.plainenglish.io/gitops-with-argo-cd-on-amazon-eks-github-integration-alb-ingress-and-app-of-apps-2fe3f3bcd01f
+https://oneuptime.com/blog/post/2026-02-26-argocd-bootstrap-cluster-infrastructure-components/view
+https://dev.to/ndzenyuy/deploy-an-amazon-clone-app-on-eks-with-kustomize-and-argocd-with-gitops-best-practices-58de
+https://dev.to/ndzenyuy/deploy-netflix-clone-app-on-eks-with-cloudformation-and-github-actions-4m2o
+
 Argo Rollouts
+https://github.com/argoproj/argo-helm/blob/main/charts/argo-rollouts/values.yaml
 https://oneuptime.com/blog/post/2026-02-02-argocd-rollouts/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-resume-pause-argo-rollouts/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-smoke-tests/view
@@ -1348,7 +1403,10 @@ terraform validate
 echo "Success: Terraform formatting and validation passed."
 
 
-
+https://oneuptime.com/blog/post/2025-12-18-conditionally-create-resources-tfvars-terraform/view
+https://dev.to/terraformmonkey/your-guide-to-terraform-variables-27kb. ## important 
+https://controlmonkey.io/resource/terraform-variables-guide/  ## important 
+https://medium.com/@sindhuri.kolluri99/locals-vs-variables-in-terraform-eecb8ae3e138
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view
 https://medium.com/@tobi.akinlade.co/building-production-grade-observability-for-aws-ecs-a-complete-step-by-step-guide-a7e32aa3ff01. best method to capture drift detection in Cloudwatch
 https://oneuptime.com/blog/post/2026-02-23-how-to-handle-terraform-state-locking-in-cicd/view
@@ -1357,7 +1415,10 @@ https://medium.com/@kwanlauris/keycloak-high-availability-setup-in-aws-ecs-clust
 https://medium.com/@o.hanhaliuk/beat-the-burst-optimizing-aws-alb-and-ecs-fargate-for-sudden-traffic-spikes-part-1-0ed52d8b142b
 
 
+https://collabnix.github.io/kubetools/
+https://nidhiashtikar.medium.com/terraform-interview-question-practical-scenarios-you-must-know-f101fd83edb3 important
 Tewrrfaorm multi account
+
 https://oneuptime.com/blog/post/2025-12-18-different-terraform-backends-each-project/view
 https://blog.brainboard.co/terraform-multiple-provider-instances/
 https://medium.com/twodigits/automating-terraform-deployments-with-jenkins-aws-and-slack-notifications-dcacca3109ac important 
@@ -1366,6 +1427,12 @@ https://levelup.gitconnected.com/aws-multi-account-multi-region-bootstrapping-wi
 https://oneuptime.com/blog/post/2026-02-23-how-to-create-cross-account-iam-roles-in-terraform/view
 https://aws.amazon.com/blogs/infrastructure-and-automation/manage-multiaccount-multi-region-infrastructure-terraform-aws-cloud9/
 https://www.develeap.com/Manage-Multiple-AWS-Accounts-Like-a-Pro-with-Terraform/
+https://oneuptime.com/blog/post/2026-02-23-how-to-optimize-terraform-for-multi-account-deployments/view
+https://oneuptime.com/blog/post/2026-02-23-how-to-optimize-terraform-for-multi-account-deployments/view
+https://oneuptime.com/blog/post/2025-12-18-terraform-deploy-multiple-aws-accounts/view
+https://dev.to/aws-builders/cross-account-parameter-sharing-in-aws-with-ram-using-terraform-a-practical-guide-4blb
+https://dev.to/aws-builders/terraform-deploying-multi-region-aws-rds-cluster-with-failover-setup-using-terraform-4ahg
+https://medium.com/devops-pro/terraform-deploying-multi-region-aws-rds-cluster-with-failover-setup-using-terraform-89e98da026f7
 
 https://oneuptime.com/blog/post/2026-02-12-ecs-task-networking-awsvpc-mode/view
 https://bhanuprathapreddy.medium.com/ecs-best-practices-networking-67230640590b
