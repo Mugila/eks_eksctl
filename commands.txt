@@ -1201,7 +1201,11 @@ https://oneuptime.com/blog/post/2026-02-23-how-to-use-terraform-for-multi-region
 
 
 labs to try
+
+##Node Group upgrade 
+
 https://techblog.realtor.com/zero-downtime-eks-node-group-updates/
+https://oneuptime.com/blog/post/2026-01-30-aws-eks-managed-node-groups/view
 https://oneuptime.com/blog/post/2026-02-09-eks-upgrade-managed-node-groups/view.  very important 
 https://oneuptime.com/blog/post/2026-02-12-upgrade-eks-cluster-versions/view
 https://oneuptime.com/blog/post/2026-01-25-troubleshoot-ingress-controller-issues/view  

@@ -1,0 +1,151 @@
+https://github.com/Mugila/myprojects/blob/master/eks_eksctl/ALB/external_dns_test_group-demo-deployment.yaml
+
+kubectl apply -f external_dns_test_group-demo-deployment.yaml
+kubectl apply -f external_dns_test_group-ingress.yaml 
+
+
+Quick Debugging Checklist #####
+check pods are running or not 
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubectl get pods -n app1 -l app=app1
+NAME                    READY   STATUS    RESTARTS   AGE
+app1-5c8c5777bc-sbpqt   1/1     Running   0          102s
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubectl get pods -n app2 -l app=app2
+
+# 2. Is the Ingress resource valid?
+kubectl get ingress -n app1
+
+# 3. Does the Service have endpoints?
+kubectl get svc -n app1
+kubectl get endpoints app1 -n app1
+
+# 5. Can you reach the service from inside the cluster?
+ubectl run debug --image=busybox -it --rm -- wget -qO- http://ngninx.aadhavan.us:80
+
+# 6 check the ingress controller logs 
+kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "error"
+kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "argocd|certificate|CreateListener|error|failed|delet
+kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "nginx"
+kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "created targetGroup"
+kubectl logs -n kube-system  -l app.kubernetes.io/name=aws-load-balancer-controller --tail=200 | grep -i -E "CreatedTargetGroup|CreatedListener|"
+
+
+#7 Test the external connectivity 
+curl -v http://ngninx.aadhavan.us:80
+
+check port configuration for 502 badgateway errros (502 errors mean the Ingress controller cannot connect to the backend) 
+Common 502 causes:
+
+Wrong targetPort in Service
+Container listening on different port than specified
+Pod failing readiness probes
+Pod crashing (CrashLoopBackOff)
+#8 check the port port configuration is correct in port 
+
+503 errors usually indicate no healthy backends:
+
+root@56bcca239888:~/ops-tools# kubectl describe pods  app1-5c8c5777bc-sbpqt -n app1  | grep  Port
+    Port:           80/TCP
+    Host Port:      0/TCP
+
+
+#Verify the target in serveice matches  the contaioner port. 
+root@56bcca239888:~/ops-tools# kubectl  get svc app1 -n app1 -o yaml  | grep  ports
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"app1","namespace":"app1"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":80}],"selector":{"app":"app1"},"type":"ClusterIP"}}
+
+ check endpoints 
+  kubectl get endpoints app1 -n app1
+
+check pos readiness 
+kubectl describe pods  app1-5c8c5777bc-sbpqt -n app1  | grep  Port
+NAME   ENDPOINTS       AGE
+app1   10.0.8.115:80   5h30
+#8 check the syntax xonfiguration
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubect get pods -n app1
+bash: kubect: command not found
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubectl get pods -n app1 
+NAME                    READY   STATUS    RESTARTS   AGE
+app1-5c8c5777bc-sbpqt   1/1     Running   0          68m
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubectl exec -n app1 app1-5c8c5777bc-sbpqt -- nginx -t 
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubectl get pods -n app2 
+NAME                  READY   STATUS    RESTARTS   AGE
+app2-6f46b7bf-xc279   1/1     Running   0          70m
+root@88275b6e4a2a:~/ops-tools/eks_eksctl/ALB# kubectl exec -n app2 app2-6f46b7bf-xc279  -- httpd -t 
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.0.8.76. Set the 'ServerName' directive globally to suppress this message
+Syntax OK
+
+
+###################################
+Check the node group name 
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes -o wide 
+NAME                         STATUS   ROLES    AGE     VERSION               INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                        KERNEL-VERSION                   CONTAINER-RUNTIME
+ip-10-0-8-105.ec2.internal   Ready    <none>   7h39m   v1.34.4-eks-f69f56f   10.0.8.105    <none>        Amazon Linux 2023.10.20260216   6.12.68-92.122.amzn2023.x86_64   containerd://2.1.5
+ip-10-0-8-43.ec2.internal    Ready    <none>   7h40m   v1.34.4-eks-f69f56f   10.0.8.43     <none>        Amazon Linux 2023.10.20260216   6.12.68-92.122.amzn2023.x86_64   containerd://2.1.5
+root@56bcca239888:~/ops-tools/eks_eksctl# # Get the scaling configuration
+
+
+Check the clouster config and scaling config of specific notde group 
+root@56bcca239888:~/ops-tools/eks_eksctl# aws eks describe-nodegroup --cluster-name eks-poc  --nodegroup-name eks-poc-ng --query 'nodegroup.updateConfig'
+{
+    "maxUnavailable": 1
+}
+root@56bcca239888:~/ops-tools/eks_eksctl# aws eks describe-nodegroup --cluster-name eks-poc  --nodegroup-name eks-poc-ng --query 'nodegroup.scalingConfig'
+{
+    "minSize": 1,
+    "maxSize": 2,
+    "desiredSize": 1
+}
+
+
+Adding new Node Groups and  draining old node groups  
+https://oneuptime.com/blog/post/2026-01-19-kubernetes-taints-tolerations-scheduling/view
+
+Check labels of the node group
+kubectl get nodes --show-labels
+
+Grep node group  using labels 
+
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes --selector=alpha.eksctl.io/nodegroup-name=eks-poc-ng
+NAME                         STATUS   ROLES    AGE   VERSION
+ip-10-0-8-105.ec2.internal   Ready    <none>   8h    v1.34.4-eks-f69f56f
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes -l alpha.eksctl.io/nodegroup-name=eks-poc-ng
+NAME                         STATUS   ROLES    AGE   VERSION
+ip-10-0-8-105.ec2.internal   Ready    <none>   8h    v1.34.4-eks-f69f56f
+
+Taint the Old node Group 
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl taint nodes -l "alpha.eksctl.io/nodegroup-name=eks-poc-ng" migration=eks-poc-ng:NoSchedule
+node/ip-10-0-8-105.ec2.internal tainted
+
+Remove a taint from  specific node groups 
+
+kubectl taint nodes -l "alpha.eksctl.io/nodegroup-name=eks-poc-ng" migration=eks-poc-ng:NoSchedule-
+
+If we want to remove taint from all nodes  then 
+kubectl taint nodes -all "alpha.eksctl.io/nodegroup-name=eks-poc-ng" migration=eks-poc-ng:NoSchedule-
+
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl taint nodes -l "alpha.eksctl.io/nodegroup-name=eks-poc-ng" migration=eks-poc-ng:NoSchedule-
+node/ip-10-0-8-105.ec2.internal untainted
+
+
+How to check if the node group taineted or not 
+
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
+NAME                         TAINTS
+ip-10-0-8-105.ec2.internal   [map[effect:NoSchedule key:migration value:eks-poc-ng]]
+ip-10-0-8-43.ec2.internal    <none>
+
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
+NAME                         TAINTS
+ip-10-0-8-105.ec2.internal   <none>
+ip-10-0-8-43.ec2.internal    <none>
+
+Taint the node group using lablel 
+
+
+Cordon the node group
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes -l alpha.eksctl.io/nodegroup-name=eks-poc-ng -o name | xargs  kubectl cordon 
+node/ip-10-0-8-105.ec2.internal cordoned
+
+
+Create a new node group 
