@@ -221,7 +221,7 @@ echo "AWS ALB Hostname: $ALB_HOSTNAME_ARGOROLLOUT ✅ ALB created by argo rollou
 echo "*********************************************************************************************"
 echo "Argo CD is ready!"
 echo "Argo CD URL: http://$INGRESS_HOST"
-echo "Argo Rollout URL: http//$INGRESS_HOST_ROLLOUT
+echo "Argo Rollout URL: http//$INGRESS_HOST_ROLLOUT"
 #echo "External IP      : $external_ip"
 echo "Initial User     : $initial_user"
 echo "Initial Password : $initial_password"
@@ -230,7 +230,7 @@ echo "**************************************************************************
 echo -e "\n"
 
 # Compare the two names
-if [[ "$ALB_HOSTNAME". == "$R53_TARGET_DNS_NAME" ]]; then
+if [[ "$ALB_HOSTNAME" == "$R53_TARGET_DNS_NAME" ]]; then
     echo "Success:✅ The ALB hostname and Route 53 record alias target match which confirms that ARGO LB is mapped to  A record in Route 53."
     exit 0
 else
