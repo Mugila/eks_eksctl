@@ -70,6 +70,7 @@ echo "The EKS cluster name is: $CLUSTER_NAME"
 
 # Example: Update your kubeconfig file using the variable
 aws eks update-kubeconfig --name "$CLUSTER_NAME" --region <YOUR_AWS_REGION>
+aws eks update-kubeconfig --name eks-poc  --region us-east-1 
 
 # Example: Describe the cluster's OIDC issuer
 aws eks describe-cluster --name "$CLUSTER_NAME" --query "cluster.identity.oidc.issuer" --output text
@@ -470,6 +471,7 @@ cert-manager   cert-manager-cainjector-5cd89979d6-4rt48        1/1     Running  
 cert-manager   cert-manager-webhook-8fc5dcf5f-hbsqw            1/1     Running   0          6m57s   10.0.8.75    ip-10-0-8-35.ec2.internal    <none>          
 
 How to troubleshoot ingress that is not deleted properly 
+https://oneuptime.com/blog/post/2026-01-25-troubleshoot-ingress-controller-issues/view
 
 Patch the server and termintate it 
 root@08087cd973c8:~/ops-tools/eks_eksctl# kubectl patch ingress argocd-server -n argocd  -p '{"metadata":{"finalizers":[]}}' --type=merge
@@ -1199,7 +1201,10 @@ https://oneuptime.com/blog/post/2026-02-23-how-to-use-terraform-for-multi-region
 
 
 labs to try
-
+https://techblog.realtor.com/zero-downtime-eks-node-group-updates/
+https://oneuptime.com/blog/post/2026-02-09-eks-upgrade-managed-node-groups/view.  very important 
+https://oneuptime.com/blog/post/2026-02-12-upgrade-eks-cluster-versions/view
+https://oneuptime.com/blog/post/2026-01-25-troubleshoot-ingress-controller-issues/view  
 https://oneuptime.com/blog/post/2026-02-09-daemonset-node-selector-pools/view   Node pool lab 
 https://oneuptime.com/blog/post/2026-02-12-use-karpenter-for-eks-node-provisioning/view. karpenter 
 https://dev.to/aws-builders/navigating-aws-eks-with-terraform-configuring-karpenter-for-just-in-time-node-provisioning-5g45  karpenter 
