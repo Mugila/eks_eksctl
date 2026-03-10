@@ -915,6 +915,17 @@ https://devsecops.puziol.com.br/en/kubernetes/installations/eks/best-practices/
 https://medium.com/@good_panther/solving-cloudformation-drift-in-blue-green-deployments-with-custom-resources-6ad3bc4c3a4d.   Key concepts discuused
 
 ARGOCD Lab
+https://github.com/samsorrahman/End-to-End-DevOps-Project
+https://aws.plainenglish.io/how-we-hooked-prometheus-into-our-argocd-rollouts-so-we-dont-roll-out-garbage-98d37236939a
+https://blog.devops.dev/setup-prometheus-and-grafana-with-existing-eks-fargate-cluster-c66eb2488b82
+https://oneuptime.com/blog/post/2026-02-12-set-up-argocd-for-gitops-on-eks/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-continuous-verification/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-expose-prometheus-metrics/view
+https://kubernetes-tutorial.schoolofdevops.com/articles/argo_adv_sync_strategies/     ++++++Key concepts 
+https://www.uk4.in/posts/argocd-backup-disaster-recovery-ha/          =============== key concepts 
+https://oneuptime.com/blog/post/2026-02-26-argocd-behind-aws-alb/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-share-resources-argo-projects/view
+https://oneuptime.com/blog/post/2026-02-26-argocd-integrate-prometheus-grafana/view
 https://dev.to/ndzenyuy/deploy-an-amazon-clone-app-on-eks-with-kustomize-and-argocd-with-gitops-best-practices-58de
 https://medium.com/@shadaabsikander/using-single-alb-for-multiple-ingresses-c79f17d7d160
 https://aws.plainenglish.io/gitops-with-argo-cd-on-amazon-eks-github-integration-alb-ingress-and-app-of-apps-2fe3f3bcd01f. important 
