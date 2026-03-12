@@ -5,7 +5,7 @@ kubectl create namespace $NAMESPACE
 
 # 1. Add Helm Repos
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add grafana https://grafana.com/helm-charts
+helm repo add grafana-community https://grafana-community.github.io/helm-charts
 helm repo update
 
 # 2. Deploy Prometheus with Metrics Enabled
@@ -16,9 +16,9 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
   --set prometheus.service.annotations."alb\.ingress\.kubernetes\.io/target-type"=ip
 
 # 3. Deploy Grafana
-helm install grafana grafana/grafana \
-  --namespace $NAMESPACE \
-  --set service.type=ClusterIP
+#helm install grafana grafana/grafana \
+#  --namespace $NAMESPACE \
+#  --set service.type=ClusterIP
 
 # 4. Create Shared ALB Ingress
 cat <<EOF | kubectl apply -f -
