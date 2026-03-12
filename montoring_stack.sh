@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 # Pre-requisites: Helm, kubectl, and AWS Load Balancer Controller installed.
 NAMESPACE="monitoring"
 kubectl create namespace $NAMESPACE
