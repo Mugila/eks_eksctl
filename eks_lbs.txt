@@ -148,4 +148,137 @@ root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes -l alpha.eksctl.io/n
 node/ip-10-0-8-105.ec2.internal cordoned
 
 
-Create a new node group 
+Updated the node group in clusterconfiguration .yaml Create a new node group and check the node group is succefuly created 
+eksctl create nodegroup --config-file=cluster_creation.yaml --include=eks-poc-ng1
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get nodes 
+NAME                         STATUS                     ROLES    AGE     VERSION
+ip-10-0-4-99.ec2.internal    Ready                      <none>   3m29s   v1.34.4-eks-f69f56f
+ip-10-0-8-105.ec2.internal   Ready,SchedulingDisabled   <none>   8h      v1.34.4-eks-f69f56f
+ip-10-0-8-43.ec2.internal    Ready                      <none>   8h      v1.34.4-eks-f69f56f
+
+
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get daemonset  --all-namespaces                                                         
+NAMESPACE     NAME                     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR              AGE
+kube-system   aws-node                 3         3         3       3            3           <none>                     9h
+kube-system   ebs-csi-node             3         3         3       3            3           kubernetes.io/os=linux     8h
+kube-system   ebs-csi-node-windows     0         0         0       0            0           kubernetes.io/os=windows   8h
+kube-system   eks-pod-identity-agent   3         3         3       3            3           <none>                     9h
+kube-system   kube-proxy               3         3         3       3            3           <none>                     9h
+
+
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get pods --all-namespaces -o wide  --field-selector spec.nodeName=ip-10-0-4-99.ec2.internal 
+NAMESPACE     NAME                           READY   STATUS    RESTARTS   AGE   IP          NODE                        NOMINATED NODE   READINESS GATES
+kube-system   aws-node-fn9qc                 2/2     Running   0          19m   10.0.4.99   ip-10-0-4-99.ec2.internal   <none>           <none>
+kube-system   ebs-csi-node-xxrzd             3/3     Running   0          19m   10.0.4.52   ip-10-0-4-99.ec2.internal   <none>           <none>
+kube-system   eks-pod-identity-agent-gkj8g   1/1     Running   0          19m   10.0.4.99   ip-10-0-4-99.ec2.internal   <none>           <none>
+kube-system   kube-proxy-95lwc               1/1     Running   0          19m   10.0.4.99   ip-10-0-4-99.ec2.internal   <none>           <none>
+
+Check pods that is going to be drained 
+root@56bcca239888:~/ops-tools/eks_eksctl# kubectl get pods --all-namespaces -o wide  --field-selector spec.nodeName=ip-10-0-8-105.ec2.internal
+NAMESPACE       NAME                                            READY   STATUS    RESTARTS   AGE   IP           NODE                         NOMINATED NODE   READINESS GATES
+app1            app1-5c8c5777bc-jzgnv                           1/1     Running   0          96m   10.0.8.110   ip-10-0-8-105.ec2.internal   <none>           <none>
+app2            app2-6f46b7bf-xc279                             1/1     Running   0          8h    10.0.8.76    ip-10-0-8-105.ec2.internal   <none>           <none>
+argo-rollouts   argo-rollouts-55f758b956-5hth7                  1/1     Running   0          8h    10.0.8.59    ip-10-0-8-105.ec2.internal   <none>           <none>
+argocd          argocd-application-controller-0                 1/1     Running   0          8h    10.0.8.21    ip-10-0-8-105.ec2.internal   <none>           <none>
+argocd          argocd-redis-5886fb89ff-nj7ld                   1/1     Running   0          8h    10.0.8.108   ip-10-0-8-105.ec2.internal   <none>           <none>
+argocd          argocd-server-654dd68d48-4ztmg                  1/1     Running   0          8h    10.0.8.79    ip-10-0-8-105.ec2.internal   <none>           <none>
+cert-manager    cert-manager-84857f6b4-lfsr4                    1/1     Running   0          9h    10.0.8.48    ip-10-0-8-105.ec2.internal   <none>           <none>
+cert-manager    cert-manager-webhook-8fc5dcf5f-djcw2            1/1     Running   0          9h    10.0.8.18    ip-10-0-8-105.ec2.internal   <none>           <none>
+karpenter       karpenter-7cf7dcfcf9-w7ss8                      1/1     Running   0          9h    10.0.8.78    ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     aws-load-balancer-controller-86d6f5f58f-m6k5t   1/1     Running   0          8h    10.0.8.27    ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     aws-node-4szsn                                  2/2     Running   0          9h    10.0.8.105   ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     ebs-csi-controller-99688b54d-5tw26              6/6     Running   0          9h    10.0.8.14    ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     ebs-csi-node-6zjq5                              3/3     Running   0          9h    10.0.8.51    ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     eks-pod-identity-agent-scsgx                    1/1     Running   0          9h    10.0.8.105   ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     external-dns-79fff7c7f9-nz5d4                   1/1     Running   0          9h    10.0.8.7     ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     kube-proxy-h8r9w                                1/1     Running   0          9h    10.0.8.105   ip-10-0-8-105.ec2.internal   <none>           <none>
+kube-system     metrics-server-5d7fc8dc9-9c992                  1/1     Running   0          9h    10.0.8.23    ip-10-0-8-105.ec2.internal   <none>           <none>
+
+Check 
+kubectl drain  -l alpha.eksctl.io/nodegroup-name=eks-poc-ng  --ignore-daemonsets --delete-emptydir-data 
+kubectl uncordon  -l alpha.eksctl.io/nodegroup-name=eks-poc-ng  to scedule pods again to the nodes 
+kubectl drain ip-10-0-8-105.ec2.internal  --ignore-daemonsets --delete-emptydir-data 
+ check the new pods are running in  new node group and old node group 
+NODES=$(kubectl get nodes -l  alpha.eksctl.io/nodegroup-name=eks-poc-ng -o jsonpath='{.items[*].metadata.name}')
+for node in $NODES; do
+  echo "Pods on node $node:"
+  kubectl get pods --all-namespaces --field-selector spec.nodeName=$node -o wide
+  echo "---"
+done
+
+
+Scaled down old node groups 
+
+root@56bcca239888:~/ops-tools/eks_eksctl# aws eks describe-nodegroup --cluster-name eks-poc  --nodegroup-name eks-poc-ng --query 'nodegroup.scalingConfig'
+{
+    "minSize": 1,
+    "maxSize": 2,
+    "desiredSize": 1
+}
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng --scaling-config minSize=0
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng --scaling-config desiredSize=0
+
+Delete the nodegroups  using eksctl 
+
+eksctl delete nodegroup --cluster=eks-poc --name=eks-poc-ng 
+
+
+###########
+
+Testing Node affininty lab
+https://docs.okd.io/4.18/nodes/scheduling/nodes-scheduler-pod-affinity.html
+https://www.cloudbolt.io/kubernetes-pod-scheduling/kubernetes-node-selector/  Concepts explained
+https://cast.ai/blog/node-affinity-and-other-ways-to-control-scheduler/
+https://repost.aws/questions/QUsppjW2m9Sy-5lZsFikMYHg/eks-node-selector-possible-labels
+https://oneuptime.com/blog/post/2026-02-20-kubernetes-node-affinity-anti-affinity/view
+https://blog.stackademic.com/mastering-kubernetes-pod-scheduling-a-complete-guide-to-affinity-anti-affinity-and-node-4aa1bc39ec3e
+https://medium.com/@venkatre1978/multi-az-deployment-and-pod-affinity-in-amazon-eks-a-hands-on-exploration-748f17ee0b84
+1) Apply the deployment::  kubectl apply -f hello-deployment.yaml
+Expose it as a ClusterIP service:kubectl expose deployment hello --type=ClusterIP --port=80
+2)Apply Topology Spread Constraints : To ensure your pods are evenly distributed across AZs and nodes 
+kubectl apply -f hello-affinity.yaml
+verify where your pods are placed: kubectl get pods -o wide
+
+3) Load Testing with BusyBox: kubectl create deployment loader --image=busybox -- /bin/sh -c \
+'while true; do wget -q -O- http://hello.default.svc.cluster.local >/dev/null; done'
+
+scale the number of BusyBox pods to increase load: kubectl scale deployment loader --replicas=10
+
+4)Monitor the load on your nodes and pods: kubectl top nodes:kubectl top nodes  kubectl top pods
+
+kubectl scale deployment loader --replicas=10
+
+5)Check how many pods are runing  each in your nodes 
+kubectl get pods --all-namespaces -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+kubectl get pods  -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+
+kubectl get pods  -o jsonpath='{range .items[?(@.spec.nodeName)]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | sort -rn | awk 'BEGIN {print "Count\tNodeName"} {print $1 "\t" $2}'
+
+6)check how kubernetes responds when nodes become unavailable  :
+kubectl drain  -l alpha.eksctl.io/nodegroup-name=eks-poc-ng  --ignore-daemonsets --delete-emptydir-data
+NODES=$(kubectl get nodes -l  alpha.eksctl.io/nodegroup-name=eks-poc-ng -o jsonpath='{.items[*].metadata.name}')
+for node in $NODES; do
+  echo "Pods on node $node:"
+  kubectl get pods --all-namespaces --field-selector spec.nodeName=$node -o wide
+  echo "---"
+
+7)Check how many pods are running in each of your node 
+
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng --scaling-config desiredSize=0
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng --scaling-config minSize=0
+
+
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng1 --scaling-config desiredSize=0
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng1 --scaling-config minSize=0
+
+
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng2 --scaling-config desiredSize=0
+aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng2 --scaling-config minSize=0
+
+
+To check why the nodes are not able to schedule in workerr nodes for all namespaces 
+https://oneuptime.com/blog/post/2026-01-25-kubernetes-events-debugging/view
+ sort events by timestamp kubectl get events -A  --field-selector reason=FailedScheduling --sort-by='.metadata.creationTimestamp' | tac
+root@13f93d656dcc:~/ops-tools/eks_eksctl# kubectl get events -A  --field-selector reason=FailedScheduling   
+NAMESPACE       LAST SEEN   TYPE      REASON             OBJECT                                                  MESSAGE
+argo-rollouts   22m         Warning   FailedScheduling   pod/argo-rollouts-55f758b956-mvcxb                      no nodes available to schedule pod
