@@ -226,6 +226,7 @@ eksctl delete nodegroup --cluster=eks-poc --name=eks-poc-ng
 ###########
 
 Testing Node affininty lab
+https://overcast.blog/mastering-node-affinity-and-anti-affinity-in-kubernetes-db769af90f5c
 https://docs.okd.io/4.18/nodes/scheduling/nodes-scheduler-pod-affinity.html
 https://www.cloudbolt.io/kubernetes-pod-scheduling/kubernetes-node-selector/  Concepts explained
 https://cast.ai/blog/node-affinity-and-other-ways-to-control-scheduler/
@@ -264,6 +265,7 @@ for node in $NODES; do
 
 7)Check how many pods are running in each of your node 
 
+Scale Down your nodes 
 aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng --scaling-config desiredSize=0
 aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc-ng --scaling-config minSize=0
 
