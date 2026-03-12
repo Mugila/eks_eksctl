@@ -284,3 +284,8 @@ https://oneuptime.com/blog/post/2026-01-25-kubernetes-events-debugging/view
 root@13f93d656dcc:~/ops-tools/eks_eksctl# kubectl get events -A  --field-selector reason=FailedScheduling   
 NAMESPACE       LAST SEEN   TYPE      REASON             OBJECT                                                  MESSAGE
 argo-rollouts   22m         Warning   FailedScheduling   pod/argo-rollouts-55f758b956-mvcxb                      no nodes available to schedule pod
+
+######## Install prometheous and Graphana and share the same ALB #####
+
+root@f6a772ef79a9:~/ops-tools/eks_eksctl# helm list --all namespaces
+helm  uninstall prometheus -n monitoring
