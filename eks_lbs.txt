@@ -195,7 +195,14 @@ kube-system     kube-proxy-h8r9w                                1/1     Running 
 kube-system     metrics-server-5d7fc8dc9-9c992                  1/1     Running   0          9h    10.0.8.23    ip-10-0-8-105.ec2.internal   <none>           <none>
 
 Check 
+https://oneuptime.com/blog/post/2026-01-24-kubernetes-liveness-readiness-probes/view
+https://www.flightcrew.io/blog/pdb-rollout-guide#id-decision-tree
+https://spacelift.io/blog/kubernetes-liveness-probe
+https://oneuptime.com/blog/post/2026-01-30-kubernetes-pdb-strategies/view
+https://oneuptime.com/blog/post/2026-02-20-kubernetes-pod-disruption-budgets/view
 kubectl drain  -l alpha.eksctl.io/nodegroup-name=eks-poc-ng  --ignore-daemonsets --delete-emptydir-data 
+kubectl drain node -1  alpha.eksctl.io/nodegroup-name=eks-poc-ng  --ignore-daemonsets --delete-emptydir-data --disable-eviction --force  # force draining
+kubectl get pdb -A --watch ## Monitor draining Process 
 kubectl uncordon  -l alpha.eksctl.io/nodegroup-name=eks-poc-ng  to scedule pods again to the nodes 
 kubectl drain ip-10-0-8-105.ec2.internal  --ignore-daemonsets --delete-emptydir-data 
  check the new pods are running in  new node group and old node group 
@@ -231,6 +238,7 @@ https://docs.okd.io/4.18/nodes/scheduling/nodes-scheduler-pod-affinity.html
 https://www.cloudbolt.io/kubernetes-pod-scheduling/kubernetes-node-selector/  Concepts explained
 https://cast.ai/blog/node-affinity-and-other-ways-to-control-scheduler/
 https://repost.aws/questions/QUsppjW2m9Sy-5lZsFikMYHg/eks-node-selector-possible-labels
+https://oneuptime.com/blog/post/2026-01-23-kubernetes-pod-anti-affinity-rules/view
 https://oneuptime.com/blog/post/2026-02-20-kubernetes-node-affinity-anti-affinity/view
 https://blog.stackademic.com/mastering-kubernetes-pod-scheduling-a-complete-guide-to-affinity-anti-affinity-and-node-4aa1bc39ec3e
 https://medium.com/@venkatre1978/multi-az-deployment-and-pod-affinity-in-amazon-eks-a-hands-on-exploration-748f17ee0b84
@@ -279,7 +287,15 @@ aws eks update-nodegroup-config --cluster-name eks-poc  --nodegroup-name eks-poc
 
 
 To check why the nodes are not able to schedule in workerr nodes for all namespaces 
+
+https://devopscube.com/private-eks-resources/ must try the to expose 
+https://mantalus.com/blog/prometheus-and-grafana-on-amazon-eks-2/
+https://florientdogbe.medium.com/argo-cd-prometheus-grafana-setup-on-top-of-amazon-eks-9306a092bbc9
+https://github.com/githubabhay2003/serverless-container-observability
 https://oneuptime.com/blog/post/2026-01-25-kubernetes-events-debugging/view
+https://github.com/harsh2478/Observability-Project-
+https://blog.devops.dev/building-a-full-scale-observability-stack-on-eks-with-prometheus-grafana-efk-and-jaeger-acb1bad5a1d1
+https://itnext.io/kubernetes-monitoring-a-complete-solution-part-3-metrics-using-the-victoria-metrics-k8s-stack-515d64b5f3ba
  sort events by timestamp kubectl get events -A  --field-selector reason=FailedScheduling --sort-by='.metadata.creationTimestamp' | tac
 root@13f93d656dcc:~/ops-tools/eks_eksctl# kubectl get events -A  --field-selector reason=FailedScheduling   
 NAMESPACE       LAST SEEN   TYPE      REASON             OBJECT                                                  MESSAGE
@@ -287,5 +303,7 @@ argo-rollouts   22m         Warning   FailedScheduling   pod/argo-rollouts-55f75
 
 ######## Install prometheous and Graphana and share the same ALB #####
 
+https://oneuptime.com/blog/post/2026-01-17-helm-prometheus-grafana-deployment/view
 root@f6a772ef79a9:~/ops-tools/eks_eksctl# helm list --all namespaces
 helm  uninstall prometheus -n monitoring
+ kubectl delete namespace monitoring 

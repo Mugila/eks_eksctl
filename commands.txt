@@ -85,7 +85,7 @@ eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
 
 create only service account from existing config file 
 eksctl delete iamserviceaccount --cluster=eks-poc  --name=cert-manager --namespace=kube-system
-eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve 
+eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve  
 eksctl delete   cluster -f cluster_creation.yaml 
 eksctl create  cluster -f cluster_creation.yaml  --timeout=45m  --verbose 4
 
@@ -888,6 +888,9 @@ https://dev.to/aws-builders/security-considerations-for-multi-cluster-cloud-arch
 https://dev.to/aws-builders/security-considerations-for-multi-cluster-cloud-architecture-ha-eks-with-databases-1edp
 
 Karpenter
+https://dev.to/aws-heroes/moving-from-node-groups-to-nodepools-on-amazon-eks-1kc5
+https://github.com/mlewis7127/amazon-eks-guide-code/blob/main/k8s/node-pool/arm-nodepool.yaml
+https://oneuptime.com/blog/post/2026-02-12-use-karpenter-for-eks-node-provisioning/view
 https://oneuptime.com/blog/post/2026-02-09-daemonset-node-selector-pools/view
 https://oneuptime.com/blog/post/2026-02-12-use-karpenter-for-eks-node-provisioning/view
 https://dev.to/aws-builders/navigating-aws-eks-with-terraform-configuring-karpenter-for-just-in-time-node-provisioning-5g45
@@ -1203,7 +1206,7 @@ https://oneuptime.com/blog/post/2026-02-23-how-to-use-terraform-for-multi-region
 labs to try
 
 ##Node Group upgrade 
-
+https://oneuptime.com/blog/post/2026-02-26-argocd-bootstrap-network-policies/view important 
 https://techblog.realtor.com/zero-downtime-eks-node-group-updates/
 https://oneuptime.com/blog/post/2026-01-30-aws-eks-managed-node-groups/view
 https://oneuptime.com/blog/post/2026-02-09-eks-upgrade-managed-node-groups/view.  very important 
@@ -1468,3 +1471,35 @@ https://dev.to/aws-builders/ecs-bluegreen-deployment-with-codedeploy-and-terrafo
 https://github.com/felipelaptrin/ecs-load-test
 https://felipetrindade.com/ecs-load-testing/
 https://kitemetric.com/blogs/beat-the-burst-optimizing-aws-alb-and-ecs-fargate-for-sudden-traffic-spikes
+
+###Name sapce isolation 
+https://repost.aws/knowledge-center/eks-configure-sso-user
+https://aws.amazon.com/blogs/containers/a-quick-path-to-amazon-eks-single-sign-on-using-aws-sso/
+https://aws.amazon.com/blogs/containers/a-deep-dive-into-simplified-amazon-eks-access-management-controls/
+https://repost.aws/knowledge-center/eks-kubernetes-object-access-error
+https://repost.aws/knowledge-center/amazon-eks-cluster-access
+https://dilshanw.medium.com/simplifying-eks-cluster-management-across-multiple-aws-accounts-with-lens-and-aws-sso-f2cdaf7ee158
+https://hub.qovery.com/guides/tutorial/how-to-activate-sso-to-connect-to-your-eks-cluster/
+https://repost.aws/knowledge-center/eks-iam-permissions-namespaces
+https://www.cbui.dev/how-to-enable-iam-and-aws-sso-access-to-eks/
+https://aws.amazon.com/solutions/guidance/integrating-external-single-sign-on-providers-with-amazon-eks/
+https://medium.com/@prasad.midde3/implementing-rbac-in-amazon-eks-with-azure-ad-integration-group-based-read-only-access-to-6e3a59b77f63
+https://github.com/aws-solutions-library-samples/guidance-for-integrating-external-single-sign-on-providers-with-amazon-eks
+https://goteleport.com/learn/kubernetes-access-and-security/authenticating-aws-eks-kubernetes-clusters-with-okta-sso/
+https://medium.com/@mrethers/authenticating-to-eks-clusters-with-aws-sso-like-a-boss-too-4ba100c87f0b
+https://jeremyritchie.com/posts/15/
+https://medium.com/@sandeepkomalp/automating-multi-tenant-eks-clusters-with-namespace-isolation-4cf15c95551d
+https://medium.com/commencis/resolving-aws-sso-user-authorization-issue-in-aws-eks-c28f7894f993
+https://www.linkedin.com/pulse/integrating-single-sign-on-sso-aws-kubernetes-guide-arya-soni/
+https://sujitpatel.in/blog/how-to-create-read-only-user-in-eks-cluster
+
+
+https://www.axelmendoza.com/posts/kubernetes-beginner-guide/   important 
+
+Network policy isolation 
+https://www.plural.sh/blog/can-pods-communicate-across-namespaces/
+https://oneuptime.com/blog/post/2026-02-20-kubernetes-network-policies-basics/view
+https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-eks-enhanced-network-security-policies/
+https://repost.aws/articles/ARFP1toB5RTrGHQCDQJPFxyw/aws-vpc-cni-network-policy-architecture-and-troubleshooting
+https://www.eksworkshop.com/docs/networking/vpc-cni/network-policies/
+https://aws.amazon.com/blogs/containers/amazon-eks-introduces-enhanced-network-policy-capabilities/
