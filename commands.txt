@@ -953,6 +953,8 @@ https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-smoke-tests/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-postsync-notifications/view
 https://oneuptime.com/blog/post/2026-02-26-argocd-blue-green-deployments/view
 https://oneuptime.com/blog/post/2026-02-02-argocd-rollouts/view
+https://medium.com/@nsalexamy/blue-green-deployments-with-argo-rollouts-helm-and-gitops-step-by-step-guide-e52f2d83b33f
+https://aws.plainenglish.io/gitops-with-argo-cd-on-amazon-eks-github-integration-alb-ingress-and-app-of-apps-2fe3f3bcd01f
 https://www.infraspec.dev/blog/argo-rollout-aws-alb/
 https://oneuptime.com/blog/post/2026-01-24-blue-green-deployments/view
 https://velog.io/@hanjoonhyuk/AWS-EKS-Workshop-Study-7%EC%A3%BC%EC%B0%A8-CICD
@@ -1503,3 +1505,11 @@ https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-eks-enhanced-network-s
 https://repost.aws/articles/ARFP1toB5RTrGHQCDQJPFxyw/aws-vpc-cni-network-policy-architecture-and-troubleshooting
 https://www.eksworkshop.com/docs/networking/vpc-cni/network-policies/
 https://aws.amazon.com/blogs/containers/amazon-eks-introduces-enhanced-network-policy-capabilities/
+
+
+https://oneuptime.com/blog/post/2026-02-23-how-to-apply-infrastructure-changes-with-terraform-apply/view
+https://oneuptime.com/blog/post/2025-12-18-terraform-refresh-explained/view
+
+https://oneuptime.com/blog/post/2026-02-16-how-to-configure-terraform-backend-partial-configuration-for-azure-team-workflows/view
+https://oneuptime.com/blog/post/2026-02-23-terraform-state-rm-command/view
+https://oneuptime.com/blog/post/2026-02-23-how-to-implement-rollback-strategies-in-terraform-cicd/view
