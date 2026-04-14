@@ -94,6 +94,16 @@ Recreate serviceaccount cert-manager  with name space cert-manager
 eksctl delete iamserviceaccount --cluster=eks-poc --name=cert-manager --namespace=cert-manager
 eksctl create iamserviceaccount -f  cluster_creation.yaml  --approve
 
+Scale down and Scale Up ECS server 
+aws eks update-nodegroup-config \
+    --cluster-name eks-poc \
+    --nodegroup-name eks-poc-ng1 \
+    --scaling-config minSize=0,maxSize=1,desiredSize=0
+
+aws eks update-nodegroup-config \
+    --cluster-name eks-poc \
+    --nodegroup-name eks-poc-ng2 \
+    --scaling-config minSize=0,maxSize=1,desiredSize=0
 
 
 full clean up of certmanager  (deleted namespace cert-manager installed through eksctl cluster config )
@@ -297,6 +307,11 @@ kube-system    metrics-server-59c6c74c8d-htfhj                 1/1     Running  
 kube-system    metrics-server-59c6c74c8d-znp6d                 1/1     Running   0          62m
 
 
+
+aws eks update-nodegroup-config \
+    --cluster-name <CLUSTER_NAME> \
+    --nodegroup-name <NODEGROUP_NAME> \
+    --scaling-config minSize=0,maxSize=<CURRENT_MAX>,desiredSize=0
 Grp pods with specifi fabels 
 https://oneuptime.com/blog/post/2026-02-09-kubectl-custom-columns-output-format/view
 
