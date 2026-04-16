@@ -88,8 +88,8 @@ managedNodeGroups:
     #  maxUnavailablePercentage: 10
     disableIMDSv1: True
     disablePodIMDS: false
-    desiredCapacity: 0
-    minSize: 0
+    desiredCapacity: 2
+    minSize: 2
     maxSize: 2
     volumeSize: 20
     volumeType: gp3
